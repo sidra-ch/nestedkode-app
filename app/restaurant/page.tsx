@@ -216,7 +216,12 @@ export default function RestaurantPage() {
 
                     {/* Price & Button */}
                     <div className="flex items-center justify-between">
-                      <button className="rounded-lg bg-afghanibaba-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-afghanibaba-dark">
+                      <button 
+                        className="rounded-lg px-4 py-2 text-sm font-semibold text-white transition"
+                        style={{ backgroundColor: '#059669' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#064E3B')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#059669')}
+                      >
                         رزرو کنید
                       </button>
                       <p className="text-xs font-semibold text-gray-500">

@@ -207,9 +207,14 @@ export default function TaxiPage() {
                     {/* Price & Book */}
                     <div className="md:col-span-1 text-right">
                       <p className="text-xs text-gray-500 mb-1">قیمت</p>
-                      <p className="text-3xl font-bold text-afghanibaba-primary">{taxi.price}</p>
+                      <p className="text-3xl font-bold" style={{ color: '#059669' }}>{taxi.price}</p>
                       <p className="text-xs text-gray-600 mb-3">افغانی</p>
-                      <button className="w-full rounded-lg bg-afghanibaba-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-afghanibaba-dark">
+                      <button 
+                        className="w-full rounded-lg px-4 py-2 text-sm font-semibold text-white transition"
+                        style={{ backgroundColor: '#059669' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#064E3B')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#059669')}
+                      >
                         رزرو تاکسی
                       </button>
                     </div>

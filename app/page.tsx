@@ -72,9 +72,10 @@ export default function Home() {
                       onClick={() => setActiveTab(tab)}
                       className={`rounded-t-lg px-4 py-2 text-sm font-semibold transition ${
                         activeTab === tab
-                          ? "bg-afghanibaba-primary text-white"
+                          ? "text-white"
                           : "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                       }`}
+                      style={activeTab === tab ? { backgroundColor: '#059669' } : {}}
                     >
                       {tab}
                     </button>
@@ -129,7 +130,12 @@ export default function Home() {
                       <div className="min-w-[150px]">
                         <input type="date" className="w-full rounded-lg border border-gray-300 p-3 text-right text-sm" />
                       </div>
-                      <button className="rounded-lg bg-afghanibaba-primary px-8 py-3 font-semibold text-white transition hover:bg-afghanibaba-dark">
+                      <button 
+                        className="rounded-lg px-8 py-3 font-semibold text-white transition"
+                        style={{ backgroundColor: '#059669' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#064E3B')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#059669')}
+                      >
                         جستجو
                       </button>
                     </div>

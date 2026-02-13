@@ -42,7 +42,7 @@ export default function RestaurantForm() {
   return (
     <div className="w-full space-y-4 rounded-2xl bg-white p-6 shadow-lg">
       <h3 className="flex items-center gap-2 text-lg font-bold text-right text-gray-900">
-        <UtensilsCrossed className="h-5 w-5 text-afghanibaba-primary" />
+        <UtensilsCrossed className="h-5 w-5" style={{ color: '#059669' }} />
         رستوران را رزرو کنید
       </h3>
 
@@ -136,7 +136,10 @@ export default function RestaurantForm() {
       {/* Search Button */}
       <button
         onClick={handleSearch}
-        className="w-full rounded-lg bg-afghanibaba-primary px-6 py-3 font-bold text-white transition hover:bg-afghanibaba-dark"
+        className="w-full rounded-lg px-6 py-3 font-bold text-white transition"
+        style={{ backgroundColor: '#059669' }}
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#064E3B')}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#059669')}
       >
         <Search className="mb-1 inline h-4 w-4" /> جستجوی رستوران
       </button>
