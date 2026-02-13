@@ -1,65 +1,463 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import { assetPath } from "@/lib/assetPath";
+import TaxiForm from "@/components/search/TaxiForm";
+import RestaurantForm from "@/components/search/RestaurantForm";
+
+type TabKey = "پرواز داخلی" | "پرواز خارجی" | "اتوبوس" | "هتل" | "تاکسی" | "رستوران";
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState<TabKey>("پرواز داخلی");
+
+  const tabs: TabKey[] = ["پرواز داخلی", "پرواز خارجی", "اتوبوس", "هتل", "تاکسی", "رستوران"];
+
+  const faqs = [
+    { q: "چند روز قبل از پرواز بلیط هواپیما بخریم؟", a: "بهترین زمان برای خرید بلیط هواپیما معمولاً 2 تا 3 هفته قبل از سفر است." },
+    { q: "در هر پرواز میزان بار مجاز چقدر است؟", a: "میزان بار مجاز بسته به ایرلاین متفاوت است. معمولاً 20 تا 30 کیلوگرم مجاز است." },
+    { q: "نرخ بلیط برای نوزادان و کودکان چگونه است؟", a: "نوزادان (زیر 2 سال) معمولاً بدون صندلی و با 10% قیمت بزرگسالان سفر می‌کنند." },
+    { q: "رزرو آنلاین هزینه بیشتری از خرید حضوری دارد؟", a: "خیر، رزرو آنلاین معمولاً هزینه کمتری دارد و امکان مقایسه قیمت‌ها فراهم است." },
+    { q: "آیا پس از خرید اینترنتی امکان استرداد وجود دارد؟", a: "بله، بسته به قوانین ایرلاین امکان استرداد با کسر جریمه وجود دارد." },
+    { q: "هنگام رزرو آنلاین امکان انتخاب صندلی هست؟", a: "بله، در بسیاری از ایرلاین‌ها امکان انتخاب صندلی هنگام خرید وجود دارد." },
+  ];
+
+  const domesticFilters = [
+    "انتخاب بر اساس ساعت حرکت",
+    "فیلتر نوع بلیط (سیستمی/چارتری)",
+    "فیلتر کلاس پروازی",
+    "انتخاب بر اساس ایرلاین داخلی",
+  ];
+
+  const internationalFilters = [
+    "انتخاب بر اساس ساعت حرکت و رسیدن",
+    "فیلتر تعداد توقف‌ها",
+    "نمایش پروازهای بدون توقف",
+    "فیلتر بار چمدان",
+  ];
+
+  const domesticAirlines = ["ماهان", "زاگرس", "کیش ایر", "قشم ایر", "آسمان", "کاسپین"];
+  const internationalAirlines = ["IranAirtour", "QeshmAir", "AirArabia", "Mahan Airlines", "Flydubai", "Emirates"];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="min-h-screen flex-col bg-gray-50" style={{ direction: 'rtl', fontFamily: 'Tahoma, Arial, sans-serif' }}>
+      <Navbar />
+
+      <main>
+        {/* Hero Section */}
+        <section className="relative h-[500px] md:h-[450px]">
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url('${assetPath("/assets/home-page.webp")}')` }}
+          />
+          <div className="absolute inset-0 bg-black/40" />
+
+          <div className="relative z-10 mx-auto h-full max-w-6xl px-4">
+            <div className="flex h-full flex-col justify-end pt-8 pb-16">
+              <h1 className="text-right text-3xl font-bold text-white md:text-5xl">
+                بلیط پرواز، هتل، تاکسی و رستوران را یکجا رزرو کنید.
+              </h1>
+              <p className="mt-3 text-right text-base text-white/90">
+                افغانی‌بابا با شبکه تامین‌کنندگان معتبر و پشتیبانی شبانه‌روزی، سفر شما را ساده و مطمئن می‌کند.
+              </p>
+
+              {/* Search Box */}
+              <div className="mt-8 w-full">
+                <div className="mb-4 flex flex-wrap gap-2 rounded-t-2xl bg-white px-4 pt-4">
+                  {tabs.map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`rounded-t-lg px-4 py-2 text-sm font-semibold transition ${
+                        activeTab === tab
+                          ? "bg-afghanibaba-primary text-white"
+                          : "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Conditional Form Rendering */}
+                {activeTab === "تاکسی" ? (
+                  <div className="rounded-b-2xl bg-white p-4 shadow-xl">
+                    <TaxiForm />
+                  </div>
+                ) : activeTab === "رستوران" ? (
+                  <div className="rounded-b-2xl bg-white p-4 shadow-xl">
+                    <RestaurantForm />
+                  </div>
+                ) : (
+                  <div className="rounded-b-2xl bg-white p-4 shadow-xl">
+                    {/* Default Flight/Bus/Hotel Form */}
+                    <div className="mt-4 flex flex-wrap items-center gap-3">
+                      <div className="flex-1 min-w-[200px]">
+                        <input 
+                          type="text" 
+                          placeholder="شهر مبدا" 
+                          className="w-full rounded-lg border border-gray-300 p-3 text-right text-sm"
+                          list="origin-options"
+                        />
+                        <datalist id="origin-options">
+                          <option value="کابل" />
+                          <option value="مزار شریف" />
+                          <option value="هرات" />
+                          <option value="قندهار" />
+                        </datalist>
+                      </div>
+                      <div className="flex-1 min-w-[200px]">
+                        <input 
+                          type="text" 
+                          placeholder="شهر مقصد" 
+                          className="w-full rounded-lg border border-gray-300 p-3 text-right text-sm"
+                          list="dest-options"
+                        />
+                        <datalist id="dest-options">
+                          <option value="دوبی" />
+                          <option value="استانبول" />
+                          <option value="دهلی" />
+                          <option value="تهران" />
+                          <option value="مشهد" />
+                        </datalist>
+                      </div>
+                      <div className="min-w-[150px]">
+                        <input type="date" className="w-full rounded-lg border border-gray-300 p-3 text-right text-sm" />
+                      </div>
+                      <div className="min-w-[150px]">
+                        <input type="date" className="w-full rounded-lg border border-gray-300 p-3 text-right text-sm" />
+                      </div>
+                      <button className="rounded-lg bg-afghanibaba-primary px-8 py-3 font-semibold text-white transition hover:bg-afghanibaba-dark">
+                        جستجو
+                      </button>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-gray-500">
+                      <span>پشتیبانی ۲۴ ساعته</span>
+                      <span>•</span>
+                      <span>تضمین کمترین قیمت</span>
+                      <span>•</span>
+                      <span>استرداد آنلاین</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Services Section */}
+        <section className="mx-auto max-w-6xl px-4 py-6">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <Link href="#" className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 transition hover:shadow-md">
+              <img src={assetPath("/assets/about-2.jpg")} alt="سفرکارت" className="h-14 w-14 rounded-lg object-cover" />
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900">سفرکارت (سازمانی)</h3>
+                <p className="text-xs text-gray-500">مدیریت سفر سازمانی</p>
+              </div>
+            </Link>
+            <Link href="#" className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 transition hover:shadow-md">
+              <img src={assetPath("/assets/about-3.jpg")} alt="سفر اقساطی" className="h-14 w-14 rounded-lg object-cover" />
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900">سفر اقساطی</h3>
+                <p className="text-xs text-gray-500">سفر با پرداخت اقساطی</p>
+              </div>
+            </Link>
+            <Link href="#" className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 transition hover:shadow-md">
+              <img src={assetPath("/assets/about-4.jpg")} alt="ویزا" className="h-14 w-14 rounded-lg object-cover" />
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900">ویزای سفر</h3>
+                <p className="text-xs text-gray-500">دریافت ویزای کشورهای مختلف</p>
+              </div>
+            </Link>
+          </div>
+        </section>
+
+        {/* Popular Routes */}
+        <section className="mx-auto max-w-6xl px-4 pb-8">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900">مسیرهای محبوب</h2>
+            <Link href="/flights" className="text-sm font-semibold text-[#FDB713]">مشاهده همه</Link>
+          </div>
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+            {[
+              { city: "کابل → دوبی", price: "از ۲۲۰ دلار" },
+              { city: "کابل → استانبول", price: "از ۱۸۰ دلار" },
+              { city: "کابل → دهلی", price: "از ۱۶۰ دلار" },
+              { city: "کابل → تهران", price: "از ۱۴۰ دلار" },
+              { city: "مزار شریف → کابل", price: "از ۲۵ دلار" },
+              { city: "هرات → کابل", price: "از ۳۰ دلار" },
+            ].map((route) => (
+              <Link key={route.city} href="/flights" className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4 transition hover:shadow-md">
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">{route.city}</p>
+                  <p className="text-xs text-gray-500">{route.price}</p>
+                </div>
+                <span className="text-xs font-semibold text-[#FDB713]">مشاهده</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Flight Info Section */}
+        <section className="mx-auto max-w-6xl px-4 pb-8">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6">
+            <h2 className="text-lg font-bold text-gray-900 text-right">بلیط هواپیما | رزرو آنلاین</h2>
+            <p className="mt-3 text-sm text-gray-600 text-right">
+              افغانی‌بابا از سال‌ها پیش با هدف ساده کردن خرید آنلاین بلیط پرواز فعالیت خود را آغاز کرده است.
+              امروز این پلتفرم به یکی از معتبرترین گزینه‌ها برای خرید بلیط پرواز داخلی و خارجی تبدیل شده است.
+            </p>
+            
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="text-right">
+                <h3 className="text-sm font-semibold text-gray-800 mb-2">فیلترهای جستجو - داخلی</h3>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  {domesticFilters.map((item) => (
+                    <li key={item}>- {item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="text-right">
+                <h3 className="text-sm font-semibold text-gray-800 mb-2">فیلترهای جستجو - خارجی</h3>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  {internationalFilters.map((item) => (
+                    <li key={item}>- {item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-4 text-right">
+              <h3 className="text-sm font-semibold text-gray-800 mb-2">ایرلاین‌های داخلی</h3>
+              <div className="flex flex-wrap gap-2">
+                {domesticAirlines.map((airline) => (
+                  <span key={airline} className="rounded-full border border-gray-300 px-3 py-1 text-xs text-gray-600">{airline}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-4 text-right">
+              <h3 className="text-sm font-semibold text-gray-800 mb-2">ایرلاین‌های خارجی</h3>
+              <div className="flex flex-wrap gap-2">
+                {internationalAirlines.map((airline) => (
+                  <span key={airline} className="rounded-full border border-gray-300 px-3 py-1 text-xs text-gray-600">{airline}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6 text-right">
+              <h3 className="text-sm font-semibold text-gray-800 mb-2">استرداد بلیط</h3>
+              <p className="text-sm text-gray-600">
+                در صورت تغییر برنامه سفر، می‌توانید بلیط خود را طبق قوانین استرداد کنسل کنید و مبلغ قابل بازگشت را در کوتاه‌ترین زمان دریافت کنید.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="mx-auto max-w-6xl px-4 pb-8">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6">
+            <h2 className="text-lg font-bold text-gray-900 text-right">پرسش‌های شما</h2>
+            <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+              {faqs.map((faq, index) => (
+                <div key={index} className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                  <p className="text-sm font-semibold text-gray-900 text-right">{faq.q}</p>
+                  <p className="mt-2 text-xs text-gray-600 text-right">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Trust Badges */}
+        <section className="mx-auto max-w-6xl px-4 pb-8">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="rounded-xl border border-gray-200 bg-white p-5 text-right">
+              <h3 className="text-base font-semibold text-gray-900">رتبه یک سفر</h3>
+              <p className="mt-1 text-sm text-gray-600">معتبرترین عرضه‌کننده محصولات گردشگری</p>
+            </div>
+            <div className="rounded-xl border border-gray-200 bg-white p-5 text-right">
+              <h3 className="text-base font-semibold text-gray-900">همسفر هر سفر</h3>
+              <p className="mt-1 text-sm text-gray-600">ارائه خدمات پرواز، اتوبوس، هتل و تور</p>
+            </div>
+            <div className="rounded-xl border border-gray-200 bg-white p-5 text-right">
+              <h3 className="text-base font-semibold text-gray-900">پشتیبانی ۲۴ ساعته</h3>
+              <p className="mt-1 text-sm text-gray-600">همراهی در تمام مراحل سفر</p>
+            </div>
+          </div>
+        </section>
+
+        {/* App & Corporate */}
+        <section className="mx-auto max-w-6xl px-4 pb-8">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+            <div className="rounded-2xl bg-[#101826] p-6 text-right text-white md:col-span-3">
+              <p className="text-xs uppercase tracking-widest text-white/60">اپلیکیشن افغانی‌بابا</p>
+              <h2 className="mt-2 text-2xl font-bold">سفرهای خود را از موبایل مدیریت کنید.</h2>
+              <p className="mt-2 text-sm text-white/80">اعلان لحظه‌ای، مدیریت رزرو و دسترسی سریع به بلیط‌ها.</p>
+              <div className="mt-4 flex items-center gap-3">
+                <div className="h-16 w-16 rounded-xl bg-white/10">
+                  <img src={assetPath("/assets/logo-img.png")} alt="QR" className="h-full w-full object-cover" />
+                </div>
+                <div className="flex gap-2">
+                  <button className="rounded-lg border border-white/30 px-4 py-2 text-sm text-white">App Store</button>
+                  <button className="rounded-lg border border-white/30 px-4 py-2 text-sm text-white">Google Play</button>
+                  <button className="rounded-lg border border-white/30 px-4 py-2 text-sm text-white">لینک مستقیم</button>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 text-right md:col-span-2">
+              <p className="text-xs uppercase tracking-widest text-gray-400">سازمانی</p>
+              <h3 className="mt-2 text-xl font-bold text-gray-900">مدیریت سفر سازمانی با داشبورد حرفه‌ای.</h3>
+              <p className="mt-2 text-sm text-gray-600">گزارش‌گیری، صورتحساب متمرکز و پشتیبانی اختصاصی.</p>
+              <button className="mt-4 rounded-lg bg-[#FDB713] px-6 py-2 font-semibold text-black">درخواست دمو</button>
+            </div>
+          </div>
+        </section>
+
+        {/* Hotel Section */}
+        <section className="mx-auto max-w-6xl px-4 pb-8">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6">
+            <h2 className="text-lg font-bold text-gray-900 text-right">رزرو هتل | اقامت در بهترین هتل‌ها</h2>
+            <p className="mt-3 text-sm text-gray-600 text-right">
+              افغانی‌بابا امکان رزرو آنلاین هتل در سراسر افغانستان و جهان را فراهم کرده است.
+              از هتل‌های لوکس تا اقامتگاه‌های اقتصادی، بهترین گزینه‌ها را با قیمت مناسب رزرو کنید.
+            </p>
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">تضمین کمترین قیمت</h3>
+                <p className="mt-1 text-xs text-gray-600">بهترین قیمت رزرو هتل</p>
+              </div>
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">انتخاب گسترده</h3>
+                <p className="mt-1 text-xs text-gray-600">هزاران هتل در شهرهای مختلف</p>
+              </div>
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">رزرو آسان</h3>
+                <p className="mt-1 text-xs text-gray-600">ثبت‌نام در چند دقیقه</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Bus Section */}
+        <section className="mx-auto max-w-6xl px-4 pb-8">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6">
+            <h2 className="text-lg font-bold text-gray-900 text-right">بلیط اتوبوس | سفر زمینی</h2>
+            <p className="mt-3 text-sm text-gray-600 text-right">
+              افغانی‌بابا امکان رزرو آنلاین بلیط اتوبوس بین شهرهای افغانستان را فراهم کرده است.
+              با انتخاب شرکت‌های معتبر حمل و نقل، سفری راحت و امن را تجربه کنید.
+            </p>
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">انتخاب صندلی</h3>
+                <p className="mt-1 text-xs text-gray-600">انتخاب دقیق صندلی مورد نظر</p>
+              </div>
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">شرکت‌های معتبر</h3>
+                <p className="mt-1 text-xs text-gray-600">بهترین شرکت‌های حمل و نقل</p>
+              </div>
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">قیمت شفاف</h3>
+                <p className="mt-1 text-xs text-gray-600">بدون هزینه پنهان</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Tour Section */}
+        <section className="mx-auto max-w-6xl px-4 pb-8">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6">
+            <h2 className="text-lg font-bold text-gray-900 text-right">تور | سفر به نقاط دیدنی افغانستان</h2>
+            <p className="mt-3 text-sm text-gray-600 text-right">
+              افغانی‌بابا بهترین تورهای داخلی افغانستان را با بهترین قیمت ارائه می‌دهد.
+              از تور بامیان گرفته تا مزار شریف و هرات، بهترین تجربه سفر را با ما داشته باشید.
+            </p>
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">تور بامیان</h3>
+                <p className="mt-1 text-xs text-gray-600">بازدید از بت‌ها و دریاچه باستانی</p>
+              </div>
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">تور مزار شریف</h3>
+                <p className="mt-1 text-xs text-gray-600">زیارت آرامگاه حکیم ناصر خسرو</p>
+              </div>
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">تور هرات</h3>
+                <p className="mt-1 text-xs text-gray-600">بازدید از مسجد و موزه‌های تاریخی</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Insurance Section */}
+        <section className="mx-auto max-w-6xl px-4 pb-8">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6">
+            <h2 className="text-lg font-bold text-gray-900 text-right">بیمه مسافرتی | سفری امن</h2>
+            <p className="mt-3 text-sm text-gray-600 text-right">
+              افغانی‌بابا امکان خرید آنلاین بیمه مسافرتی را برای تمام مقاصد فراهم کرده است.
+              با خرید بیمه، سفری بدون نگرانی را تجربه کنید.
+            </p>
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">پوشش پزشکی</h3>
+                <p className="mt-1 text-xs text-gray-600">تا ۲۰۰ هزار دلار</p>
+              </div>
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">بازگشت اضطراری</h3>
+                <p className="mt-1 text-xs text-gray-600">هزینه‌های فوری</p>
+              </div>
+              <div className="rounded-xl bg-gray-50 p-4 text-right">
+                <h3 className="text-sm font-semibold text-gray-900">گم شدن چمدان</h3>
+                <p className="mt-1 text-xs text-gray-600">جبران خسارت</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Links Section */}
+        <section className="mx-auto max-w-6xl px-4 pb-8">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+            <div className="text-right">
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">افغانی‌بابا</h3>
+              <ul className="text-xs text-gray-600 space-y-2">
+                <li><Link href="#" className="hover:text-[#FDB713]">درباره ما</Link></li>
+                <li><Link href="#" className="hover:text-[#FDB713]">تماس با ما</Link></li>
+                <li><Link href="#" className="hover:text-[#FDB713]">چرا افغانی‌بابا</Link></li>
+                <li><Link href="#" className="hover:text-[#FDB713]">بیمه مسافرتی</Link></li>
+              </ul>
+            </div>
+            <div className="text-right">
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">خدمات مشتریان</h3>
+              <ul className="text-xs text-gray-600 space-y-2">
+                <li><Link href="#" className="hover:text-[#FDB713]">مرکز پشتیبانی آنلاین</Link></li>
+                <li><Link href="#" className="hover:text-[#FDB713]">راهنمای خرید</Link></li>
+                <li><Link href="#" className="hover:text-[#FDB713]">راهنمای استرداد</Link></li>
+                <li><Link href="#" className="hover:text-[#FDB713]">قوانین و مقررات</Link></li>
+              </ul>
+            </div>
+            <div className="text-right">
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">اطلاعات تکمیلی</h3>
+              <ul className="text-xs text-gray-600 space-y-2">
+                <li><Link href="#" className="hover:text-[#FDB713]">فروش سازمانی</Link></li>
+                <li><Link href="#" className="hover:text-[#FDB713]">پنل آژانسی</Link></li>
+                <li><Link href="#" className="hover:text-[#FDB713]">فرصت‌های شغلی</Link></li>
+                <li><Link href="#" className="hover:text-[#FDB713]">نقشه سایت</Link></li>
+              </ul>
+            </div>
+            <div className="text-right">
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">تماس</h3>
+              <ul className="text-xs text-gray-600 space-y-2">
+                <li>info@afghanibaba.com</li>
+                <li>کابل، افغانستان</li>
+              </ul>
+            </div>
+          </div>
+        </section>
       </main>
+
+      <Footer />
     </div>
   );
 }
