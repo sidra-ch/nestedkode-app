@@ -210,7 +210,7 @@ export default function TaxiPage() {
                       <p className="text-3xl font-bold" style={{ color: '#F97316' }}>{taxi.price}</p>
                       <p className="text-xs text-gray-600 mb-3">افغانی</p>
                       <button 
-                        className="w-full rounded-lg px-4 py-2 text-sm font-semibold text-white transition"
+                        className="w-full rounded-lg px-6 py-3 font-semibold text-white transition"
                         style={{ backgroundColor: '#F97316' }}
                         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C2410C')}
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F97316')}

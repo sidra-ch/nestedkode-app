@@ -59,7 +59,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-black/40" />
             {/* Content */}
             <div className="container mx-auto px-4 pt-16 relative z-10">
-              <h1 className="text-right text-3xl md:text-4xl font-bold text-white mb-3">
+              <h1 className="text-right text-3xl md:text-4xl font-semibold text-white mb-3">
                 سفر با افغانی‌بابا
               </h1>
               <p className="text-right text-lg text-white/90">
@@ -77,7 +77,7 @@ export default function Home() {
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`pb-4 text-sm font-bold transition-all whitespace-nowrap ${
+                    className={`pb-4 text-sm font-semibold transition-all whitespace-nowrap ${
                       activeTab === tab
                         ? 'border-b-2 text-afghanibaba-primary'
                         : 'text-gray-400 hover:text-gray-600'
@@ -106,7 +106,7 @@ export default function Home() {
                       <input
                         type="text"
                         placeholder="کابل"
-                        className="text-base font-bold text-gray-800 border-none outline-none bg-transparent w-full text-right"
+                        className="text-base font-semibold text-gray-800 border-none outline-none bg-transparent w-full text-right"
                         list="origin-options"
                       />
                       <datalist id="origin-options">
@@ -125,7 +125,7 @@ export default function Home() {
                       <input
                         type="text"
                         placeholder="دوبی"
-                        className="text-base font-bold text-gray-800 border-none outline-none bg-transparent w-full text-right"
+                        className="text-base font-semibold text-gray-800 border-none outline-none bg-transparent w-full text-right"
                         list="dest-options"
                       />
                       <datalist id="dest-options">
@@ -143,14 +143,14 @@ export default function Home() {
                       </div>
                       <input
                         type="date"
-                        className="text-base font-bold text-gray-800 border-none outline-none bg-transparent w-full text-right"
+                        className="text-base font-semibold text-gray-800 border-none outline-none bg-transparent w-full text-right"
                       />
                     </div>
 
                     {/* Search Button */}
                     <div className="flex items-center">
                       <button
-                        className="w-full h-full font-bold text-lg text-white transition-colors py-4 px-8"
+                        className="w-full h-full font-semibold text-lg text-white transition-colors py-4 px-8"
                         style={{ backgroundColor: '#F97316' }}
                         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C2410C')}
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F97316')}
@@ -205,7 +205,7 @@ export default function Home() {
         {/* Popular Routes */}
         <section className="mx-auto max-w-6xl px-4 pb-8">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">مسیرهای محبوب</h2>
+            <h2 className="text-xl font-semibold text-gray-900">مسیرهای محبوب</h2>
             <Link href="/flights" className="text-sm font-semibold text-[#FDB713]">مشاهده همه</Link>
           </div>
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">

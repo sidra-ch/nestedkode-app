@@ -124,7 +124,7 @@ export default function TaxiForm() {
       {/* Search Button */}
       <button
         onClick={handleSearch}
-        className="w-full rounded-lg px-6 py-3 font-bold text-white transition"
+        className="w-full rounded-lg px-6 py-3 font-semibold text-white transition"
         style={{ backgroundColor: '#F97316' }}
         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C2410C')}
         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F97316')}

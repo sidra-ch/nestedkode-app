@@ -220,7 +220,7 @@ export default function RestaurantPage() {
                     {/* Price & Button */}
                     <div className="flex items-center justify-between">
                       <button 
-                        className="rounded-lg px-4 py-2 text-sm font-semibold text-white transition"
+                        className="w-full rounded-lg px-6 py-3 font-semibold text-white transition"
                         style={{ backgroundColor: '#F97316' }}
                         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C2410C')}
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F97316')}
