@@ -142,7 +142,7 @@ export default function TaxiPage() {
             <div className="text-center py-12">
               <p className="text-gray-500">در حال بارگذاری...</p>
             </div>
-          ) : taxis.length > 0 ? (
+          ) : taxis && taxis.length > 0 ? (
             <div className="grid gap-4">
               {taxis.map((taxi) => (
                 <div

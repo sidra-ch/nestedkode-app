@@ -136,7 +136,7 @@ export default function RestaurantPage() {
             <div className="text-center py-12">
               <p className="text-gray-500">در حال بارگذاری...</p>
             </div>
-          ) : restaurants.length > 0 ? (
+          ) : restaurants && restaurants.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {restaurants.map((restaurant) => (
                 <Link
