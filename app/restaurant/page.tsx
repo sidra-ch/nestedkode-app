@@ -69,7 +69,10 @@ export default function RestaurantPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative h-72 bg-gradient-to-r from-afghanibaba-primary to-afghanibaba-secondary">
+        <section 
+          className="relative h-72"
+          style={{ background: 'linear-gradient(to right, #059669, #10B981)' }}
+        >
           <div className="absolute inset-0 bg-black/30" />
           <div className="relative z-10 mx-auto h-full max-w-6xl px-4 flex flex-col justify-center">
             <h1 className="text-4xl font-bold text-white mb-3">رستوران‌های برتر افغانستان</h1>
