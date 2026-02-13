@@ -48,9 +48,16 @@ export default function Home() {
       <main>
         {/* Hero Section with Overlapping Search Card - Alibaba.ir Style */}
         <section className="relative">
-          {/* 1. Hero Background */}
-          <div className="w-full h-[320px] relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #059669 0%, #10B981 100%)' }}>
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent" />
+          {/* 1. Hero Background with Image */}
+          <div className="w-full h-[320px] relative overflow-hidden">
+            {/* Background Image */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url('${assetPath("/assets/home-page.webp")}')` }}
+            />
+            {/* Dark Overlay */}
+            <div className="absolute inset-0 bg-black/40" />
+            {/* Content */}
             <div className="container mx-auto px-4 pt-16 relative z-10">
               <h1 className="text-right text-3xl md:text-4xl font-bold text-white mb-3">
                 سفر با افغانی‌بابا
@@ -75,7 +82,7 @@ export default function Home() {
                         ? 'border-b-2 text-afghanibaba-primary'
                         : 'text-gray-400 hover:text-gray-600'
                     }`}
-                    style={activeTab === tab ? { borderColor: '#059669' } : {}}
+                    style={activeTab === tab ? { borderColor: '#F97316' } : {}}
                   >
                     {tab}
                   </button>
@@ -144,9 +151,9 @@ export default function Home() {
                     <div className="flex items-center">
                       <button
                         className="w-full h-full font-bold text-lg text-white transition-colors py-4 px-8"
-                        style={{ backgroundColor: '#059669' }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#064E3B')}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#059669')}
+                        style={{ backgroundColor: '#F97316' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C2410C')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F97316')}
                       >
                         جستجو
                       </button>

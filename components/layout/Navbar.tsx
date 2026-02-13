@@ -37,7 +37,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4 h-full flex items-center justify-between">
         {/* Right Side: Logo & Main Links (RTL) */}
         <div className="flex items-center gap-8">
-          <Link href="/" className="text-2xl font-black" style={{ color: '#059669' }}>AFGHANIBABA</Link>
+          <Link href="/" className="text-2xl font-black" style={{ color: '#F97316' }}>AFGHANIBABA</Link>
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
             <Link href="/flights" className="hover:text-afghanibaba-primary transition-colors">پرواز</Link>
             <Link href="/hotels" className="hover:text-afghanibaba-primary transition-colors">هتل</Link>

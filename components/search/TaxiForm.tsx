@@ -125,9 +125,9 @@ export default function TaxiForm() {
       <button
         onClick={handleSearch}
         className="w-full rounded-lg px-6 py-3 font-bold text-white transition"
-        style={{ backgroundColor: '#059669' }}
-        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#064E3B')}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#059669')}
+        style={{ backgroundColor: '#F97316' }}
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C2410C')}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F97316')}
       >
         <Search className="mb-1 inline h-4 w-4" /> جستجوی تاکسی
       </button>

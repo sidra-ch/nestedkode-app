@@ -9,14 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Afghanibaba Emerald Green Color Scheme
+        // Afghanibaba Orange Color Scheme
         afghanibaba: {
-          primary: '#059669',    // Main Emerald Green
-          secondary: '#10B981',  // Lighter Emerald
-          dark: '#064E3B',       // Dark Emerald  
+          primary: '#F97316',    // Main Orange
+          secondary: '#FB923C',  // Lighter Orange
+          dark: '#C2410C',       // Dark Orange  
           accent: '#F59E0B',     // Gold accent for highlights
           gold: '#FDB713',       // Legacy gold (for compatibility)
-          light: '#D1FAE5',      // Light emerald background
+          light: '#FED7AA',      // Light orange background
           muted: '#6B7280',      // Muted gray
         },
         // Support colors

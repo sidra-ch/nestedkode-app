@@ -71,7 +71,7 @@ export default function RestaurantPage() {
         {/* Hero Section */}
         <section 
           className="relative h-72"
-          style={{ background: 'linear-gradient(to right, #059669, #10B981)' }}
+          style={{ background: 'linear-gradient(to right, #F97316, #FB923C)' }}
         >
           <div className="absolute inset-0 bg-black/30" />
           <div className="relative z-10 mx-auto h-full max-w-6xl px-4 flex flex-col justify-center">
@@ -221,9 +221,9 @@ export default function RestaurantPage() {
                     <div className="flex items-center justify-between">
                       <button 
                         className="rounded-lg px-4 py-2 text-sm font-semibold text-white transition"
-                        style={{ backgroundColor: '#059669' }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#064E3B')}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#059669')}
+                        style={{ backgroundColor: '#F97316' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C2410C')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F97316')}
                       >
                         رزرو کنید
                       </button>
