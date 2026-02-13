@@ -81,8 +81,6 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-                ))}
-              </div>
 
               {/* Conditional Form Rendering */}
               {activeTab === "تاکسی" ? (
