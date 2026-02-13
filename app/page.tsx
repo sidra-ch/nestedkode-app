@@ -42,96 +42,110 @@ export default function Home() {
   const internationalAirlines = ["IranAirtour", "QeshmAir", "AirArabia", "Mahan Airlines", "Flydubai", "Emirates"];
 
   return (
-    <div className="min-h-screen flex-col bg-gray-50" style={{ direction: 'rtl', fontFamily: 'Tahoma, Arial, sans-serif' }}>
+    <div className="min-h-screen flex flex-col bg-gray-50" style={{ direction: 'rtl', fontFamily: 'Tahoma, Arial, sans-serif' }}>
       <Navbar />
 
       <main>
-        {/* Hero Section */}
-        <section className="relative h-[500px] md:h-[450px]">
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url('${assetPath("/assets/home-page.webp")}')` }}
-          />
-          <div className="absolute inset-0 bg-black/40" />
-
-          <div className="relative z-10 mx-auto h-full max-w-6xl px-4">
-            <div className="flex h-full flex-col justify-end pt-8 pb-16">
-              <h1 className="text-right text-3xl font-bold text-white md:text-5xl">
-                بلیط پرواز، هتل، تاکسی و رستوران را یکجا رزرو کنید.
+        {/* Hero Section with Overlapping Search Card - Alibaba.ir Style */}
+        <section className="relative">
+          {/* 1. Hero Background */}
+          <div className="w-full h-[320px] relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #059669 0%, #10B981 100%)' }}>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent" />
+            <div className="container mx-auto px-4 pt-16 relative z-10">
+              <h1 className="text-right text-3xl md:text-4xl font-bold text-white mb-3">
+                سفر با افغانی‌بابا
               </h1>
-              <p className="mt-3 text-right text-base text-white/90">
-                افغانی‌بابا با شبکه تامین‌کنندگان معتبر و پشتیبانی شبانه‌روزی، سفر شما را ساده و مطمئن می‌کند.
+              <p className="text-right text-lg text-white/90">
+                بهترین قیمت‌ها برای پرواز، هتل، تاکسی و رستوران
               </p>
+            </div>
+          </div>
 
-              {/* Search Box */}
-              <div className="mt-8 w-full">
-                <div className="mb-4 flex flex-wrap gap-2 rounded-t-2xl bg-white px-4 pt-4">
-                  {tabs.map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
-                      className={`rounded-t-lg px-4 py-2 text-sm font-semibold transition ${
-                        activeTab === tab
-                          ? "text-white"
-                          : "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                      }`}
-                      style={activeTab === tab ? { backgroundColor: '#059669' } : {}}
-                    >
-                      {tab}
-                    </button>
-                  ))}
-                </div>
+          {/* 2. The Overlapping Search Card - The Alibaba.ir Secret */}
+          <div className="container mx-auto px-4 -mt-20 relative z-20 mb-12">
+            <div className="bg-white rounded-2xl p-6" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+              {/* Sub-Tabs */}
+              <div className="flex gap-8 border-b border-gray-100 mb-6 overflow-x-auto">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`pb-4 text-sm font-bold transition-all whitespace-nowrap ${
+                      activeTab === tab
+                        ? 'border-b-2 text-afghanibaba-primary'
+                        : 'text-gray-400 hover:text-gray-600'
+                    }`}
+                    style={activeTab === tab ? { borderColor: '#059669' } : {}}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+                ))}
+              </div>
 
-                {/* Conditional Form Rendering */}
-                {activeTab === "تاکسی" ? (
-                  <div className="rounded-b-2xl bg-white p-4 shadow-xl">
-                    <TaxiForm />
-                  </div>
-                ) : activeTab === "رستوران" ? (
-                  <div className="rounded-b-2xl bg-white p-4 shadow-xl">
-                    <RestaurantForm />
-                  </div>
-                ) : (
-                  <div className="rounded-b-2xl bg-white p-4 shadow-xl">
-                    {/* Default Flight/Bus/Hotel Form */}
-                    <div className="mt-4 flex flex-wrap items-center gap-3">
-                      <div className="flex-1 min-w-[200px]">
-                        <input 
-                          type="text" 
-                          placeholder="شهر مبدا" 
-                          className="w-full rounded-lg border border-gray-300 p-3 text-right text-sm"
-                          list="origin-options"
-                        />
-                        <datalist id="origin-options">
-                          <option value="کابل" />
-                          <option value="مزار شریف" />
-                          <option value="هرات" />
-                          <option value="قندهار" />
-                        </datalist>
+              {/* Conditional Form Rendering */}
+              {activeTab === "تاکسی" ? (
+                <TaxiForm />
+              ) : activeTab === "رستوران" ? (
+                <RestaurantForm />
+              ) : (
+                <div>
+                  {/* Pro Search Inputs Grid - Alibaba.ir Style */}
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-0 border border-gray-200 rounded-xl overflow-hidden">
+                    {/* Origin Input */}
+                    <div className="p-4 flex flex-col gap-1 cursor-pointer hover:bg-gray-50 transition-all md:border-l border-b md:border-b-0 border-gray-100">
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <span>مبدا</span>
                       </div>
-                      <div className="flex-1 min-w-[200px]">
-                        <input 
-                          type="text" 
-                          placeholder="شهر مقصد" 
-                          className="w-full rounded-lg border border-gray-300 p-3 text-right text-sm"
-                          list="dest-options"
-                        />
-                        <datalist id="dest-options">
-                          <option value="دوبی" />
-                          <option value="استانبول" />
-                          <option value="دهلی" />
-                          <option value="تهران" />
-                          <option value="مشهد" />
-                        </datalist>
+                      <input
+                        type="text"
+                        placeholder="کابل"
+                        className="text-base font-bold text-gray-800 border-none outline-none bg-transparent w-full text-right"
+                        list="origin-options"
+                      />
+                      <datalist id="origin-options">
+                        <option value="کابل" />
+                        <option value="مزار شریف" />
+                        <option value="هرات" />
+                        <option value="قندهار" />
+                      </datalist>
+                    </div>
+
+                    {/* Destination Input */}
+                    <div className="p-4 flex flex-col gap-1 cursor-pointer hover:bg-gray-50 transition-all md:border-l border-b md:border-b-0 border-gray-100">
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <span>مقصد</span>
                       </div>
-                      <div className="min-w-[150px]">
-                        <input type="date" className="w-full rounded-lg border border-gray-300 p-3 text-right text-sm" />
+                      <input
+                        type="text"
+                        placeholder="دوبی"
+                        className="text-base font-bold text-gray-800 border-none outline-none bg-transparent w-full text-right"
+                        list="dest-options"
+                      />
+                      <datalist id="dest-options">
+                        <option value="دوبی" />
+                        <option value="استانبول" />
+                        <option value="دهلی" />
+                        <option value="تهران" />
+                      </datalist>
+                    </div>
+
+                    {/* Date Input */}
+                    <div className="p-4 flex flex-col gap-1 cursor-pointer hover:bg-gray-50 transition-all md:border-l border-b md:border-b-0 border-gray-100">
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <span>تاریخ</span>
                       </div>
-                      <div className="min-w-[150px]">
-                        <input type="date" className="w-full rounded-lg border border-gray-300 p-3 text-right text-sm" />
-                      </div>
-                      <button 
-                        className="rounded-lg px-8 py-3 font-semibold text-white transition"
+                      <input
+                        type="date"
+                        className="text-base font-bold text-gray-800 border-none outline-none bg-transparent w-full text-right"
+                      />
+                    </div>
+
+                    {/* Search Button */}
+                    <div className="flex items-center">
+                      <button
+                        className="w-full h-full font-bold text-lg text-white transition-colors py-4 px-8"
                         style={{ backgroundColor: '#059669' }}
                         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#064E3B')}
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#059669')}
@@ -139,17 +153,19 @@ export default function Home() {
                         جستجو
                       </button>
                     </div>
-
-                    <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-gray-500">
-                      <span>پشتیبانی ۲۴ ساعته</span>
-                      <span>•</span>
-                      <span>تضمین کمترین قیمت</span>
-                      <span>•</span>
-                      <span>استرداد آنلاین</span>
-                    </div>
                   </div>
-                )}
-              </div>
+
+                  {/* Trust Badges */}
+                  <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-gray-500">
+                    <span>پشتیبانی ۲۴ ساعته</span>
+                    <span>•</span>
+                    <span>تضمین کمترین قیمت</span>
+                    <span>•</span>
+                    <span>استرداد آنلاین</span>
+                    <span>استرداد آنلاین</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>

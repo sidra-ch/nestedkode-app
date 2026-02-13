@@ -29,6 +29,7 @@ const config: Config = {
         'afghanibaba': '0 4px 20px rgba(0, 0, 0, 0.05)',
         'afghanibaba-md': '0 2px 12px rgba(0, 0, 0, 0.08)',
         'afghanibaba-lg': '0 10px 30px rgba(0, 0, 0, 0.1)',
+        'pro': '0 4px 20px rgba(0,0,0,0.08)', // Professional Alibaba.ir shadow
       },
       borderRadius: {
         // Standard Afghanibaba border radius

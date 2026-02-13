@@ -33,31 +33,38 @@ export default function Navbar() {
   }, [userMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl flex-row-reverse flex-wrap items-center justify-between gap-3 border-b border-black/5 bg-white px-4 py-2 text-xs text-slate-600">
-        <div className="flex flex-wrap items-center gap-3">
-          <span>پشتیبانی ۲۴ ساعته: ۰۲۱ - ۴۳۹۰۰۰۰۰</span>
+    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 h-16">
+      <div className="container mx-auto px-4 h-full flex items-center justify-between">
+        {/* Right Side: Logo & Main Links (RTL) */}
+        <div className="flex items-center gap-8">
+          <Link href="/" className="text-2xl font-black" style={{ color: '#059669' }}>AFGHANIBABA</Link>
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+            <Link href="/flights" className="hover:text-afghanibaba-primary transition-colors">پرواز</Link>
+            <Link href="/hotels" className="hover:text-afghanibaba-primary transition-colors">هتل</Link>
+            <Link href="/restaurant" className="hover:text-afghanibaba-primary transition-colors">رستوران</Link>
+            <Link href="/bus-info" className="hover:text-afghanibaba-primary transition-colors">اتوبوس</Link>
+            <Link href="/taxi" className="hover:text-afghanibaba-primary transition-colors">تاکسی</Link>
+          </nav>
         </div>
-        <div className="flex items-center gap-3">
-          <Link
-            href="#"
-            className="border-b border-black text-slate-700 hover:text-slate-900"
-          >
-            مرکز پشتیبانی آنلاین
+
+        {/* Left Side: Actions */}
+        <div className="flex items-center gap-4">
+          <Link href="#" className="flex items-center gap-2 text-sm text-gray-600 hover:text-black">
+            <span className="hidden sm:inline">پشتیبانی</span>
           </Link>
           {isAuthenticated && (
             <Link
               href="/my-bookings"
-              className="border-b border-black text-slate-700 hover:text-slate-900"
+              className="flex items-center gap-2 text-sm text-gray-600 hover:text-black"
             >
-              سفرهای من
+              <span className="hidden sm:inline">سفرهای من</span>
             </Link>
-          )}
+          )}          <div className="h-6 w-[1px] bg-gray-200 mx-2 hidden md:block" />
           {isAuthenticated && user ? (
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-2 rounded-md border border-black/10 px-3 py-1.5 text-[11px] font-semibold text-slate-700 hover:bg-slate-50"
+                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-bold hover:bg-gray-50 transition-all"
               >
                 <div className="flex items-center gap-2">
                   <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
@@ -158,40 +165,20 @@ export default function Navbar() {
           ) : (
             <Link
               href="/login"
-              className="rounded-md border border-black/10 px-3 py-1 text-[11px] font-semibold text-slate-700 hover:bg-slate-50"
+              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-bold hover:bg-gray-50 transition-all"
             >
-              ورود یا ثبت‌نام
+              <User size={18} /> ورود یا ثبت‌نام
             </Link>
           )}
+          
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold"
+            onClick={() => setMenuOpen(true)}
+          >
+            منو
+          </button>
         </div>
-      </div>
-
-      <div className="mx-auto flex max-w-6xl flex-row-reverse items-center justify-between px-4 py-4">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="text-2xl font-semibold text-black">
-            <span className="text-[#FDB713]">افغانی‌بابا</span>
-          </Link>
-          <nav className="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex">
-            {navItems.map((item) => (
-              <Link key={item.label} href={item.href} className="hover:text-slate-900 whitespace-nowrap">
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-
-        <div className="hidden items-center gap-3 md:flex">
-          <button className="btn-secondary text-xs">رستوران</button>
-          <button className="btn-secondary text-xs">تاکسی</button>
-          <button className="btn-secondary text-xs">هتل</button>
-        </div>
-
-        <button
-          className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold text-slate-700 md:hidden"
-          onClick={() => setMenuOpen(true)}
-        >
-          منو
-        </button>
       </div>
 
       <MobileMenu 
