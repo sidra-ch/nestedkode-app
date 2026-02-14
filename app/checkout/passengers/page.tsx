@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
-export default function PassengerDetails() {
+function PassengerDetailsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const bookingId = searchParams.get("bookingId");
@@ -223,5 +223,13 @@ export default function PassengerDetails() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function PassengerDetails() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PassengerDetailsContent />
+    </Suspense>
   );
 }

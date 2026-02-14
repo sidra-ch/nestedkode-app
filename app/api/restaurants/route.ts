@@ -130,8 +130,8 @@ export async function POST(req: NextRequest) {
     const restaurantData = {
       ...body,
       vendorId: decoded.userId,
-      vendorName: decoded.name || "Unknown",
-      vendorPhone: decoded.phone || "",
+      vendorName: "",
+      vendorPhone: "",
       isApproved: false, // Requires admin approval
       isActive: true,
     };

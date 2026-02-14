@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function OTPVerification() {
+function OTPVerificationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const phone = searchParams.get("phone") || "";
@@ -157,5 +157,13 @@ export default function OTPVerification() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function OTPVerification() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <OTPVerificationContent />
+    </Suspense>
   );
 }

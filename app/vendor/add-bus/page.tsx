@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ImageUpload from "@/components/ImageUpload";
 import useAuthStore from "@/store/useAuthStore";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
@@ -23,6 +24,7 @@ export default function VendorAddBusPage() {
     seats: "",
     price: "",
     busType: "Standard",
+    images: [] as string[],
   });
 
   useEffect(() => {
@@ -41,17 +43,29 @@ export default function VendorAddBusPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${API_BASE}/api/vendor/bus`, {
+      const res = await fetch(`/api/buses`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
-          ...form,
-          seats: Number(form.seats),
+          busName: form.company,
+          busNumber: `BUS-${Date.now()}`,
+          from: form.origin,
+          to: form.destination,
+          departureTime: form.departureTime,
+          arrivalTime: form.arrivalTime,
+          totalSeats: Number(form.seats),
+          availableSeats: Number(form.seats),
           price: Number(form.price),
+          busType: form.busType as 'AC' | 'Non-AC' | 'Sleeper' | 'Semi-Sleeper',
+          images: form.images,
           vendorId: user?.id,
+          vendorName: user?.name || 'Vendor',
+          isActive: true,
+          amenities: ['WiFi', 'AC', 'Charging Port'],
+          duration: "6 hours",
         }),
       });
 
@@ -190,6 +204,18 @@ export default function VendorAddBusPage() {
                 <option value="اقتصادی">اقتصادی</option>
               </select>
             </div>
+          </div>
+
+          {/* Image Upload */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Bus Images</label>
+            <ImageUpload
+              value={form.images}
+              onChange={(urls) => setForm({ ...form, images: Array.isArray(urls) ? urls : [urls] })}
+              multiple={true}
+              type="bus"
+              maxFiles={5}
+            />
           </div>
 
           <div className="flex gap-3">

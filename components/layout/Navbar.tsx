@@ -1,194 +1,234 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { User, ChevronDown } from "lucide-react";
-import MobileMenu from "./MobileMenu";
 import useAuthStore from "@/store/useAuthStore";
-import { navItems, userMenuItems, adminMenuItems, vendorMenuItems } from "@/lib/routes";
+import { ChevronDown, User, LogOut, LayoutDashboard, Plane, Hotel, Bus, Compass, ShoppingBag, Menu, X, HelpCircle, MapPin } from "lucide-react";
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const userMenuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { user, isAuthenticated, logout } = useAuthStore();
+  const [flightDropdownOpen, setFlightDropdownOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Close user menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
-        setUserMenuOpen(false);
-      }
-    };
-
-    if (userMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [userMenuOpen]);
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 h-16">
-      <div className="container mx-auto px-4 h-full flex items-center justify-between">
-        {/* Right Side: Logo & Main Links (RTL) */}
-        <div className="flex items-center gap-8">
-          <Link href="/" className="text-2xl font-semibold" style={{ color: '#F97316' }}>AFGHANIBABA</Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-            <Link href="/flights" className="hover:text-afghanibaba-primary transition-colors">پرواز</Link>
-            <Link href="/hotels" className="hover:text-afghanibaba-primary transition-colors">هتل</Link>
-            <Link href="/restaurant" className="hover:text-afghanibaba-primary transition-colors">رستوران</Link>
-            <Link href="/bus-info" className="hover:text-afghanibaba-primary transition-colors">اتوبوس</Link>
-            <Link href="/taxi" className="hover:text-afghanibaba-primary transition-colors">تاکسی</Link>
-          </nav>
-        </div>
-
-        {/* Left Side: Actions */}
-        <div className="flex items-center gap-4">
-          <Link href="#" className="flex items-center gap-2 text-sm text-gray-600 hover:text-black">
-            <span className="hidden sm:inline">پشتیبانی</span>
-          </Link>
-          {isAuthenticated && (
-            <Link
-              href="/my-bookings"
-              className="flex items-center gap-2 text-sm text-gray-600 hover:text-black"
-            >
-              <span className="hidden sm:inline">سفرهای من</span>
+    <nav className="sticky top-0 z-50 bg-white border-b border-gray-300 shadow-sm" style={{ direction: "rtl" }}>
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Right Side: Logo and Main Navigation */}
+          <div className="hidden md:flex items-center gap-2 md:gap-4 flex-1">
+            {/* Logo */}
+            <Link href="/" className="hidden md:flex items-center gap-1 flex-shrink-0">
+              <div className="text-xl md:text-2xl font-bold text-afghanibaba-primary">افغانی‌بابا</div>
             </Link>
-          )}          <div className="h-6 w-[1px] bg-gray-200 mx-2 hidden md:block" />
-          {isAuthenticated && user ? (
-            <div className="relative" ref={userMenuRef}>
-              <button
-                onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-bold hover:bg-gray-50 transition-all"
-              >
-                <div className="flex items-center gap-2">
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                    user.role === 'admin' ? 'bg-purple-100' :
-                    user.role === 'vendor' ? 'bg-blue-100' :
-                    'bg-yellow-100'
-                  }`}>
-                    <User className={`w-4 h-4 ${
-                      user.role === 'admin' ? 'text-purple-700' :
-                      user.role === 'vendor' ? 'text-blue-700' :
-                      'text-yellow-700'
-                    }`} />
-                  </div>
-                  <span className="text-slate-700">{user.name}</span>
-                  <ChevronDown className="w-3 h-3" />
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-1">
+              {/* Flight Dropdown */}
+              <div className="relative group">
+                <button className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-afghanibaba-primary hover:bg-orange-50 rounded transition text-sm">
+                  <Plane className="h-4 w-4" />
+                  <span className="font-medium whitespace-nowrap">بلیط هواپیما</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+                <div className="absolute right-0 mt-0 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 opacity-0 group-hover:opacity-100 transition invisible group-hover:visible z-50">
+                  <Link href="/flights?type=domestic" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 text-right transition">
+                    پرواز داخلی
+                  </Link>
+                  <Link href="/flights?type=international" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 text-right transition">
+                    پرواز خارجی
+                  </Link>
                 </div>
-              </button>
+              </div>
 
-              {userMenuOpen && (
-                <div className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                  <div className="px-4 py-2 border-b border-gray-100">
-                    <p className="text-xs text-gray-500">Logged in as</p>
-                    <p className="text-sm font-semibold text-gray-900">{user.email}</p>
-                    <p className={`text-xs mt-1 inline-block px-2 py-0.5 rounded-full ${
-                      user.role === 'admin' ? 'bg-purple-100 text-purple-700' :
-                      user.role === 'vendor' ? 'bg-blue-100 text-blue-700' :
-                      'bg-yellow-100 text-yellow-700'
-                    }`}>
-                      {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                    </p>
+              {/* Hotel */}
+              <Link href="/hotels" className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-afghanibaba-primary hover:bg-orange-50 rounded transition text-sm">
+                <Hotel className="h-4 w-4" />
+                <span className="font-medium whitespace-nowrap">هتل</span>
+              </Link>
+
+              {/* Bus */}
+              <Link href="/bus" className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-afghanibaba-primary hover:bg-orange-50 rounded transition text-sm">
+                <Bus className="h-4 w-4" />
+                <span className="font-medium whitespace-nowrap">اتوبوس</span>
+              </Link>
+
+              {/* Taxi */}
+              <Link href="/taxi" className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-afghanibaba-primary hover:bg-orange-50 rounded transition text-sm">
+                <ShoppingBag className="h-4 w-4" />
+                <span className="font-medium whitespace-nowrap">تاکسی</span>
+              </Link>
+
+              {/* Tour */}
+              <Link href="/tour" className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-afghanibaba-primary hover:bg-orange-50 rounded transition text-sm">
+                <Compass className="h-4 w-4" />
+                <span className="font-medium whitespace-nowrap">تور</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Mobile Navigation Icons */}
+          <div className="flex md:hidden items-center justify-around flex-1 gap-3">
+            <Link href="/flights" title="پروازها" className="p-2 text-gray-700 hover:text-afghanibaba-primary rounded transition">
+              <Plane className="h-5 w-5" />
+            </Link>
+            <Link href="/hotels" title="هتل‌ها" className="p-2 text-gray-700 hover:text-afghanibaba-primary rounded transition">
+              <Hotel className="h-5 w-5" />
+            </Link>
+            <Link href="/bus" title="اتوبوس" className="p-2 text-gray-700 hover:text-afghanibaba-primary rounded transition">
+              <Bus className="h-5 w-5" />
+            </Link>
+            <Link href="/taxi" title="تاکسی" className="p-2 text-gray-700 hover:text-afghanibaba-primary rounded transition">
+              <ShoppingBag className="h-5 w-5" />
+            </Link>
+            <Link href="/tour" title="تور" className="p-2 text-gray-700 hover:text-afghanibaba-primary rounded transition">
+              <Compass className="h-5 w-5" />
+            </Link>
+          </div>
+
+
+
+          {/* Left Side: Support, My Travels, Auth */}
+          <div className="flex items-center gap-2 md:gap-4 lg:gap-6 flex-shrink-0">
+            {/* Support Center - Desktop & Tablet */}
+            <Link href="/help-center" className="hidden md:flex items-center gap-2 text-gray-700 hover:text-afghanibaba-primary transition" title="مرکز پشتیبانی آنلاین">
+              <HelpCircle className="h-5 w-5" />
+              <span className="text-sm font-medium whitespace-nowrap">پشتیبانی</span>
+            </Link>
+
+            {/* My Travels - Desktop & Tablet */}
+            <Link href="/my-bookings" className="hidden md:flex items-center gap-2 text-gray-700 hover:text-afghanibaba-primary transition" title="سفرهای من">
+              <MapPin className="h-5 w-5" />
+              <span className="text-sm font-medium whitespace-nowrap">سفرهای من</span>
+            </Link>
+
+            {/* Divider - Desktop & Tablet */}
+            <div className="hidden md:block w-px h-6 bg-gray-300"></div>
+
+            {/* Auth Section */}
+            {isAuthenticated && user ? (
+              <div className="relative hidden md:block">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-2 text-gray-700 hover:text-afghanibaba-primary transition"
+                >
+                  <div className="w-6 h-6 rounded-full bg-afghanibaba-primary text-white flex items-center justify-center text-xs font-semibold">
+                    {user.name.charAt(0)}
                   </div>
-
-                  {/* User Menu Items */}
-                  {userMenuItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                      onClick={() => setUserMenuOpen(false)}
-                    >
-                      {item.icon} {item.label}
+                  <span className="text-sm font-medium hidden lg:inline">{user.name}</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+                {userMenuOpen && (
+                  <div className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                    <Link href="/profile" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition">
+                      <User className="h-4 w-4" />
+                      <span>پروفایل</span>
                     </Link>
-                  ))}
-
-                  {/* Vendor Menu Items */}
-                  {user.role === "vendor" && (
-                    <>
-                      <div className="border-t border-gray-100 mt-2 pt-2">
-                        <p className="px-4 py-1 text-xs font-semibold text-blue-600">Vendor Panel</p>
-                        {vendorMenuItems.map((item) => (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50"
-                            onClick={() => setUserMenuOpen(false)}
-                          >
-                            {item.icon} {item.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </>
-                  )}
-
-                  {/* Admin Menu Items */}
-                  {user.role === "admin" && (
-                    <>
-                      <div className="border-t border-gray-100 mt-2 pt-2">
-                        <p className="px-4 py-1 text-xs font-semibold text-purple-600">Admin Panel</p>
-                        {adminMenuItems.map((item) => (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50"
-                            onClick={() => setUserMenuOpen(false)}
-                          >
-                            {item.icon} {item.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </>
-                  )}
-
-                  <div className="border-t border-gray-100 mt-2">
+                    {user.role === "admin" && (
+                      <Link href="/admin/dashboard" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition">
+                        <LayoutDashboard className="h-4 w-4" />
+                        <span>داشبورد ادمین</span>
+                      </Link>
+                    )}
+                    {user.role === "vendor" && (
+                      <Link href="/vendor/dashboard" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition">
+                        <LayoutDashboard className="h-4 w-4" />
+                        <span>داشبورد فروشنده</span>
+                      </Link>
+                    )}
+                    <hr className="my-2 border-gray-200" />
                     <button
-                      onClick={() => {
-                        logout();
-                        setUserMenuOpen(false);
-                        router.push("/");
-                      }}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                      onClick={handleLogout}
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition w-full text-right"
                     >
-                      🚪 Logout
+                      <LogOut className="h-4 w-4" />
+                      <span>خروج</span>
                     </button>
                   </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <Link
-              href="/login"
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-bold hover:bg-gray-50 transition-all"
-            >
-              <User size={18} /> ورود یا ثبت‌نام
-            </Link>
-          )}
-          
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold"
-            onClick={() => setMenuOpen(true)}
-          >
-            منو
-          </button>
-        </div>
-      </div>
+                )}
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center gap-2">
+                <Link href="/login" className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-afghanibaba-primary transition text-sm lg:text-base">
+                  <User className="h-4 w-4 lg:h-5 lg:w-5" />
+                  <span className="hidden lg:inline">ورود</span>
+                </Link>
+              </div>
+            )}
 
-      <MobileMenu 
-        open={menuOpen} 
-        onClose={() => setMenuOpen(false)} 
-        navItems={navItems}
-        userMenuItems={userMenuItems}
-        adminMenuItems={adminMenuItems}
-        vendorMenuItems={vendorMenuItems}
-      />
-    </header>
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-gray-700 hover:text-afghanibaba-primary transition"
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-gray-50 border-t border-gray-200 py-4 space-y-2">
+            <Link href="/flights" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
+              <Plane className="h-5 w-5" />
+              <span>پروازها</span>
+            </Link>
+            <Link href="/hotels" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
+              <Hotel className="h-5 w-5" />
+              <span>هتل</span>
+            </Link>
+            <Link href="/bus" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
+              <Bus className="h-5 w-5" />
+              <span>اتوبوس</span>
+            </Link>
+            <Link href="/taxi" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
+              <ShoppingBag className="h-5 w-5" />
+              <span>تاکسی</span>
+            </Link>
+            <Link href="/tour" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
+              <Compass className="h-5 w-5" />
+              <span>تور</span>
+            </Link>
+            <hr className="my-2 border-gray-300" />
+            <Link href="/help-center" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
+              <HelpCircle className="h-5 w-5" />
+              <span>پشتیبانی</span>
+            </Link>
+            <Link href="/my-bookings" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
+              <MapPin className="h-5 w-5" />
+              <span>سفرهای من</span>
+            </Link>
+            {isAuthenticated && user ? (
+              <>
+                <hr className="my-2 border-gray-300" />
+                <Link href="/profile" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
+                  <User className="h-5 w-5" />
+                  <span>پروفایل</span>
+                </Link>
+                <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 rounded transition w-full text-right">
+                  <LogOut className="h-5 w-5" />
+                  <span>خروج</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <hr className="my-2 border-gray-300" />
+                <Link href="/login" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
+                  <User className="h-5 w-5" />
+                  <span>ورود / ثبت‌نام</span>
+                </Link>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </nav>
   );
 }

@@ -6,7 +6,7 @@ import { getUserFromRequest } from '@/lib/auth';
 // PUT - Approve/reject vendor
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = getUserFromRequest(request);
@@ -22,8 +22,9 @@ export async function PUT(
 
     const body = await request.json();
     const { isApproved } = body;
+    const { id } = await params;
 
-    const vendor = await User.findById(params.id);
+    const vendor = await User.findById(id);
 
     if (!vendor || vendor.role !== 'vendor') {
       return NextResponse.json(
@@ -33,7 +34,7 @@ export async function PUT(
     }
 
     const updatedVendor = await User.findByIdAndUpdate(
-      params.id,
+      id,
       { isApproved },
       { new: true }
     ).select('-password');

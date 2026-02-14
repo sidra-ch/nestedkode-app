@@ -6,6 +6,7 @@ export type User = {
   name: string;
   email: string;
   role: "admin" | "vendor" | "user";
+  phone?: string;
 };
 
 type AuthState = {
@@ -20,7 +21,7 @@ type AuthState = {
 };
 
 const API_BASE = typeof window !== "undefined" 
-  ? process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
+  ? process.env.NEXT_PUBLIC_API_URL || ""
   : "";
 
 const useAuthStore = create<AuthState>()(
@@ -39,7 +40,7 @@ const useAuthStore = create<AuthState>()(
 
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({}));
-          throw new Error(errorData.error || "Login failed");
+          throw new Error(errorData.message || errorData.error || "Login failed");
         }
 
         const data = await res.json();
@@ -59,7 +60,7 @@ const useAuthStore = create<AuthState>()(
 
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({}));
-          throw new Error(errorData.error || "Registration failed");
+          throw new Error(errorData.message || errorData.error || "Registration failed");
         }
 
         const data = await res.json();

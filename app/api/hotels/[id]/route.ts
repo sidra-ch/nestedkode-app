@@ -6,12 +6,13 @@ import { verifyToken } from "@/lib/auth";
 // GET /api/hotels/[id] - Get single hotel
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
+    const { id } = await params;
 
-    const hotel = await Hotel.findById(params.id).lean();
+    const hotel = await Hotel.findById(id).lean();
 
     if (!hotel) {
       return NextResponse.json(
@@ -36,7 +37,7 @@ export async function GET(
 // PUT /api/hotels/[id] - Update hotel (vendor/admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "");
@@ -56,8 +57,9 @@ export async function PUT(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const hotel = await Hotel.findById(params.id);
+    const hotel = await Hotel.findById(id);
 
     if (!hotel) {
       return NextResponse.json(
@@ -100,7 +102,7 @@ export async function PUT(
 // DELETE /api/hotels/[id] - Delete hotel (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "");
@@ -120,8 +122,9 @@ export async function DELETE(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const hotel = await Hotel.findByIdAndDelete(params.id);
+    const hotel = await Hotel.findByIdAndDelete(id);
 
     if (!hotel) {
       return NextResponse.json(

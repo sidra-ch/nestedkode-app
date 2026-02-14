@@ -7,8 +7,7 @@ type TabKey =
   | "پرواز خارجی"
   | "اتوبوس"
   | "تور"
-  | "هتل"
-  | "ویلا و اقامتگاه";
+  | "هتل";
 
 type Field = {
   name: string;
@@ -51,16 +50,9 @@ const tabFields: Record<TabKey, Field[]> = {
     { name: "rooms", placeholder: "اتاق" },
     { name: "guests", placeholder: "نفر" },
   ],
-  "ویلا و اقامتگاه": [
-    { name: "destination", placeholder: "شهر مقصد" },
-    { name: "checkin", placeholder: "تاریخ ورود", type: "date" },
-    { name: "checkout", placeholder: "تاریخ خروج", type: "date" },
-    { name: "rooms", placeholder: "ویلا" },
-    { name: "guests", placeholder: "نفر" },
-  ],
 };
 
-const tabs: TabKey[] = ["پرواز داخلی", "پرواز خارجی", "اتوبوس", "تور", "هتل", "ویلا و اقامتگاه"];
+const tabs: TabKey[] = ["پرواز داخلی", "پرواز خارجی", "اتوبوس", "تور", "هتل"];
 const cityOptions = [
   "کابل",
   "مزار شریف",

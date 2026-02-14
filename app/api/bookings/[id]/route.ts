@@ -7,7 +7,7 @@ import { getUserFromRequest } from '@/lib/auth';
 // GET - Get single booking
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = getUserFromRequest(request);
@@ -20,8 +20,9 @@ export async function GET(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const booking = await Booking.findById(params.id);
+    const booking = await Booking.findById(id);
 
     if (!booking) {
       return NextResponse.json(
@@ -70,7 +71,7 @@ export async function GET(
 // PUT - Update booking status
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = getUserFromRequest(request);
@@ -83,8 +84,9 @@ export async function PUT(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const booking = await Booking.findById(params.id);
+    const booking = await Booking.findById(id);
 
     if (!booking) {
       return NextResponse.json(
@@ -112,7 +114,7 @@ export async function PUT(
     }
 
     const updatedBooking = await Booking.findByIdAndUpdate(
-      params.id,
+      id,
       { status, paymentStatus },
       { new: true }
     );
@@ -137,7 +139,7 @@ export async function PUT(
 // DELETE - Delete booking
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = getUserFromRequest(request);
@@ -150,8 +152,9 @@ export async function DELETE(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const booking = await Booking.findById(params.id);
+    const booking = await Booking.findById(id);
 
     if (!booking) {
       return NextResponse.json(
@@ -167,7 +170,7 @@ export async function DELETE(
       });
     }
 
-    await Booking.findByIdAndDelete(params.id);
+    await Booking.findByIdAndDelete(id);
 
     return NextResponse.json(
       {

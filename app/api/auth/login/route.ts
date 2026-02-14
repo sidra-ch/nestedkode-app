@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
 
     // Find user
     const user = await User.findOne({ email: email.toLowerCase() });
+    
     if (!user) {
       return NextResponse.json(
         { success: false, message: 'Invalid email or password' },
@@ -38,6 +39,7 @@ export async function POST(request: NextRequest) {
 
     // Verify password
     const isPasswordValid = await comparePassword(password, user.password);
+    
     if (!isPasswordValid) {
       return NextResponse.json(
         { success: false, message: 'Invalid email or password' },

@@ -6,7 +6,7 @@ import { verifyToken } from "@/lib/auth";
 // PUT /api/reviews/[id] - Update review (admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "");
@@ -26,11 +26,12 @@ export async function PUT(
     }
 
     await connectDB();
+    const { id } = await params;
 
     const body = await request.json();
 
     const review = await Review.findByIdAndUpdate(
-      params.id,
+      id,
       body,
       { new: true }
     );
@@ -59,7 +60,7 @@ export async function PUT(
 // DELETE /api/reviews/[id] - Delete review (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "");
@@ -79,8 +80,9 @@ export async function DELETE(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const review = await Review.findByIdAndDelete(params.id);
+    const review = await Review.findByIdAndDelete(id);
 
     if (!review) {
       return NextResponse.json(

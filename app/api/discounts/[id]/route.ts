@@ -6,7 +6,7 @@ import { verifyToken } from "@/lib/auth";
 // PUT /api/discounts/[id] - Update discount (admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "");
@@ -26,11 +26,12 @@ export async function PUT(
     }
 
     await connectDB();
+    const { id } = await params;
 
     const body = await request.json();
 
     const discount = await Discount.findByIdAndUpdate(
-      params.id,
+      id,
       body,
       { new: true }
     );
@@ -59,7 +60,7 @@ export async function PUT(
 // DELETE /api/discounts/[id] - Delete discount (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "");
@@ -79,8 +80,9 @@ export async function DELETE(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const discount = await Discount.findByIdAndDelete(params.id);
+    const discount = await Discount.findByIdAndDelete(id);
 
     if (!discount) {
       return NextResponse.json(

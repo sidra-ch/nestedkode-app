@@ -61,12 +61,12 @@ export const routes = {
  * Navigation Menu Items
  */
 export const navItems = [
-  { label: "بلیط هواپیما", href: routes.services.flights },
-  { label: "بلیط اتوبوس", href: routes.services.bus },
-  { label: "اقامت", href: routes.services.hotels },
-  { label: "رستوران", href: routes.services.restaurant },
-  { label: "تاکسی", href: routes.services.taxi },
-  { label: "تور", href: routes.services.tour },
+  { label: "پرواز", href: "/flights" },
+  { label: "اتوبوس", href: "/bus-info" },
+  { label: "اقامت", href: "/hotels" },
+  { label: "تور", href: "/tour" },
+  { label: "ویزا", href: "#" },
+  { label: "تاکسی", href: "/taxi" },
 ];
 
 export const userMenuItems = [

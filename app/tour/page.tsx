@@ -1,69 +1,769 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { assetPath } from "@/lib/assetPath";
+import { Calendar, Users, ChevronDown, ArrowRightLeft, Star, Phone, Mail, MapPin, Clock, Shield, Headphones, Plane, Hotel, Bus, Compass, CheckCircle } from "lucide-react";
 
-const mockTours = [
-  { id: 1, name: "تور بامیان", city: "بامیان", duration: "۳ روز و ۲ شب", price: 250, image: assetPath("/assets/bamyan-tour.jpg"), available: true },
-  { id: 2, name: "تور مزار شریف", city: "مزار شریف", duration: "۲ روز و ۱ شب", price: 180, image: assetPath("/assets/mazar-tour.jpg"), available: true },
-  { id: 3, name: "تور هرات", city: "هرات", duration: "۳ روز و ۲ شب", price: 220, image: assetPath("/assets/herat-hero.jpg"), available: true },
-  { id: 4, name: "تور پنجشیر", city: "پنجشیر", duration: "۲ روز و ۱ شب", price: 150, image: assetPath("/assets/panjshir-tour.jpg"), available: true },
-  { id: 5, name: "تور قندهار", city: "قندهار", duration: "۳ روز و ۲ شب", price: 200, image: assetPath("/assets/kandahar-tour.jpg"), available: true },
-  { id: 6, name: "تور کابل", city: "کابل", duration: "۱ روز", price: 80, image: assetPath("/assets/kabul-tour.jpg"), available: true },
+const provinces = [
+  { name: "کابل", icon: "🏛️" },
+  { name: "کندهار", icon: "🏜️" },
+  { name: "هرات", icon: "🌆" },
+  { name: "بلخ", icon: "🕌" },
+  { name: "ننگرهار", icon: "⛰️" },
+  { name: "بامیان", icon: "❄️" },
+  { name: "مزار شریف", icon: "🕌" },
+  { name: "جلال‌آباد", icon: "🌳" },
 ];
 
-export default function TourPage() {
-  const [tours] = useState(mockTours);
+const destinations = [
+  { name: "کابل", image: "/assets/tour5.jpg" },
+  { name: "هرات", image: "/assets/tour2.jpg" },
+  { name: "مزار شریف", image: "/assets/tour3.jpg" },
+  { name: "بامیان", image: "/assets/tour1.jpg" },
+  { name: "قندهار", image: "/assets/tour4.jpg" },
+  { name: "غزنی", image: "/assets/tour6.jpg" },
+];
+
+const tourCategories = [
+  { id: "all", label: "همه" },
+  { id: "domestic", label: "تور داخلی" },
+  { id: "nowruz_domestic", label: "تور داخلی نوروز" },
+  { id: "taxi", label: "تور تاکسی" },
+  { id: "oneday", label: "تور یک روزه" },
+  { id: "exhibition", label: "تور نمایشگاه و رویداد" },
+];
+
+const tours = [
+  {
+    id: 1,
+    title: "تور بامیان ۳ روزه",
+    description: "بازدید از بت‌های باستانی و دریاچه‌های بامیان",
+    duration: "۳ روز - هتل ۴ ستاره",
+    price: 250,
+    priceUSD: 180,
+    image: "/assets/tour1.jpg",
+    category: "domestic",
+    rating: 4.8,
+    reviews: 124,
+    city: "بامیان",
+  },
+  {
+    id: 2,
+    title: "تور هرات ۴ روزه",
+    description: "قلعه هرات، مسجد شمس‌الائمه و بازار قدیم",
+    duration: "۴ روز - هتل ۴ ستاره",
+    price: 320,
+    priceUSD: 230,
+    image: "/assets/tour2.jpg",
+    category: "domestic",
+    rating: 4.6,
+    reviews: 89,
+    city: "هرات",
+  },
+  {
+    id: 3,
+    title: "تور مزار شریف ۲ روزه",
+    description: "زیارت آرامگاه Imam علی (ع) و بازار شهر",
+    duration: "۲ روز - هتل ۳ ستاره",
+    price: 180,
+    priceUSD: 130,
+    image: "/assets/tour3.jpg",
+    category: "domestic",
+    rating: 4.7,
+    reviews: 198,
+    city: "مزار شریف",
+  },
+  {
+    id: 4,
+    title: "تور قندهار ۳ روزه",
+    description: "اماکن تاریخی و بازار سنتی قندهار",
+    duration: "۳ روز - هتل ۳ ستاره",
+    price: 200,
+    priceUSD: 145,
+    image: "/assets/tour4.jpg",
+    category: "domestic",
+    rating: 4.4,
+    reviews: 52,
+    city: "قندهار",
+  },
+  {
+    id: 5,
+    title: "تور یک روزه کابل",
+    description: "بازدید از موزه ملی، ارگ و بازار",
+    duration: "۱ روز - بدون پرواز",
+    price: 80,
+    priceUSD: 55,
+    image: "/assets/tour5.jpg",
+    category: "oneday",
+    rating: 4.5,
+    reviews: 67,
+    city: "کابل",
+  },
+  {
+    id: 6,
+    title: "تور غزنی ۲ روزه",
+    description: "بازدید از آرامگاه احمد شاه درانی و اماکن تاریخی",
+    duration: "۲ روز - هتل ۳ ستاره",
+    price: 150,
+    priceUSD: 110,
+    image: "/assets/tour6.jpg",
+    category: "domestic",
+    rating: 4.5,
+    reviews: 45,
+    city: "غزنی",
+  },
+  {
+    id: 7,
+    title: "تور پنجشیر ۳ روزه",
+    description: "کوه‌های زیبا، طبیعت سبز و دریاچه سیاه‌رود",
+    duration: "۳ روز - هتل ۳ ستاره",
+    price: 220,
+    priceUSD: 160,
+    image: "/assets/panjshir-tour.jpg",
+    category: "domestic",
+    rating: 4.7,
+    reviews: 78,
+    city: "پنجشیر",
+  },
+  {
+    id: 8,
+    title: "تور تخار ۲ روزه",
+    description: "بازدید از تاریخ کهن و فرهنگ باستانی تخار",
+    duration: "۲ روز - هتل ۳ ستاره",
+    price: 170,
+    priceUSD: 125,
+    image: "/assets/mazar-hero.jpg",
+    category: "domestic",
+    rating: 4.3,
+    reviews: 36,
+    city: "تخار",
+  },
+  {
+    id: 9,
+    title: "تاکسی شهری کابل",
+    description: "بازدید از ارگ، موزه ملی، بازار و مرکز شهر",
+    duration: "۱ روز - تاکسی اختصاصی",
+    price: 50,
+    priceUSD: 35,
+    image: "/assets/kabul-hero.jpg",
+    category: "taxi",
+    rating: 4.6,
+    reviews: 89,
+    city: "کابل",
+  },
+  {
+    id: 10,
+    title: "تاکسی بامیان",
+    description: "بازدید از بت‌های بامیان، دریاچه بند امیر و غار بامیان",
+    duration: "۱ روز - تاکسی اختصاصی",
+    price: 80,
+    priceUSD: 55,
+    image: "/assets/bamyan-tour.jpg",
+    category: "taxi",
+    rating: 4.8,
+    reviews: 124,
+    city: "بامیان",
+  },
+  {
+    id: 11,
+    title: "تاکسی مزار شریف",
+    description: "بازدید از آرامگاه Imam علی (ع)، موزه و بازار قدیم",
+    duration: "۱ روز - تاکسی اختصاصی",
+    price: 60,
+    priceUSD: 42,
+    image: "/assets/mazar-hero.jpg",
+    category: "taxi",
+    rating: 4.7,
+    reviews: 156,
+    city: "مزار شریف",
+  },
+  {
+    id: 12,
+    title: "تاکسی هرات",
+    description: "بازدید از قلعه هرات، مسجد شمس‌الائمه و بازار تیموری",
+    duration: "۱ روز - تاکسی اختصاصی",
+    price: 70,
+    priceUSD: 48,
+    image: "/assets/herat-hero.jpg",
+    category: "taxi",
+    rating: 4.5,
+    reviews: 92,
+    city: "هرات",
+  },
+  {
+    id: 13,
+    title: "جشنواره بهار بامیان",
+    description: "جشنواره فرهنگی بهار با موسیقی محلی، رقص سنتی و غذاهای محلی",
+    duration: "۲ روز - هتل ۴ ستاره",
+    price: 180,
+    priceUSD: 130,
+    image: "/assets/bamyan-tour.jpg",
+    category: "exhibition",
+    rating: 4.9,
+    reviews: 210,
+    city: "بامیان",
+  },
+  {
+    id: 14,
+    title: "نمایشگاه صنایع دستی کابل",
+    description: "بازدید از نمایشگاه صنایع دستی افغانی با امکان خرید مستقیم از تولیدکنندگان",
+    duration: "۱ روز - بدون اقامت",
+    price: 30,
+    priceUSD: 20,
+    image: "/assets/kabul-hero.jpg",
+    category: "exhibition",
+    rating: 4.6,
+    reviews: 145,
+    city: "کابل",
+  },
+  {
+    id: 15,
+    title: "مراسم عاشورای هرات",
+    description: "شرکت در مراسم مذهبی و عزاداری در شهر تاریخی هرات با بازدید از مساجد قدیمی",
+    duration: "۲ روز - هتل ۳ ستاره",
+    price: 120,
+    priceUSD: 85,
+    image: "/assets/herat-hero.jpg",
+    category: "exhibition",
+    rating: 4.8,
+    reviews: 89,
+    city: "هرات",
+  },
+  {
+    id: 16,
+    title: "جشنواره موسیقی مقامات",
+    description: "اجرای زنده موسیقی مقامات افغانی توسط هنرمندان برجسته کشور",
+    duration: "۱ روز - بدون اقامت",
+    price: 25,
+    priceUSD: 18,
+    image: "/assets/mazar-hero.jpg",
+    category: "exhibition",
+    rating: 4.7,
+    reviews: 178,
+    city: "مزار شریف",
+  },
+  {
+    id: 17,
+    title: "بازار نوروزی کابل",
+    description: "بازدید از بازار ویژه نوروزی با صنایع دستی، لباس‌های سنتی و شیرینی‌های محلی",
+    duration: "۱ روز - بدون اقامت",
+    price: 20,
+    priceUSD: 15,
+    image: "/assets/kabul-hero.jpg",
+    category: "exhibition",
+    rating: 4.5,
+    reviews: 92,
+    city: "کابل",
+  },
+  {
+    id: 18,
+    title: "مسابقه بزکشی بامیان",
+    description: "شرکت در مسابقات سنتی بزکشی و آشنایی با فرهنگ عشایری افغانستان",
+    duration: "۱ روز - تاکسی اختصاصی",
+    price: 45,
+    priceUSD: 32,
+    image: "/assets/bamyan-tour.jpg",
+    category: "exhibition",
+    rating: 4.6,
+    reviews: 67,
+    city: "بامیان",
+  },
+];
+
+const popularRoutes = [
+  { name: "کابل", count: 24 },
+  { name: "بامیان", count: 18 },
+  { name: "هرات", count: 15 },
+  { name: "مزار شریف", count: 22 },
+  { name: "قندهار", count: 12 },
+  { name: "غزنی", count: 10 },
+  { name: "پنجشیر", count: 8 },
+  { name: "تخار", count: 6 },
+];
+
+export default function ToursPage() {
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [originDropdown, setOriginDropdown] = useState(false);
+  const [destinationDropdown, setDestinationDropdown] = useState(false);
+  const [dateDropdown, setDateDropdown] = useState(false);
+  const [originSearch, setOriginSearch] = useState("");
+  const [destinationSearch, setDestinationSearch] = useState("");
+  const [selectedOrigin, setSelectedOrigin] = useState("");
+  const [selectedDestination, setSelectedDestination] = useState("");
+  const [departureDate, setDepartureDate] = useState("");
+  const [passengers, setPassengers] = useState("1 Passenger");
+  const [dynamicTours, setDynamicTours] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch tours from API
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const response = await fetch('/api/tours');
+        const data = await response.json();
+        if (data.success && data.tours.length > 0) {
+          setDynamicTours(data.tours);
+        } else {
+          // Fallback to hardcoded tours if no data
+          setDynamicTours(tours);
+        }
+      } catch (error) {
+        console.error('Error fetching tours:', error);
+        // Fallback to hardcoded tours on error
+        setDynamicTours(tours);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTours();
+  }, []);
+
+  const handleSwapCities = () => {
+    const temp = selectedOrigin;
+    setSelectedOrigin(selectedDestination);
+    setSelectedDestination(temp);
+  };
+
+  const handleSearch = () => {
+    const searchParams = new URLSearchParams();
+    searchParams.set('origin', selectedOrigin);
+    searchParams.set('destination', selectedDestination);
+    searchParams.set('departure', departureDate);
+    searchParams.set('passengers', passengers);
+    searchParams.set('type', 'tour');
+    window.location.href = `/search-results?${searchParams.toString()}`;
+  };
+
+  const allTours = dynamicTours.length > 0 ? dynamicTours : tours;
+  const filteredTours = activeCategory === "all" 
+    ? allTours 
+    : allTours.filter(tour => tour.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-[#f5f6f8]">
+    <div className="min-h-screen flex flex-col bg-gray-50" style={{ direction: 'rtl' }}>
       <Navbar />
-      <main>
-        <div className="relative h-48 overflow-hidden">
-          <img src={assetPath("/assets/bamyan-tour.jpg")} alt="تور" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-black/40" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <h1 className="text-3xl font-semibold text-white">تور</h1>
+
+      <main className="flex-1">
+        {/* Hero Section with Image - Same as Home */}
+        <div className="w-full h-[250px] md:h-[350px] lg:h-[400px] relative overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url('/assets/home-page.webp')` }}
+          />
+          <div className="absolute inset-0 bg-white/60" />
+          <div className="container mx-auto px-4 pt-20 relative z-10">
           </div>
         </div>
 
-        <div className="mx-auto max-w-6xl px-4 py-8">
-          <h2 className="text-xl font-semibold text-slate-900 text-right mb-6">تورهای پیشنهادی</h2>
-          
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {tours.map((tour) => (
-              <div key={tour.id} className="group rounded-2xl border border-black/5 bg-white shadow-sm hover:shadow-md transition overflow-hidden">
-                <div className="h-48 overflow-hidden">
-                  <img src={tour.image} alt={tour.name} className="h-full w-full object-cover transition group-hover:scale-110" />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-base font-semibold text-slate-900">{tour.name}</h3>
-                  <p className="mt-1 text-sm text-slate-600">{tour.city} - {tour.duration}</p>
-                  <div className="mt-4 flex items-center justify-between">
-                    <div>
-                      <span className="text-xl font-bold text-[#FDB713]">${tour.price}</span>
-                      <span className="text-xs text-slate-500 mr-1">هر نفر</span>
+        {/* Search Card */}
+        <div className="container mx-auto px-4 -mt-16 md:-mt-20 lg:-mt-24 relative z-20 mb-12 md:mb-16">
+          <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-4 md:p-6 lg:p-8">
+            <div className="space-y-4 md:space-y-6">
+              <div className="flex items-center justify-between gap-2 flex-wrap lg:flex-nowrap">
+                <div className="relative flex-1 min-w-[180px]">
+                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مبدا</div>
+                  <input
+                    type="text"
+                    placeholder="Origin"
+                    value={selectedOrigin || originSearch}
+                    onChange={(e) => {
+                      setOriginSearch(e.target.value);
+                      setOriginDropdown(true);
+                      if (!e.target.value) setSelectedOrigin("");
+                    }}
+                    onFocus={() => setOriginDropdown(true)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-right"
+                  />
+                  <ChevronDown className="absolute left-3 top-10 h-5 text-gray-400 pointer-events-none" />
+                  {originDropdown && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto">
+                      {provinces.filter(p => p.name.includes(originSearch) || originSearch === "").map(province => (
+                        <button
+                          key={province.name}
+                          onClick={() => { setSelectedOrigin(province.name); setOriginSearch(""); setOriginDropdown(false); }}
+                          className="w-full px-4 py-3 text-right hover:bg-orange-50 flex items-center justify-between"
+                        >
+                          <span>{province.name}</span>
+                          <span>{province.icon}</span>
+                        </button>
+                      ))}
                     </div>
-                    <button className="btn-primary text-xs">رزرو</button>
-                  </div>
+                  )}
                 </div>
+
+                <button onClick={handleSwapCities} className="p-2.5 rounded-full bg-orange-500 hover:bg-orange-600 mt-6 md:mt-7 shadow-md">
+                  <ArrowRightLeft className="h-4 w-4 text-white" />
+                </button>
+
+                <div className="relative flex-1 min-w-[180px]">
+                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مقصد</div>
+                  <input
+                    type="text"
+                    placeholder="Destination"
+                    value={selectedDestination || destinationSearch}
+                    onChange={(e) => {
+                      setDestinationSearch(e.target.value);
+                      setDestinationDropdown(true);
+                      if (!e.target.value) setSelectedDestination("");
+                    }}
+                    onFocus={() => setDestinationDropdown(true)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-right"
+                  />
+                  <ChevronDown className="absolute left-3 top-10 h-5 text-gray-400 pointer-events-none" />
+                  {destinationDropdown && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto">
+                      {provinces.filter(p => p.name.includes(destinationSearch) || destinationSearch === "").map(province => (
+                        <button
+                          key={province.name}
+                          onClick={() => { setSelectedDestination(province.name); setDestinationSearch(""); setDestinationDropdown(false); }}
+                          className="w-full px-4 py-3 text-right hover:bg-orange-50 flex items-center justify-between"
+                        >
+                          <span>{province.name}</span>
+                          <span>{province.icon}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative flex-1 min-w-[160px]">
+                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ</div>
+                  <div onClick={() => setDateDropdown(!dateDropdown)} className="w-full px-4 py-3 border border-gray-300 rounded-lg cursor-pointer flex items-center justify-between hover:bg-gray-50 transition">
+                    <span className="text-gray-700">{departureDate || 'انتخاب تاریخ'}</span>
+                    <Calendar className="h-5 text-gray-400" />
+                  </div>
+                  {dateDropdown && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-lg shadow-lg z-50 p-4 space-y-3">
+                      <div>
+                        <label className="text-sm text-gray-700 mb-2 block text-right font-medium">تاریخ</label>
+                        <input type="date" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} className="w-full px-3 py-2 border rounded-lg text-right" />
+                      </div>
+                      <button onClick={() => setDateDropdown(false)} className="w-full py-2.5 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600">تایید</button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="relative flex-1 min-w-[140px]">
+                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مسافران</div>
+                  <Users className="absolute left-3 top-10 h-5 text-gray-400 pointer-events-none" />
+                  <select value={passengers} onChange={(e) => setPassengers(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-right pr-10">
+                    <option value="1 Passenger">1 مسافر</option>
+                    <option value="2 Passengers">2 مسافر</option>
+                    <option value="3 Passengers">3 مسافر</option>
+                    <option value="4 Passengers">4 مسافر</option>
+                  </select>
+                </div>
+
+                <button onClick={handleSearch} className="px-8 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 mt-6 md:mt-7 shadow-md whitespace-nowrap">
+                  جستجو
+                </button>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Best Tour Destinations Section */}
+        <section className="container mx-auto px-4 mb-12 md:mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">بهترین مقاصد گردشگری</h2>
+            <p className="text-gray-600">بهترین مقاصد گردشگری برای سفری فراموش‌نشدنی و لذت‌بخش</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+            {destinations.map((city, index) => (
+              <Link 
+                key={index} 
+                href={`/search-results?type=tour&destination=${city.name}`}
+                className="group"
+              >
+                <div className="relative rounded-xl overflow-hidden mb-3">
+                  <img 
+                    src={city.image} 
+                    alt={city.name} 
+                    className="w-full h-32 md:h-40 object-cover transform group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
+                </div>
+                <p className="text-center font-semibold text-gray-800 group-hover:text-orange-500 transition-colors">{city.name}</p>
+              </Link>
             ))}
           </div>
-        </div>
+        </section>
 
-        <div className="mx-auto max-w-6xl px-4 pb-8">
-          <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900 text-right">تور | سفر به نقاط دیدنی افغانستان</h2>
-            <p className="mt-4 text-sm text-slate-600 text-right">
-              افغانی‌بابا بهترین تورهای داخلی افغانستان را با بهترین قیمت ارائه می‌دهد.
-              از تور بامیان گرفته تا مزار شریف و هرات، بهترین تجربه سفر را با ما داشته باشید.
-            </p>
+        {/* Category Filter Tabs Section */}
+        <section className="container mx-auto px-4 mb-8">
+          <div className="border-b border-gray-200 overflow-x-auto">
+            <div className="flex gap-2 md:gap-4 min-w-max pb-1">
+              {tourCategories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`px-4 py-3 text-sm md:text-base font-medium whitespace-nowrap transition-colors relative ${
+                    activeCategory === category.id 
+                      ? 'text-orange-500' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  {category.label}
+                  {activeCategory === category.id && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500" />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
+
+        {/* Tour Cards Listing Section */}
+        <section className="container mx-auto px-4 mb-12">
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-orange-500"></div>
+            </div>
+          ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredTours.map((tour, index) => (
+              <Link key={tour._id || tour.id || index} href={`/search-results?type=tour&destination=${tour.city}`} className="group">
+                <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <div className="relative h-48 overflow-hidden">
+                    <img 
+                      src={tour.image} 
+                      alt={tour.title} 
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                    />
+
+                    {tour.category === "oneday" && (
+                      <span className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded">یک روزه</span>
+                    )}
+                    {tour.category === "taxi" && (
+                      <span className="absolute top-3 right-3 bg-purple-500 text-white text-xs px-2 py-1 rounded">تاکسی</span>
+                    )}
+                    {tour.category === "exhibition" && (
+                      <span className="absolute top-3 right-3 bg-pink-500 text-white text-xs px-2 py-1 rounded">نمایشگاه و رویداد</span>
+                    )}
+                  </div>
+                  <div className="p-4 text-right">
+                    <h3 className="font-bold text-gray-900 mb-2 group-hover:text-orange-500 transition-colors">{tour.title}</h3>
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">{tour.description}</p>
+                    <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                      <Clock className="h-3 w-3" />
+                      <span>{tour.duration}</span>
+                    </div>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                        <span className="text-sm font-semibold">{tour.rating}</span>
+                        <span className="text-xs text-gray-400">({tour.reviews})</span>
+                      </div>
+                    </div>
+                    <div className="pt-3 border-t border-gray-100">
+                      <span className="text-xs text-gray-500">از</span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-xl font-bold text-orange-500">{tour.price.toLocaleString()}</span>
+                        <span className="text-xs text-gray-600">افغانی</span>
+                      </div>
+                      <span className="text-xs text-gray-400">(${tour.priceUSD})</span>
+                    </div>
+                    <div className="mt-3 text-center text-sm font-medium text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                      مشاهده جزئیات ←
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+          )}
+        </section>
+
+        {/* View All Tours CTA */}
+        <section className="container mx-auto px-4 mb-16">
+          <div className="text-center">
+            <button className="px-10 py-4 bg-orange-500 text-white font-bold rounded-full hover:bg-orange-600 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+              مشاهده همه تورهای انتخابی
+            </button>
+          </div>
+        </section>
+
+        {/* Mobile App Download Section */}
+        <section className="container mx-auto px-4 mb-16">
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div className="grid md:grid-cols-3 gap-8 p-8 md:p-12 items-center">
+              <div className="flex items-center justify-center">
+                <div className="text-center">
+                  <img src="/assets/Home-page/home-card-5.png" alt="QR Code" className="w-32 h-32 md:w-40 md:h-40 mx-auto" />
+                  <p className="text-sm text-gray-600 mt-3">کد را اسکن کنید</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">اپلیکیشن افغانی‌بابا</h2>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  سریع‌تر و مطمئن‌تر به سفر بروید. اپلیکیشن افغانی‌بابا را دانلود کنید و از تمام خدمات سفر در هر جای و هر زمان استفاده کنید.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a href="#" className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition justify-center">
+                    <span>🍎</span>
+                    <span>دانلود iOS</span>
+                  </a>
+                  <a href="#" className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition justify-center">
+                    <span>🤖</span>
+                    <span>دانلود Android</span>
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-center justify-center">
+                <img src="/assets/Home-page/home-card-4.webp" alt="Mobile App" className="w-36 h-52 md:w-40 md:h-56 object-contain" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Informational Tourism Content Section */}
+        <section className="bg-gray-50 py-12 md:py-16 mb-16">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center">سفر با تورهای راهنما دار افغانی‌بابا</h2>
+            <div className="space-y-6 text-gray-700 leading-relaxed text-right">
+              <p>
+                سفر با تورهای راهنما دار یکی از بهترین راه‌ها برای تجربه سفری امن و لذت‌بخش است. با انتخاب تورهای organized، شما از تجربه و دانش محلی راهنمایان حرفه‌ای بهره‌مند می‌شوید و می‌توانید با خیال راحت از جاذبه‌های گردشگری لذت ببرید.
+              </p>
+              <p>
+                افغانی‌بابا بهترین تورهای داخلی و خارجی را با بهترین قیمت‌ها ارائه می‌دهد. از تورهای داخلی مانند بامیان، هرات، مزار شریف و قندهار تا تورهای خارجی مانند ترکیه، دبی و امارات، همه با بهترین کیفیت و خدمات.
+              </p>
+              <div className="grid md:grid-cols-3 gap-4 mt-8">
+                <div className="bg-white p-4 rounded-xl shadow-sm text-center">
+                  <div className="text-3xl mb-2">🛡️</div>
+                  <h3 className="font-bold text-gray-900 mb-1">ایمنی</h3>
+                  <p className="text-sm text-gray-600">سفر امن با برنامه‌ریزی دقیق</p>
+                </div>
+                <div className="bg-white p-4 rounded-xl shadow-sm text-center">
+                  <div className="text-3xl mb-2">📋</div>
+                  <h3 className="font-bold text-gray-900 mb-1">برنامه‌ریزی</h3>
+                  <p className="text-sm text-gray-600">سفر بدون دردسر و نگرانی</p>
+                </div>
+                <div className="bg-white p-4 rounded-xl shadow-sm text-center">
+                  <div className="text-3xl mb-2">💡</div>
+                  <h3 className="font-bold text-gray-900 mb-1">دانش محلی</h3>
+                  <p className="text-sm text-gray-600">آشنایی با فرهنگ و تاریخ</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Popular Routes Section */}
+        <section className="container mx-auto px-4 mb-16">
+          <div className="bg-white rounded-2xl shadow-sm p-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-6 text-right">مسیرهای پرطرفدار</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {popularRoutes.map((route, index) => (
+                <Link 
+                  key={index} 
+                  href={`/search-results?type=tour&destination=${route.name}`}
+                  className="flex items-center justify-between p-3 rounded-lg hover:bg-orange-50 transition group"
+                >
+                  <span className="text-gray-700 group-hover:text-orange-500 transition-colors">{route.name}</span>
+                  <span className="text-xs text-gray-400">({route.count} تور)</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Trust & Service Features Section */}
+        <section className="container mx-auto px-4 mb-16">
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-xl p-6 shadow-sm text-right">
+              <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mb-4">
+                <Shield className="h-7 w-7 text-blue-500" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">معتمدترین عرضه‌کننده</h3>
+              <p className="text-gray-600 text-sm">ارائه خدمات گردشگری با کیفیت و قابل اعتماد</p>
+            </div>
+            <div className="bg-white rounded-xl p-6 shadow-sm text-right">
+              <div className="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mb-4">
+                <Compass className="h-7 w-7 text-green-500" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">خدمات کامل سفر</h3>
+              <p className="text-gray-600 text-sm">پرواز، هتل، حمل‌ونقل و تورهای گردشگری</p>
+            </div>
+            <div className="bg-white rounded-xl p-6 shadow-sm text-right">
+              <div className="w-14 h-14 bg-purple-50 rounded-full flex items-center justify-center mb-4">
+                <Headphones className="h-7 w-7 text-purple-500" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">پشتیبانی ۲۴ ساعته</h3>
+              <p className="text-gray-600 text-sm">راهنمایی و کمک در تمام مراحل سفر</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer Section */}
+        <section className="bg-gray-900 text-white pt-12 pb-6">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-8">
+              <div className="col-span-2 md:col-span-4 lg:col-span-1">
+                <h3 className="font-bold text-xl mb-4">افغانی‌بابا</h3>
+                <p className="text-gray-400 text-sm mb-4">بزرگ‌ترین و معتبرترین پلتفرم خرید بلیط و خدمات گردشگری در افغانستان</p>
+                <div className="flex gap-3">
+                  <a href="#" className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition">📱</a>
+                  <a href="#" className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition">📘</a>
+                  <a href="#" className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition">📸</a>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-4">درباره ما</h4>
+                <ul className="space-y-2 text-gray-400 text-sm">
+                  <li><a href="#" className="hover:text-orange-400">معرفی افغانی‌بابا</a></li>
+                  <li><a href="#" className="hover:text-orange-400">تماس با ما</a></li>
+                  <li><a href="#" className="hover:text-orange-400">چرا افغانی‌بابا؟</a></li>
+                  <li><a href="#" className="hover:text-orange-400">افغانی‌بابا پلاس</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-4">خدمات</h4>
+                <ul className="space-y-2 text-gray-400 text-sm">
+                  <li><a href="#" className="hover:text-orange-400">بلیط هواپیما</a></li>
+                  <li><a href="#" className="hover:text-orange-400">بلیط اتوبوس</a></li>
+                  <li><a href="#" className="hover:text-orange-400">رزرو هتل</a></li>
+                  <li><a href="#" className="hover:text-orange-400">تور گردشگری</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-4">پشتیبانی</h4>
+                <ul className="space-y-2 text-gray-400 text-sm">
+                  <li><a href="#" className="hover:text-orange-400">راهنمای خرید</a></li>
+                  <li><a href="#" className="hover:text-orange-400">راهنمای استرداد</a></li>
+                  <li><a href="#" className="hover:text-orange-400">قوانین و مقررات</a></li>
+                  <li><a href="#" className="hover:text-orange-400">سوالات متداول</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-4">دیگر</h4>
+                <ul className="space-y-2 text-gray-400 text-sm">
+                  <li><a href="#" className="hover:text-orange-400">فروش سازمانی</a></li>
+                  <li><a href="#" className="hover:text-orange-400">پنل آژانس‌ها</a></li>
+                  <li><a href="#" className="hover:text-orange-400">فرصت‌های شغلی</a></li>
+                  <li><a href="#" className="hover:text-orange-400">بیمه مسافرتی</a></li>
+                </ul>
+              </div>
+            </div>
+            <div className="border-t border-gray-800 pt-6">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 text-gray-400">
+                    <Phone className="h-4 w-4" />
+                    <span className="text-sm">پشتیبانی: ۰۲۱-۴۳۹۰۰۰۰۰</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-xs text-gray-500">🛡️</span>
+                  <span className="text-xs text-gray-500">تمامی حقوق محفوظ است © ۱۴۰۴</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
+
       <Footer />
     </div>
   );

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import TaxiForm from "@/components/search/TaxiForm";
 import { MapPin, Users, Car, Star, Clock, CheckCircle } from "lucide-react";
 
 interface Taxi {
@@ -27,8 +27,68 @@ interface Taxi {
   rating?: number;
 }
 
-export default function TaxiPage() {
-  const [taxis, setTaxis] = useState<Taxi[]>([]);
+const mockTaxis: Taxi[] = [
+  {
+    _id: "1",
+    driverName: "احمد الله",
+    driverPhone: "+93 700 123 456",
+    vehicleType: "sedan",
+    vehicleModel: "تویوتا کمری",
+    vehiclePlate: "۱۲۳۴۵",
+    vehicleColor: "سفید",
+    from: "کابل",
+    to: "مزار شریف",
+    departureTime: "08:00",
+    departureDate: new Date(),
+    price: 1500,
+    totalSeats: 4,
+    availableSeats: 3,
+    amenities: ["کیسه هوا", "اینترنت", "آب معدنی"],
+    isApproved: true,
+    rating: 4.8
+  },
+  {
+    _id: "2",
+    driverName: "محمد حسین",
+    driverPhone: "+93 700 234 567",
+    vehicleType: "suv",
+    vehicleModel: "لندکروزر",
+    vehiclePlate: "۵۶۷۸۹",
+    vehicleColor: "مشکی",
+    from: "کابل",
+    to: "هرات",
+    departureTime: "09:00",
+    departureDate: new Date(),
+    price: 2500,
+    totalSeats: 6,
+    availableSeats: 4,
+    amenities: ["کیسه هوا", "سیستم صوتی", "تهویه مطبوع"],
+    isApproved: true,
+    rating: 4.9
+  },
+  {
+    _id: "3",
+    driverName: "عبدالله",
+    driverPhone: "+93 700 345 678",
+    vehicleType: "minivan",
+    vehicleModel: "هیوندای استارکس",
+    vehiclePlate: "۹۰۱۲۳",
+    vehicleColor: "سفید",
+    from: "کابل",
+    to: "قندهار",
+    departureTime: "07:00",
+    departureDate: new Date(),
+    price: 1800,
+    totalSeats: 7,
+    availableSeats: 5,
+    amenities: ["تهویه مطبوع", "موقعیت یاب", "آب معدنی"],
+    isApproved: true,
+    rating: 4.7
+  },
+];
+
+function TaxiPageContent() {
+  const [taxis, setTaxis] = useState<Taxi[]>(mockTaxis);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     from: "",
@@ -74,8 +134,8 @@ export default function TaxiPage() {
     const labels: Record<string, string> = {
       sedan: "سدان",
       suv: "اس یو وی",
-      minivan: "مینی وان",
-      luxury: "لوکسری",
+      minivan: "مینی ون",
+      luxury: "لوکس",
     };
     return labels[vehicleType] || vehicleType;
   };
@@ -85,54 +145,44 @@ export default function TaxiPage() {
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative h-72 bg-gradient-to-r from-blue-600 to-blue-500">
-          <div className="absolute inset-0 bg-black/30" />
+        {/* Hero Section with Image */}
+        <section className="relative h-72 overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url('/assets/taxi1.jpg')` }}
+          />
+          <div className="absolute inset-0 bg-black/40" />
           <div className="relative z-10 mx-auto h-full max-w-6xl px-4 flex flex-col justify-center">
-            <h1 className="text-4xl font-bold text-white mb-3">تاکسی را به سادگی رزرو کنید</h1>
-            <p className="text-white/90">سریع، ایمن و قابل اعتماد</p>
+            <h1 className="text-4xl font-bold text-white mb-3">تاکسی بین‌شهری</h1>
+            <p className="text-white/90">سفری راحت و امن با تاکسی‌های معتبر</p>
           </div>
         </section>
 
-        {/* Search Section */}
-        <section className="mx-auto max-w-6xl px-4 -mt-20 relative z-20 mb-12">
-          <TaxiForm />
-        </section>
-
-        {/* Filters Section */}
-        <section className="mx-auto max-w-6xl px-4 mb-8">
-          <div className="grid gap-4 md:grid-cols-3">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">مکان برداشتن</label>
-              <input
-                type="text"
-                value={filters.from}
-                onChange={(e) => setFilters({ ...filters, from: e.target.value })}
-                placeholder="شهر مبدا"
-                className="w-full rounded-lg border border-gray-300 bg-white p-3 text-right text-sm"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">مقصد</label>
-              <input
-                type="text"
-                value={filters.to}
-                onChange={(e) => setFilters({ ...filters, to: e.target.value })}
-                placeholder="شهر مقصد"
-                className="w-full rounded-lg border border-gray-300 bg-white p-3 text-right text-sm"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">تاریخ</label>
-              <input
-                type="date"
-                value={filters.date}
-                onChange={(e) => setFilters({ ...filters, date: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 bg-white p-3 text-right text-sm"
-              />
-            </div>
+        {/* Popular Routes */}
+        <section className="mx-auto max-w-6xl px-4 py-12">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">مسیرهای محبوب تاکسی</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Link href="/taxi?from=کابل&to=مزار شریف" className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4 transition hover:shadow-md">
+              <div>
+                <p className="text-sm font-semibold text-gray-900">کابل → مزار شریف</p>
+                <p className="text-xs text-gray-500">از ۱۵۰۰ افغانی</p>
+              </div>
+              <span className="text-xs font-semibold text-orange-500">رزرو</span>
+            </Link>
+            <Link href="/taxi?from=کابل&to=هرات" className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4 transition hover:shadow-md">
+              <div>
+                <p className="text-sm font-semibold text-gray-900">کابل → هرات</p>
+                <p className="text-xs text-gray-500">از ۲۵۰۰ افغانی</p>
+              </div>
+              <span className="text-xs font-semibold text-orange-500">رزرو</span>
+            </Link>
+            <Link href="/taxi?from=کابل&to=قندهار" className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4 transition hover:shadow-md">
+              <div>
+                <p className="text-sm font-semibold text-gray-900">کابل → قندهار</p>
+                <p className="text-xs text-gray-500">از ۱۸۰۰ افغانی</p>
+              </div>
+              <span className="text-xs font-semibold text-orange-500">رزرو</span>
+            </Link>
           </div>
         </section>
 
@@ -143,7 +193,8 @@ export default function TaxiPage() {
               <p className="text-gray-500">در حال بارگذاری...</p>
             </div>
           ) : taxis && taxis.length > 0 ? (
-            <div className="grid gap-4">
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">تاکسی‌های موجود</h2>
               {taxis.map((taxi) => (
                 <div
                   key={taxi._id}
@@ -152,12 +203,25 @@ export default function TaxiPage() {
                   <div className="grid md:grid-cols-5 gap-6 items-center">
                     {/* Driver & Vehicle Info */}
                     <div className="md:col-span-1 text-right">
-                      <p className="text-sm font-semibold text-gray-700 mb-1">راننده</p>
-                      <p className="text-lg font-bold text-gray-900">{taxi.driverName}</p>
-                      <div className="flex items-center justify-end gap-1 mt-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span className="text-xs text-green-600">تأیید شده</span>
+                      <div className="flex items-center gap-3 mb-2 justify-end">
+                        <div>
+                          <p className="text-sm font-semibold text-gray-700">راننده</p>
+                          <p className="text-lg font-bold text-gray-900">{taxi.driverName}</p>
+                        </div>
+                        <div className="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center">
+                          <span className="text-xl font-bold text-orange-600">{taxi.driverName[0]}</span>
+                        </div>
                       </div>
+                      <div className="flex items-center justify-end gap-1 mt-2">
+                        <span className="text-xs text-green-600">تأیید شده</span>
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                      </div>
+                      {taxi.rating && (
+                        <div className="flex items-center justify-end gap-1 mt-1">
+                          <span className="text-sm font-semibold text-gray-700">{taxi.rating}</span>
+                          <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                        </div>
+                      )}
                     </div>
 
                     {/* Vehicle Details */}
@@ -174,7 +238,7 @@ export default function TaxiPage() {
                         <span className="font-semibold text-gray-900">{taxi.from}</span>
                         <MapPin className="h-4 w-4 text-red-500" />
                       </div>
-                      <div className="border-r-2 border-gray-300 h-6" />
+                      <div className="border-r-2 border-gray-300 h-6 mr-2" />
                       <div className="flex items-center justify-end gap-2 mt-2">
                         <span className="font-semibold text-gray-900">{taxi.to}</span>
                         <MapPin className="h-4 w-4 text-green-500" />
@@ -207,13 +271,10 @@ export default function TaxiPage() {
                     {/* Price & Book */}
                     <div className="md:col-span-1 text-right">
                       <p className="text-xs text-gray-500 mb-1">قیمت</p>
-                      <p className="text-3xl font-bold" style={{ color: '#F97316' }}>{taxi.price}</p>
+                      <p className="text-3xl font-bold text-orange-500">{taxi.price}</p>
                       <p className="text-xs text-gray-600 mb-3">افغانی</p>
                       <button 
-                        className="w-full rounded-lg px-6 py-3 font-semibold text-white transition"
-                        style={{ backgroundColor: '#F97316' }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C2410C')}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F97316')}
+                        className="w-full rounded-lg px-6 py-3 font-semibold text-white bg-orange-500 hover:bg-orange-600 transition"
                       >
                         رزرو تاکسی
                       </button>
@@ -259,5 +320,13 @@ export default function TaxiPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function TaxiPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">در حال بارگذاری...</div>}>
+      <TaxiPageContent />
+    </Suspense>
   );
 }

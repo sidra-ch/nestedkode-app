@@ -6,12 +6,13 @@ import { getUserFromRequest } from '@/lib/auth';
 // GET - Get single bus
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
+    const { id } = await params;
 
-    const bus = await Bus.findById(params.id);
+    const bus = await Bus.findById(id);
 
     if (!bus) {
       return NextResponse.json(
@@ -39,7 +40,7 @@ export async function GET(
 // PUT - Update bus (Vendor/Admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = getUserFromRequest(request);
@@ -52,8 +53,9 @@ export async function PUT(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const bus = await Bus.findById(params.id);
+    const bus = await Bus.findById(id);
 
     if (!bus) {
       return NextResponse.json(
@@ -72,7 +74,7 @@ export async function PUT(
 
     const body = await request.json();
     const updatedBus = await Bus.findByIdAndUpdate(
-      params.id,
+      id,
       { ...body },
       { new: true, runValidators: true }
     );
@@ -97,7 +99,7 @@ export async function PUT(
 // DELETE - Delete bus (Vendor/Admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = getUserFromRequest(request);
@@ -110,8 +112,9 @@ export async function DELETE(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const bus = await Bus.findById(params.id);
+    const bus = await Bus.findById(id);
 
     if (!bus) {
       return NextResponse.json(
@@ -128,7 +131,7 @@ export async function DELETE(
       );
     }
 
-    await Bus.findByIdAndDelete(params.id);
+    await Bus.findByIdAndDelete(id);
 
     return NextResponse.json(
       {

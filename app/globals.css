@@ -1,84 +1,28 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@reference {
-  @import "tailwindcss";
-}
-
-:root {
-  --ink-900: #0f172a;
-  --ink-700: #1f2937;
-  --ink-500: #475569;
-  --sand-50: #fbf8f3;
-  --sand-100: #f6efe6;
-  --sand-200: #efe4d4;
-  --bronze-500: #b8793e;
-  --bronze-600: #9a642f;
-  --emerald-600: #0f766e;
-  --sky-500: #0ea5e9;
-  /* Afghanibaba Brand Colors */
-  --afghanibaba-primary: #059669;
-  --afghanibaba-secondary: #10B981;
-  --afghanibaba-dark: #064E3B;
-  --afghanibaba-accent: #F59E0B;
-  --brand-500: #FDB713;
-  --brand-600: #e6a512;
-  --brand-100: #fff7e0;
-  --cream: #fdfbf7;
-  --radius: 0.625rem;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  background: #f5f6f8;
-  direction: rtl;
-  font-family: 'Noto Sans Arabic', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-img {
-  image-rendering: auto;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
-@layer components {
-  .btn-primary {
-    @apply rounded-full bg-[#FDB713] px-6 py-3 text-sm font-semibold text-black shadow-lg shadow-[#FDB713]/20 transition hover:bg-[#e6a512];
-  }
-
-  .btn-secondary {
-    @apply rounded-full border border-black/10 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-black/30 hover:bg-[#fff7e0];
-  }
-
-  .input-field {
-    @apply h-12 w-full rounded-2xl border border-black/10 bg-white px-4 text-right text-sm text-slate-700 shadow-sm focus:border-[#FDB713] focus:outline-none;
-  }
-
-  .pill {
-    @apply rounded-full border border-black/10 bg-white/90 px-4 py-2 text-xs font-semibold text-slate-700;
-  }
-}
-
-.animate-fade-up {
-  animation: fade-up 0.8s ease forwards;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.9s ease forwards;
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
 }

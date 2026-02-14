@@ -6,12 +6,13 @@ import { verifyToken } from "@/lib/auth";
 // GET /api/flights/[id] - Get single flight
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
+    const { id } = await params;
 
-    const flight = await Flight.findById(params.id).lean();
+    const flight = await Flight.findById(id).lean();
 
     if (!flight) {
       return NextResponse.json(
@@ -36,7 +37,7 @@ export async function GET(
 // PUT /api/flights/[id] - Update flight (vendor/admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "");
@@ -56,8 +57,9 @@ export async function PUT(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const flight = await Flight.findById(params.id);
+    const flight = await Flight.findById(id);
 
     if (!flight) {
       return NextResponse.json(
@@ -100,7 +102,7 @@ export async function PUT(
 // DELETE /api/flights/[id] - Delete flight (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "");
@@ -120,8 +122,9 @@ export async function DELETE(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const flight = await Flight.findByIdAndDelete(params.id);
+    const flight = await Flight.findByIdAndDelete(id);
 
     if (!flight) {
       return NextResponse.json(

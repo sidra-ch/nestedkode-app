@@ -14,6 +14,16 @@ type Props = {
   vendorMenuItems?: { label: string; href: string; icon: string }[];
 };
 
+const mobileNavItems = [
+  { label: "✈️ پرواز", href: "/flights" },
+  { label: "🚌 اتوبوس", href: "/bus-info" },
+  { label: "🏨 هتل", href: "/hotels" },
+  { label: "🗺️ تور", href: "/tour" },
+  { label: "🛂 ویزا", href: "#" },
+  { label: "🚕 تاکسی", href: "/taxi" },
+  { label: "🛡️ بیمه سفر", href: "/insurance" },
+];
+
 export default function MobileMenu({ 
   open, 
   onClose, 
@@ -29,8 +39,8 @@ export default function MobileMenu({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm">
-      <div className="absolute right-0 top-0 h-full w-72 bg-white p-6 text-right shadow-2xl">
-        <div className="flex items-center justify-between">
+      <div className="absolute right-0 top-0 h-full w-72 bg-white p-6 text-right shadow-2xl overflow-y-auto">
+        <div className="flex items-center justify-between mb-4">
           <p className="text-lg font-semibold text-slate-900">منو</p>
           <button
             className="rounded-full border border-black/10 px-3 py-1 text-xs font-semibold"
@@ -40,8 +50,15 @@ export default function MobileMenu({
           </button>
         </div>
 
+        {/* Logo */}
+        <div className="mb-4">
+          <Link href="/" className="text-xl font-bold" style={{ color: '#F97316' }}>
+            AFGHANIBABA
+          </Link>
+        </div>
+
         {isAuthenticated && user && (
-          <div className="mt-4 p-3 bg-linear-to-r from-gray-50 to-gray-100 rounded-lg border border-gray-200">
+          <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
             <div className="flex items-center gap-3 mb-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                 user.role === 'admin' ? 'bg-purple-100' :
@@ -69,18 +86,39 @@ export default function MobileMenu({
           </div>
         )}
 
-        <nav className="mt-6 flex flex-col gap-4 text-sm font-medium text-slate-700">
-          {navItems.map((item) => (
-            <Link key={item.label} href={item.href} onClick={onClose}>
+        <nav className="mt-6 flex flex-col gap-2 text-sm font-medium text-slate-700">
+          {mobileNavItems.map((item) => (
+            <Link 
+              key={item.label} 
+              href={item.href} 
+              onClick={onClose}
+              className="p-3 rounded-lg hover:bg-gray-50 transition"
+            >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="mt-8 flex flex-col gap-3">
+        <div className="mt-6 pt-4 border-t border-gray-200">
+          <Link 
+            href="/help-center" 
+            onClick={onClose}
+            className="block p-3 text-sm text-slate-700 hover:bg-gray-50 rounded-lg"
+          >
+            ❓ مرکز پشتیبانی آنلاین
+          </Link>
+          <Link 
+            href="#" 
+            onClick={onClose}
+            className="block p-3 text-sm text-slate-700 hover:bg-gray-50 rounded-lg"
+          >
+            🏢 پنل آژانسی
+          </Link>
+        </div>
+
+        <div className="mt-6 flex flex-col gap-3">
           {isAuthenticated && user ? (
             <>
-              {/* User Menu Items */}
               {userMenuItems.map((item) => (
                 <Link
                   key={item.href}
@@ -92,16 +130,15 @@ export default function MobileMenu({
                 </Link>
               ))}
 
-              {/* Vendor Menu Items */}
               {user.role === "vendor" && vendorMenuItems.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-gray-200">
-                  <p className="text-xs font-semibold text-blue-600 mb-2">Vendor Panel</p>
+                  <p className="text-xs font-semibold text-blue-600 mb-2">پنل فروشنده</p>
                   {vendorMenuItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={onClose}
-                      className="btn-secondary text-center mb-2"
+                      className="block p-2 text-sm text-slate-700 hover:bg-blue-50 rounded-lg"
                     >
                       {item.icon} {item.label}
                     </Link>
@@ -109,16 +146,15 @@ export default function MobileMenu({
                 </div>
               )}
 
-              {/* Admin Menu Items */}
               {user.role === "admin" && adminMenuItems.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-gray-200">
-                  <p className="text-xs font-semibold text-purple-600 mb-2">Admin Panel</p>
+                  <p className="text-xs font-semibold text-purple-600 mb-2">پنل مدیریت</p>
                   {adminMenuItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={onClose}
-                      className="btn-secondary text-center mb-2"
+                      className="block p-2 text-sm text-slate-700 hover:bg-purple-50 rounded-lg"
                     >
                       {item.icon} {item.label}
                     </Link>
@@ -134,7 +170,7 @@ export default function MobileMenu({
                 }}
                 className="btn-primary bg-red-500 hover:bg-red-600 mt-4"
               >
-                🚪 Logout
+                🚪 خروج
               </button>
             </>
           ) : (

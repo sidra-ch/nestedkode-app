@@ -6,12 +6,13 @@ import { verifyToken } from "@/lib/auth";
 // GET /api/taxis/[id] - Get single taxi
 export async function GET(
   request: NextRequest,  
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
+    const { id } = await params;
 
-    const taxi = await Taxi.findById(params.id)
+    const taxi = await Taxi.findById(id)
       .populate("driverId", "name email phone")
       .lean();
 
@@ -38,7 +39,7 @@ export async function GET(
 // PUT /api/taxis/[id] - Update taxi (driver/admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "");
@@ -58,8 +59,9 @@ export async function PUT(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const taxi = await Taxi.findById(params.id);
+    const taxi = await Taxi.findById(id);
 
     if (!taxi) {
       return NextResponse.json(
@@ -102,7 +104,7 @@ export async function PUT(
 // DELETE /api/taxis/[id] - Delete taxi (driver/admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "");
@@ -122,8 +124,9 @@ export async function DELETE(
     }
 
     await connectDB();
+    const { id } = await params;
 
-    const taxi = await Taxi.findById(params.id);
+    const taxi = await Taxi.findById(id);
 
     if (!taxi) {
       return NextResponse.json(
@@ -143,7 +146,7 @@ export async function DELETE(
       );
     }
 
-    await Taxi.findByIdAndDelete(params.id);
+    await Taxi.findByIdAndDelete(id);
 
     return NextResponse.json({
       success: true,
