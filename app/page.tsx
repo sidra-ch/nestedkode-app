@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import TaxiForm from "@/components/search/TaxiForm";
@@ -110,9 +111,9 @@ export default function Home() {
 
         {/* Search Card */}
         <div className="container mx-auto px-4 -mt-16 md:-mt-20 lg:-mt-24 relative z-20 mb-12 md:mb-16">
-          <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-4 md:p-6 lg:p-8">
+          <div className="bg-white rounded-xl shadow-xl border border-gray-200 p-4 md:p-6 lg:p-8">
             {/* Tabs with Icons */}
-            <div className="flex gap-4 md:gap-6 lg:gap-8 border-b border-gray-200 mb-4 md:mb-6 overflow-x-auto">
+            <div className="flex gap-4 align-center  justify-between -md:gap-6 lg:gap-8 border-b border-gray-800 mb-4 md:mb-6 overflow-x-auto">
               {[
                 { key: "پرواز داخلی", icon: Plane },
                 { key: "پرواز خارجی", icon: Plane },
@@ -124,13 +125,13 @@ export default function Home() {
                 <button
                   key={key}
                   onClick={() => setActiveTab(key as TabKey)}
-                  className={`pb-3 md:pb-4 flex items-center gap-2 text-sm md:text-base transition-all whitespace-nowrap ${
+                  className={`pb-3 md:pb-4 flex items-center gap-2 transition-all whitespace-nowrap ${
                     activeTab === key
-                      ? 'border-b-2 border-orange-500 text-orange-500 font-medium'
-                      : 'text-gray-600 hover:text-gray-800 font-normal'
+                      ? 'border-b-2 border-orange-500 text-orange-500 font-bold text-lg md:text-xl'
+                      : 'text-gray-800 hover:text-gray-800 font-bold text-lg md:text-xl'
                   }`}
                 >
-                  <Icon className="h-4 w-4 md:h-5 md:w-5" />
+                  <Icon className="h-6 w-6 md:h-6 md:w-6" />
                   {key}
                 </button>
               ))}
@@ -373,7 +374,7 @@ export default function Home() {
               {/* Travel Visa */}
               <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition">
                 <div className="flex items-center gap-3">
-                  <img src="/assets/home-page/home-card-1.svg" alt="Travel Visa" className="h-12 w-12 md:h-16 md:w-16 object-contain" />
+                  <Image src="/assets/home-page/home-card-1.svg" alt="Travel Visa" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
                   <h3 className="text-lg md:text-xl font-bold text-gray-900">تاشیره سفر</h3>
                 </div>
                 <p className="text-sm md:text-base text-gray-600">اخذ تاشیره برای کشورهای مختلف</p>
@@ -382,7 +383,7 @@ export default function Home() {
               {/* Installment Travel */}
               <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition">
                 <div className="flex items-center gap-3">
-                  <img src="/assets/home-page/home-card-2.svg" alt="Installment Travel" className="h-12 w-12 md:h-16 md:w-16 object-contain" />
+                  <Image src="/assets/home-page/home-card-2.svg" alt="Installment Travel" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
                   <h3 className="text-lg md:text-xl font-bold text-gray-900">سفر اقساط</h3>
                 </div>
                 <p className="text-sm md:text-base text-gray-600">پرداخت هزینه سفر به صورت اقساط</p>
@@ -391,7 +392,7 @@ export default function Home() {
               {/* Travel Card */}
               <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition">
                 <div className="flex items-center gap-3">
-                  <img src="/assets/home-page/home-card-3.svg" alt="Travel Card" className="h-12 w-12 md:h-16 md:w-16 object-contain" />
+                  <Image src="/assets/home-page/home-card-3.svg" alt="Travel Card" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
                   <h3 className="text-lg md:text-xl font-bold text-gray-900">کارت سفر</h3>
                 </div>
                 <p className="text-sm md:text-base text-gray-600">کارت ویژه برای مسافران</p>
@@ -405,18 +406,22 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {/* Card 1 */}
             <div className="p-4 md:p-6 rounded-xl overflow-hidden hover:shadow-lg transition">
-              <img 
+              <Image 
                 src="/assets/Home-page/home-card-6.webp" 
                 alt="Service Card 6" 
+                width={800}
+                height={600}
                 className="w-full h-64 md:h-60 rounded-lg object-cover"
               />
             </div>
 
             {/* Card 2 */}
             <div className="p-4 md:p-6 rounded-xl overflow-hidden hover:shadow-lg transition">
-              <img 
+              <Image 
                 src="/assets/Home-page/home-card-7.webp" 
                 alt="Service Card 7" 
+                width={800}
+                height={600}
                 className="w-full h-64 md:h-60 rounded-lg object-cover"
               />
             </div>
@@ -430,9 +435,11 @@ export default function Home() {
               {/* QR Code Section */}
               <div className="flex items-center justify-center">
                 <div className="text-center">
-                  <img 
+                  <Image 
                     src="/assets/Home-page/home-card-5.png" 
                     alt="QR Code" 
+                    width={192}
+                    height={192}
                     className="w-40 h-40 md:w-48 md:h-48 object-contain mx-auto"
                   />
                   <p className="text-sm text-gray-600 mt-4">کود را اسکن کنید</p>
@@ -460,9 +467,11 @@ export default function Home() {
 
               {/* Mobile Phone Image Section */}
               <div className="flex items-center justify-center">
-                <img 
+                <Image 
                   src="/assets/Home-page/home-card-4.webp" 
                   alt="Mobile App Screenshot" 
+                  width={176}
+                  height={256}
                   className="w-40 h-56 md:w-44 md:h-64 object-contain"
                 />
               </div>

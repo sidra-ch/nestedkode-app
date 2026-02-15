@@ -2,6 +2,23 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Tour from '@/models/Tour';
 
+// Define query type for MongoDB operations
+type TourQuery = {
+  isActive: boolean;
+  isApproved: boolean;
+  category?: string;
+  city?: string;
+  price?: {
+    $gte?: number;
+    $lte?: number;
+  };
+  $or?: Array<{
+    title?: { $regex: string; $options: string };
+    description?: { $regex: string; $options: string };
+    city?: { $regex: string; $options: string };
+  }>;
+};
+
 // GET - Get all tours or search tours
 export async function GET(request: NextRequest) {
   try {
@@ -14,7 +31,7 @@ export async function GET(request: NextRequest) {
     const maxPrice = searchParams.get('maxPrice');
     const search = searchParams.get('search');
 
-    const query: Record<string, unknown> = { isActive: true, isApproved: true };
+    const query: TourQuery = { isActive: true, isApproved: true };
 
     // Filter by category
     if (category && category !== 'all') {

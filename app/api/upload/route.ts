@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
-import { existsSync } from 'fs';
+import { v2 as cloudinary } from 'cloudinary';
 
-// POST - Upload image file
+// Define Cloudinary upload result type
+interface CloudinaryUploadResult {
+  secure_url: string;
+  public_id: string;
+  [key: string]: unknown;
+}
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// POST - Upload image file to Cloudinary
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
@@ -35,33 +47,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create upload directory if it doesn't exist
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', type || 'general');
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
-
-    // Generate unique filename
-    const timestamp = Date.now();
-    const randomString = Math.random().toString(36).substring(2, 8);
-    const extension = file.name.split('.').pop();
-    const filename = `${type || 'image'}-${timestamp}-${randomString}.${extension}`;
-
-    // Convert file to buffer and save
+    // Convert file to buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const filepath = path.join(uploadDir, filename);
-    await writeFile(filepath, buffer);
 
-    // Return public URL
-    const publicUrl = `/uploads/${type || 'general'}/${filename}`;
+    // Upload to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: `nestedkode/${type || 'general'}`,
+          resource_type: 'auto',
+          quality: 'auto',
+        },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+
+      uploadStream.end(buffer);
+    });
+
+    const uploadResult = result as CloudinaryUploadResult;
 
     return NextResponse.json(
       {
         success: true,
         message: 'File uploaded successfully',
-        url: publicUrl,
-        filename,
+        url: uploadResult.secure_url,
+        filename: uploadResult.public_id,
       },
       { status: 200 }
     );
@@ -74,40 +88,30 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// DELETE - Delete uploaded image
+// DELETE - Delete uploaded image from Cloudinary
 export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const url = searchParams.get('url');
+    const publicId = searchParams.get('publicId');
 
-    if (!url) {
+    if (!publicId) {
       return NextResponse.json(
-        { success: false, message: 'No file URL provided' },
+        { success: false, message: 'No public ID provided' },
         { status: 400 }
       );
     }
 
-    // Security: Ensure the file is in uploads directory
-    if (!url.startsWith('/uploads/')) {
-      return NextResponse.json(
-        { success: false, message: 'Invalid file path' },
-        { status: 400 }
-      );
-    }
+    // Delete from Cloudinary
+    const result = await cloudinary.uploader.destroy(publicId);
 
-    const filepath = path.join(process.cwd(), 'public', url);
-    
-    if (existsSync(filepath)) {
-      const { unlink } = await import('fs/promises');
-      await unlink(filepath);
-      
+    if (result.result === 'ok') {
       return NextResponse.json(
         { success: true, message: 'File deleted successfully' },
         { status: 200 }
       );
     } else {
       return NextResponse.json(
-        { success: false, message: 'File not found' },
+        { success: false, message: 'File not found on Cloudinary' },
         { status: 404 }
       );
     }
