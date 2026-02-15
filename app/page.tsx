@@ -374,7 +374,7 @@ export default function Home() {
               {/* Travel Visa */}
               <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition">
                 <div className="flex items-center gap-3">
-                  <Image src="/assets/home-page/home-card-1.svg" alt="Travel Visa" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
+                  <Image src="/assets/Home-page/home-card-1.svg" alt="Travel Visa" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
                   <h3 className="text-lg md:text-xl font-bold text-gray-900">تاشیره سفر</h3>
                 </div>
                 <p className="text-sm md:text-base text-gray-600">اخذ تاشیره برای کشورهای مختلف</p>
@@ -383,7 +383,7 @@ export default function Home() {
               {/* Installment Travel */}
               <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition">
                 <div className="flex items-center gap-3">
-                  <Image src="/assets/home-page/home-card-2.svg" alt="Installment Travel" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
+                  <Image src="/assets/Home-page/home-card-2.svg" alt="Installment Travel" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
                   <h3 className="text-lg md:text-xl font-bold text-gray-900">سفر اقساط</h3>
                 </div>
                 <p className="text-sm md:text-base text-gray-600">پرداخت هزینه سفر به صورت اقساط</p>
@@ -392,7 +392,7 @@ export default function Home() {
               {/* Travel Card */}
               <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition">
                 <div className="flex items-center gap-3">
-                  <Image src="/assets/home-page/home-card-3.svg" alt="Travel Card" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
+                  <Image src="/assets/Home-page/home-card-3.svg" alt="Travel Card" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
                   <h3 className="text-lg md:text-xl font-bold text-gray-900">کارت سفر</h3>
                 </div>
                 <p className="text-sm md:text-base text-gray-600">کارت ویژه برای مسافران</p>
