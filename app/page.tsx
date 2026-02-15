@@ -119,7 +119,7 @@ export default function Home() {
 
         {/* Search Card - sticky below navbar on mobile/tablet (Alibaba.ir style) */}
         <div className="container mx-auto px-3 sm:px-4 -mt-12 sm:-mt-16 md:-mt-20 lg:-mt-24 sticky top-14 sm:top-16 md:top-20 lg:static z-[90] mb-8 sm:mb-12 md:mb-16">
-          <div className="bg-white rounded-xl shadow-xl border border-gray-200 p-3 sm:p-4 md:p-6 lg:p-8 overflow-hidden">
+          <div className="bg-white rounded-xl shadow-xl border border-gray-200 p-3 sm:p-4 md:p-6 lg:p-8">
             {/* Tabs - horizontal scroll on mobile, no wrap */}
             <div className="flex gap-2 sm:gap-4 md:gap-6 lg:gap-8 border-b border-gray-200 mb-4 md:mb-6 overflow-x-auto scrollbar-hide -mx-3 px-3 sm:mx-0 sm:px-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {[
@@ -198,6 +198,7 @@ export default function Home() {
                   <input type="date" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-right text-base" />
                 </div>
                 <button onClick={handleSearch} className="w-full sm:col-span-2 lg:w-auto lg:flex-shrink-0 px-6 md:px-8 py-3 md:py-3.5 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition shadow-md min-h-[48px]">جستجو</button>
+                              <button onClick={handleSearch} className="w-full sm:col-span-2 lg:w-auto lg:flex-shrink-0 px-6 md:px-8 py-3 md:py-3.5 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition shadow-md min-h-[48px]">جستجو</button>
               </div>
             ) : (
               <div className="space-y-4 md:space-y-6">

@@ -152,7 +152,7 @@ export default function BusBookingPage() {
             <div>
               <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                 <Bus className="text-yellow-500" size={24} />
-                {bus?.company || "Qudrat Bus Transport"}
+                {bus?.company ? bus.company : ""}
               </h1>
               <p className="text-sm text-gray-600 mt-1">
                 {bus?.origin} → {bus?.destination}
