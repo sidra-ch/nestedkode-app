@@ -28,10 +28,10 @@ export async function GET(
       },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Get bus error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to fetch bus', error: error.message },
+      { success: false, message: 'Failed to fetch bus', error: (error as Error).message },
       { status: 500 }
     );
   }
@@ -87,10 +87,10 @@ export async function PUT(
       },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Update bus error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to update bus', error: error.message },
+      { success: false, message: 'Failed to update bus', error: (error as Error).message },
       { status: 500 }
     );
   }
@@ -140,10 +140,10 @@ export async function DELETE(
       },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Delete bus error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to delete bus', error: error.message },
+      { success: false, message: 'Failed to delete bus', error: (error as Error).message },
       { status: 500 }
     );
   }

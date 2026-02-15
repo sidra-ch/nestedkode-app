@@ -32,10 +32,10 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Get user error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to get user data', error: error.message },
+      { success: false, message: 'Failed to get user data', error: (error as Error).message },
       { status: 500 }
     );
   }

@@ -69,7 +69,7 @@ function OTPVerificationContent() {
         alert(data.message || "کد وارد شده اشتباه است");
         setOtp(["", "", "", "", "", ""]);
       }
-    } catch (error) {
+    } catch {
       alert("خطا در تایید کد");
     } finally {
       setLoading(false);
@@ -86,7 +86,7 @@ function OTPVerificationContent() {
         body: JSON.stringify({ phone }),
       });
       alert("کد مجدداً ارسال شد");
-    } catch (error) {
+    } catch {
       alert("خطا در ارسال مجدد کد");
     }
   };
@@ -96,8 +96,8 @@ function OTPVerificationContent() {
       <div className="w-full max-w-md">
         <div className="rounded-2xl bg-white p-8 shadow-lg">
           <div className="text-center mb-8">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#FDB713]/20">
-              <svg className="h-8 w-8 text-[#FDB713]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-orange-500/20">
+              <svg className="h-8 w-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
@@ -119,7 +119,7 @@ function OTPVerificationContent() {
                   value={digit}
                   onChange={(e) => handleChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="h-14 w-12 rounded-lg border-2 border-gray-300 text-center text-xl font-bold focus:border-[#FDB713] focus:outline-none"
+                  className="h-14 w-12 rounded-lg border-2 border-gray-300 text-center text-xl font-bold focus:border-orange-500 focus:outline-none"
                 />
               ))}
             </div>
@@ -131,7 +131,7 @@ function OTPVerificationContent() {
               ) : (
                 <button
                   onClick={resendOTP}
-                  className="font-semibold text-[#FDB713] hover:text-[#e6a512]"
+                  className="font-semibold text-orange-500 hover:text-orange-600"
                 >
                   ارسال مجدد کد
                 </button>
@@ -143,7 +143,7 @@ function OTPVerificationContent() {
           <button
             onClick={handleVerify}
             disabled={loading || otp.join("").length !== 6}
-            className="w-full rounded-lg bg-[#FDB713] py-3 font-semibold text-black hover:bg-[#e6a512] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full rounded-lg bg-orange-500 py-3 font-semibold text-white hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "در حال تایید..." : "تایید و ورود"}
           </button>

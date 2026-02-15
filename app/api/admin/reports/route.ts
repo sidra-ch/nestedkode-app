@@ -21,35 +21,35 @@ export async function GET(request: NextRequest) {
     const endDate = searchParams.get('endDate');
     const format = searchParams.get('format') || 'json';
 
-    let query: any = {};
-    let data: any[] = [];
+    const query: Record<string, unknown> = {};
+    let data: Record<string, unknown>[] = [];
 
     if (startDate || endDate) {
-      query.createdAt = {};
-      if (startDate) query.createdAt.$gte = new Date(startDate);
-      if (endDate) query.createdAt.$lte = new Date(endDate);
+      query.createdAt = {} as { $gte?: Date; $lte?: Date };
+      if (startDate) (query.createdAt as { $gte?: Date; $lte?: Date }).$gte = new Date(startDate);
+      if (endDate) (query.createdAt as { $gte?: Date; $lte?: Date }).$lte = new Date(endDate);
     }
 
     switch (type) {
       case 'bookings':
-        data = await Booking.find(query)
+        data = (await Booking.find(query)
           .sort({ createdAt: -1 })
           .limit(1000)
-          .lean();
+          .lean()) as unknown as Record<string, unknown>[];
         break;
 
       case 'payments':
-        data = await Payment.find(query)
+        data = (await Payment.find(query)
           .sort({ createdAt: -1 })
           .limit(1000)
-          .lean();
+          .lean()) as unknown as Record<string, unknown>[];
         break;
 
       case 'refunds':
-        data = await Refund.find(query)
+        data = (await Refund.find(query)
           .sort({ createdAt: -1 })
           .limit(1000)
-          .lean();
+          .lean()) as unknown as Record<string, unknown>[];
         break;
 
       case 'revenue':
@@ -105,8 +105,8 @@ export async function GET(request: NextRequest) {
       }
 
       const headers = Object.keys(data[0]).join(',');
-      const rows = data.map((item: any) => 
-        Object.values(item).map((v: any) => 
+      const rows = data.map((item: Record<string, unknown>) => 
+        Object.values(item).map((v: unknown) => 
           typeof v === 'string' && v.includes(',') ? `"${v}"` : v
         ).join(',')
       );
@@ -128,10 +128,10 @@ export async function GET(request: NextRequest) {
       data,
     });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Generate report error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to generate report' },
+      { success: false, message: 'Failed to generate report', error: (error as Error).message },
       { status: 500 }
     );
   }

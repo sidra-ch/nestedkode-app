@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { MapPin, Users, Car, Star, Clock, CheckCircle } from "lucide-react";
+import { MapPin, Users, Star, Clock, CheckCircle } from "lucide-react";
 
 interface Taxi {
   _id: string;
@@ -18,7 +18,7 @@ interface Taxi {
   from: string;
   to: string;
   departureTime: string;
-  departureDate: Date;
+  departureDate: string; // should be string for API data
   price: number;
   totalSeats: number;
   availableSeats: number;
@@ -39,7 +39,7 @@ const mockTaxis: Taxi[] = [
     from: "کابل",
     to: "مزار شریف",
     departureTime: "08:00",
-    departureDate: new Date(),
+    departureDate: new Date().toISOString(),
     price: 1500,
     totalSeats: 4,
     availableSeats: 3,
@@ -58,7 +58,7 @@ const mockTaxis: Taxi[] = [
     from: "کابل",
     to: "هرات",
     departureTime: "09:00",
-    departureDate: new Date(),
+    departureDate: new Date().toISOString(),
     price: 2500,
     totalSeats: 6,
     availableSeats: 4,
@@ -77,7 +77,7 @@ const mockTaxis: Taxi[] = [
     from: "کابل",
     to: "قندهار",
     departureTime: "07:00",
-    departureDate: new Date(),
+    departureDate: new Date().toISOString(),
     price: 1800,
     totalSeats: 7,
     availableSeats: 5,
@@ -90,7 +90,7 @@ const mockTaxis: Taxi[] = [
 function TaxiPageContent() {
   const [taxis, setTaxis] = useState<Taxi[]>(mockTaxis);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({
+  const [filters] = useState({
     from: "",
     to: "",
     date: "",

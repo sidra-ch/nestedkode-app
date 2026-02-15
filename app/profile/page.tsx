@@ -7,24 +7,30 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import useAuthStore from "@/store/useAuthStore";
 
+type Booking = {
+  travelDate: string;
+  status: string;
+  paymentStatus: string;
+  totalPrice: number;
+};
+
+type Stats = {
+  totalBookings: number;
+  upcomingTrips: number;
+  completedTrips: number;
+  totalSpent: number;
+};
+
+
 export default function ProfileDashboard() {
   const router = useRouter();
   const { user, isAuthenticated } = useAuthStore();
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<Stats>({
     totalBookings: 0,
     upcomingTrips: 0,
     completedTrips: 0,
     totalSpent: 0,
   });
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/login");
-      return;
-    }
-
-    fetchUserStats();
-  }, [isAuthenticated]);
 
   const fetchUserStats = async () => {
     try {
@@ -34,20 +40,29 @@ export default function ProfileDashboard() {
         },
       });
       const data = await response.json();
-      
       if (data.success) {
-        const bookings = data.bookings;
+        const bookings: Booking[] = data.bookings;
         setStats({
           totalBookings: bookings.length,
-          upcomingTrips: bookings.filter((b: any) => new Date(b.travelDate) > new Date() && b.status !== "cancelled").length,
-          completedTrips: bookings.filter((b: any) => b.status === "completed").length,
-          totalSpent: bookings.reduce((sum: number, b: any) => sum + (b.paymentStatus === "paid" ? b.totalPrice : 0), 0),
+          upcomingTrips: bookings.filter((b) => new Date(b.travelDate) > new Date() && b.status !== "cancelled").length,
+          completedTrips: bookings.filter((b) => b.status === "completed").length,
+          totalSpent: bookings.reduce((sum, b) => sum + (b.paymentStatus === "paid" ? b.totalPrice : 0), 0),
         });
       }
     } catch (error) {
       console.error("Failed to fetch stats:", error);
     }
   };
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/login");
+      return;
+    }
+    (async () => {
+      await fetchUserStats();
+    })();
+  }, [isAuthenticated, router]);
 
   if (!user) return null;
 

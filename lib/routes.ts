@@ -20,7 +20,6 @@ export const routes = {
     busInfo: "/bus-info",
     hotels: "/hotels",
     tour: "/tour",
-    insurance: "/insurance",
     taxi: "/taxi",
     restaurant: "/restaurant",
   },
@@ -100,7 +99,6 @@ export const allPages = [
   { path: "/bus-info", name: "Bus Information", category: "Services" },
   { path: "/hotels", name: "Hotels", category: "Services" },
   { path: "/tour", name: "Tour", category: "Services" },
-  { path: "/insurance", name: "Travel Insurance", category: "Services" },
   
   // Auth Pages
   { path: "/login", name: "Login", category: "Auth" },

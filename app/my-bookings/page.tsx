@@ -25,7 +25,7 @@ type Booking = {
 
 export default function MyBookingsPage() {
   const router = useRouter();
-  const { user, token, isAuthenticated } = useAuthStore();
+  const { token, isAuthenticated } = useAuthStore();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,9 +36,9 @@ export default function MyBookingsPage() {
       router.push("/login");
       return;
     }
-
     fetchBookings();
-  }, [isAuthenticated, user, router, token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, router, token]);
 
   const fetchBookings = async () => {
     try {
@@ -48,7 +48,7 @@ export default function MyBookingsPage() {
       // Fetch all bookings and filter by user (in production, use dedicated endpoint)
       const res = await fetch(`${API_BASE}/api/booking`, {
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -59,7 +59,7 @@ export default function MyBookingsPage() {
         setError("Failed to load bookings");
       }
     } catch (err) {
-      setError("Error loading bookings");
+      setError((err as Error).message || "Error loading bookings");
     } finally {
       setLoading(false);
     }
@@ -73,7 +73,7 @@ export default function MyBookingsPage() {
       const res = await fetch(`${API_BASE}/api/booking/${bookingId}/cancel`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -86,7 +86,7 @@ export default function MyBookingsPage() {
         alert(errorData.error || "Failed to cancel booking");
       }
     } catch (err) {
-      alert("Error cancelling booking");
+      alert((err as Error).message || "Error cancelling booking");
     } finally {
       setCancelling(null);
     }
@@ -112,7 +112,7 @@ export default function MyBookingsPage() {
           <p className="text-gray-600">Loading bookings...</p>
         ) : bookings.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-            <p className="text-gray-600 mb-4">You don't have any bookings yet.</p>
+            <p className="text-gray-600 mb-4">You don&apos;t have any bookings yet.</p>
             <a
               href="/bus"
               className="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-lg"

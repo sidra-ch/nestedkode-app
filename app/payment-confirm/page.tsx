@@ -8,12 +8,21 @@ import Footer from "@/components/layout/Footer";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
+type Booking = {
+  _id: string;
+  busId?: {
+    origin?: string;
+    destination?: string;
+  };
+  seats: number[];
+  totalPrice: number;
+  paymentStatus: string;
+};
+
 function PaymentConfirmContent() {
   const searchParams = useSearchParams();
   const bookingId = searchParams.get("bookingId");
-  const paymentId = searchParams.get("paymentId");
-  const [booking, setBooking] = useState<any>(null);
-  const [payment, setPayment] = useState<any>(null);
+  const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,10 +40,9 @@ function PaymentConfirmContent() {
           const bookingData = await bookingRes.json();
           setBooking(bookingData.item);
         }
-
-        setLoading(false);
       } catch (err) {
-        setError("Failed to load booking details");
+        setError((err as Error).message || "Failed to load booking details");
+      } finally {
         setLoading(false);
       }
     };
@@ -68,7 +76,7 @@ function PaymentConfirmContent() {
           </div>
         ) : booking ? (
           <div className="bg-green-50 border border-green-200 rounded-lg p-8 text-center">
-            <div className="inline-block w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
               <svg
                 className="w-8 h-8 text-green-600"
                 fill="currentColor"

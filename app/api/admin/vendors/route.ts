@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
 
-    const query: any = { role: 'vendor' };
+    const query: Record<string, unknown> = { role: 'vendor' };
     if (status === 'pending') {
       query.isApproved = false;
     } else if (status === 'approved') {
@@ -37,10 +37,10 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Get vendors error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to fetch vendors', error: error.message },
+      { success: false, message: 'Failed to fetch vendors', error: (error as Error).message },
       { status: 500 }
     );
   }

@@ -2,12 +2,12 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-black/5 bg-white">
-      <div className="mx-auto max-w-6xl px-4 py-12">
-        <div className="grid gap-8 text-right md:grid-cols-4">
+    <footer className="border-t border-black/5 bg-white overflow-x-hidden">
+      <div className="mx-auto max-w-6xl px-3 sm:px-4 py-8 sm:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-right">
           <div>
-            <h3 className="text-lg font-semibold text-black">افغانی‌بابا</h3>
-            <p className="mt-3 text-sm text-slate-600">
+            <h3 className="text-base sm:text-lg font-semibold text-black">افغانی‌بابا</h3>
+            <p className="mt-2 sm:mt-3 text-sm text-slate-600 leading-relaxed">
               افغانی‌بابا، رتبه یک خرید اینترنتی بلیط سفر در افغانستان. با بهترین قیمت و پشتیبانی ۲۴ ساعته.
             </p>
             <div className="mt-4 flex gap-3">
@@ -23,7 +23,6 @@ export default function Footer() {
               <li><Link href="/help-center" className="hover:text-[#FDB713]">تماس با ما</Link></li>
               <li><Link href="#" className="hover:text-[#FDB713]">چرا افغانی‌بابا</Link></li>
               <li><Link href="#" className="hover:text-[#FDB713]">افغانی‌بابا پلاس</Link></li>
-              <li><Link href="/insurance" className="hover:text-[#FDB713]">بیمه مسافرتی</Link></li>
             </ul>
           </div>
           <div>
@@ -54,9 +53,9 @@ export default function Footer() {
         </div>
 
         {/* City Links Section */}
-        <div className="mt-8 border-t border-black/5 pt-8">
-          <h4 className="text-lg font-semibold text-slate-900 mb-4">جستجوی بلیط اتوبوس سراسر افغانستان</h4>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 sm:mt-8 border-t border-black/5 pt-6 sm:pt-8">
+          <h4 className="text-base sm:text-lg font-semibold text-slate-900 mb-3 sm:mb-4">جستجوی بلیط اتوبوس سراسر افغانستان</h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <Link href="/bus-info?from=کابل&to=هرات" className="text-slate-600 hover:text-[#FDB713] transition text-sm">بلیط اتوبوس کابل به هرات</Link>
             <Link href="/bus-info?from=هرات&to=کابل" className="text-slate-600 hover:text-[#FDB713] transition text-sm">بلیط اتوبوس هرات به کابل</Link>
             <Link href="/bus-info?from=کابل&to=مزار شریف" className="text-slate-600 hover:text-[#FDB713] transition text-sm">بلیط اتوبوس کابل به مزار شریف</Link>
@@ -67,15 +66,15 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="mt-8 border-t border-black/5 pt-8">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap gap-4 text-sm text-slate-500">
-              <Link href="#">قوانین و مقررات</Link>
-              <Link href="#">حریم خصوصی</Link>
-              <Link href="/help-center">سوالات متداول</Link>
-              <Link href="/sitemap" className="hover:text-[#FDB713]">نقشه سایت</Link>
+        <div className="mt-6 sm:mt-8 border-t border-black/5 pt-6 sm:pt-8">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-3 sm:gap-4">
+            <div className="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm text-slate-500">
+              <Link href="#" className="hover:text-orange-500 transition">قوانین و مقررات</Link>
+              <Link href="#" className="hover:text-orange-500 transition">حریم خصوصی</Link>
+              <Link href="/help-center" className="hover:text-orange-500 transition">سوالات متداول</Link>
+              <Link href="/sitemap" className="hover:text-[#FDB713] transition">نقشه سایت</Link>
             </div>
-            <p className="text-sm text-slate-500">
+            <p className="text-xs sm:text-sm text-slate-500 text-right sm:text-left">
               © ۱۴۰۵ - شرکت خدمات گردشگری افغانی‌بابا - تمامی حقوق محفوظ است
             </p>
           </div>

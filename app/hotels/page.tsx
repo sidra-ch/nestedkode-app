@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { Calendar, Users, Star, MapPin, Clock, Shield, Headphones, Plane, Bus, Train, Map, Hotel as HotelIcon, ChevronDown, ArrowRightLeft } from "lucide-react";
+import { Calendar, Users, Star, Clock, Shield, Plane, Bus, Map, Hotel as HotelIcon, ChevronDown } from "lucide-react";
 
 const provinces = [
   { name: "کابل", icon: "🏛️" },
@@ -76,10 +77,10 @@ const faqs = [
 ];
 
 export default function HotelsPage() {
-  const [originDropdown, setOriginDropdown] = useState(false);
+  // Removed unused originDropdown
   const [destinationDropdown, setDestinationDropdown] = useState(false);
   const [dateDropdown, setDateDropdown] = useState(false);
-  const [originSearch, setOriginSearch] = useState("");
+  // Removed unused originSearch
   const [destinationSearch, setDestinationSearch] = useState("");
   const [selectedOrigin, setSelectedOrigin] = useState("");
   const [selectedDestination, setSelectedDestination] = useState("");
@@ -88,11 +89,7 @@ export default function HotelsPage() {
   const [passengers, setPassengers] = useState("1 بزرگسال، 1 اتاق");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  const handleSwapCities = () => {
-    const temp = selectedOrigin;
-    setSelectedOrigin(selectedDestination);
-    setSelectedDestination(temp);
-  };
+  // Removed unused handleSwapCities
 
   const handleSearch = () => {
     const searchParams = new URLSearchParams();
@@ -234,7 +231,7 @@ export default function HotelsPage() {
                 <Link key={index} href={`/search-results?type=hotel&destination=${city}&hotel=${hotel.name}`} className="group">
                   <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all">
                     <div className="h-32 md:h-40 overflow-hidden">
-                      <img src={hotel.image} alt={hotel.name} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform" />
+                      <Image src={hotel.image} alt={hotel.name} width={400} height={160} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform" />
                     </div>
                     <div className="p-3">
                       <h3 className="font-bold text-gray-900 text-sm mb-1 truncate">{hotel.name}</h3>
@@ -259,7 +256,7 @@ export default function HotelsPage() {
               <Link key={index} href={`/search-results?type=hotel&destination=${city.name}`} className="group">
                 <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition text-center">
                   <div className="h-16 w-16 md:h-20 md:w-20 mx-auto mb-2 rounded-full overflow-hidden">
-                    <img src={city.icon} alt={city.name} className="w-full h-full object-cover" />
+                    <Image src={city.icon} alt={city.name} width={80} height={80} className="w-full h-full object-cover" />
                   </div>
                   <p className="font-medium text-gray-800 group-hover:text-orange-500">{city.name}</p>
                 </div>
@@ -289,7 +286,7 @@ export default function HotelsPage() {
                 </div>
               </div>
               <div className="order-1 md:order-2 flex justify-center">
-                <img src="/assets/Home-page/home-card-5.png" alt="QR Code" className="w-32 h-32 md:w-40 md:h-40" />
+                <Image src="/assets/Home-page/home-card-5.png" alt="QR Code" width={160} height={160} className="w-32 h-32 md:w-40 md:h-40" />
               </div>
             </div>
           </div>

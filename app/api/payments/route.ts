@@ -37,10 +37,10 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Get payments error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to fetch payments', error: error.message },
+      { success: false, message: 'Failed to fetch payments', error: (error as Error).message },
       { status: 500 }
     );
   }
@@ -126,10 +126,10 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Create payment error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to process payment', error: error.message },
+      { success: false, message: 'Failed to process payment', error: (error as Error).message },
       { status: 500 }
     );
   }

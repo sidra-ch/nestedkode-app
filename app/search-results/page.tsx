@@ -6,6 +6,7 @@ import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
+
 type FilterType = {
   busType: string[];
   priceRange: [number, number];
@@ -13,13 +14,27 @@ type FilterType = {
   amenities: string[];
 };
 
+interface Bus {
+  _id: string;
+  busName: string;
+  busType: string;
+  vendorName: string;
+  departureTime: string;
+  arrivalTime: string;
+  duration: string;
+  amenities?: string[];
+  price: number;
+  availableSeats: number;
+  rating?: number;
+}
+
 function SearchResultsContent() {
   const searchParams = useSearchParams();
   const from = searchParams.get("from") || "";
   const to = searchParams.get("to") || "";
   const date = searchParams.get("date") || "";
 
-  const [buses, setBuses] = useState<any[]>([]);
+  const [buses, setBuses] = useState<Bus[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("price");
   const [filters, setFilters] = useState<FilterType>({
@@ -30,23 +45,22 @@ function SearchResultsContent() {
   });
 
   useEffect(() => {
+    const fetchBuses = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/buses?from=${from}&to=${to}`);
+        const data = await response.json();
+        if (data.success) {
+          setBuses(data.buses);
+        }
+      } catch (error) {
+        console.error("Failed to fetch buses:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchBuses();
   }, [from, to]);
-
-  const fetchBuses = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/buses?from=${from}&to=${to}`);
-      const data = await response.json();
-      if (data.success) {
-        setBuses(data.buses);
-      }
-    } catch (error) {
-      console.error("Failed to fetch buses:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredAndSortedBuses = buses
     .filter((bus) => {

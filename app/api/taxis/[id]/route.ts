@@ -27,10 +27,10 @@ export async function GET(
       success: true,
       taxi,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error fetching taxi:", error);
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: (error as Error).message },
       { status: 500 }
     );
   }
@@ -92,10 +92,10 @@ export async function PUT(
       message: "تاکسی با موفقیت به‌روزرسانی شد",
       taxi,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error updating taxi:", error);
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: (error as Error).message },
       { status: 500 }
     );
   }
@@ -152,10 +152,10 @@ export async function DELETE(
       success: true,
       message: "تاکسی با موفقیت حذف شد",
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error deleting taxi:", error);
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: (error as Error).message },
       { status: 500 }
     );
   }

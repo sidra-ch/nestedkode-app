@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { Calendar, Users, ChevronDown, ArrowRightLeft, Star, Phone, Mail, MapPin, Clock, Shield, Headphones, Plane, Hotel, Bus, Compass, CheckCircle } from "lucide-react";
+import { Calendar, Users, ChevronDown, ArrowRightLeft, Star, Phone, Clock, Shield, Headphones, Compass } from "lucide-react";
 
 const provinces = [
   { name: "کابل", icon: "🏛️" },
@@ -35,7 +36,22 @@ const tourCategories = [
   { id: "exhibition", label: "تور نمایشگاه و رویداد" },
 ];
 
-const tours = [
+interface Tour {
+  id?: number;
+  _id?: string;
+  title: string;
+  description: string;
+  duration: string;
+  price: number;
+  priceUSD: number;
+  image: string;
+  category: string;
+  rating: number;
+  reviews: number;
+  city: string;
+}
+
+const tours: Tour[] = [
   {
     id: 1,
     title: "تور بامیان ۳ روزه",
@@ -294,7 +310,7 @@ export default function ToursPage() {
   const [selectedDestination, setSelectedDestination] = useState("");
   const [departureDate, setDepartureDate] = useState("");
   const [passengers, setPassengers] = useState("1 Passenger");
-  const [dynamicTours, setDynamicTours] = useState<any[]>([]);
+  const [dynamicTours, setDynamicTours] = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch tours from API
@@ -478,9 +494,11 @@ export default function ToursPage() {
                 className="group"
               >
                 <div className="relative rounded-xl overflow-hidden mb-3">
-                  <img 
-                    src={city.image} 
-                    alt={city.name} 
+                  <Image
+                    src={city.image}
+                    alt={city.name}
+                    width={400}
+                    height={160}
                     className="w-full h-32 md:h-40 object-cover transform group-hover:scale-110 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
@@ -527,9 +545,11 @@ export default function ToursPage() {
               <Link key={tour._id || tour.id || index} href={`/search-results?type=tour&destination=${tour.city}`} className="group">
                 <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                   <div className="relative h-48 overflow-hidden">
-                    <img 
-                      src={tour.image} 
-                      alt={tour.title} 
+                    <Image
+                      src={tour.image}
+                      alt={tour.title}
+                      width={400}
+                      height={192}
                       className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
                     />
 
@@ -591,7 +611,7 @@ export default function ToursPage() {
             <div className="grid md:grid-cols-3 gap-8 p-8 md:p-12 items-center">
               <div className="flex items-center justify-center">
                 <div className="text-center">
-                  <img src="/assets/Home-page/home-card-5.png" alt="QR Code" className="w-32 h-32 md:w-40 md:h-40 mx-auto" />
+                  <Image src="/assets/Home-page/home-card-5.png" alt="QR Code" width={160} height={160} className="w-32 h-32 md:w-40 md:h-40 mx-auto" />
                   <p className="text-sm text-gray-600 mt-3">کد را اسکن کنید</p>
                 </div>
               </div>
@@ -612,7 +632,7 @@ export default function ToursPage() {
                 </div>
               </div>
               <div className="flex items-center justify-center">
-                <img src="/assets/Home-page/home-card-4.webp" alt="Mobile App" className="w-36 h-52 md:w-40 md:h-56 object-contain" />
+                <Image src="/assets/Home-page/home-card-4.webp" alt="Mobile App" width={160} height={224} className="w-36 h-52 md:w-40 md:h-56 object-contain" />
               </div>
             </div>
           </div>

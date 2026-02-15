@@ -19,12 +19,19 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-300 shadow-sm" style={{ direction: "rtl" }}>
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Right Side: Logo and Main Navigation */}
+    <nav
+      className="sticky top-0 left-0 right-0 z-[100] bg-white border-b border-gray-300 shadow-sm"
+      style={{ direction: "rtl", paddingTop: "env(safe-area-inset-top, 0px)" }}
+    >
+      <div className="container mx-auto px-3 sm:px-4">
+        <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 px-2 sm:px-0">
+          {/* Logo - visible on mobile (right side in RTL) */}
+          <Link href="/" className="flex md:hidden items-center gap-1 flex-shrink-0 text-lg font-bold text-orange-500">
+            افغانی‌بابا
+          </Link>
+          {/* Right Side: Main Navigation - Desktop */}
           <div className="hidden md:flex items-center gap-2 md:gap-4 flex-1">
-            {/* Logo */}
+            {/* Logo - Desktop */}
             <Link href="/" className="hidden md:flex items-center gap-1 flex-shrink-0">
               <div className="text-xl md:text-2xl font-bold text-afghanibaba-primary">افغانی‌بابا</div>
             </Link>
@@ -74,22 +81,22 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Navigation Icons */}
-          <div className="flex md:hidden items-center justify-around flex-1 gap-3">
-            <Link href="/flights" title="پروازها" className="p-2 text-gray-700 hover:text-afghanibaba-primary rounded transition">
-              <Plane className="h-5 w-5" />
+          {/* Mobile Navigation Icons - touch friendly */}
+          <div className="flex md:hidden items-center justify-around flex-1 gap-1 min-w-0">
+            <Link href="/flights" title="پروازها" className="flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-gray-700 hover:text-orange-500 active:bg-orange-50 rounded-lg transition">
+              <Plane className="h-5 w-5 shrink-0" />
             </Link>
-            <Link href="/hotels" title="هتل‌ها" className="p-2 text-gray-700 hover:text-afghanibaba-primary rounded transition">
-              <Hotel className="h-5 w-5" />
+            <Link href="/hotels" title="هتل" className="flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-gray-700 hover:text-orange-500 active:bg-orange-50 rounded-lg transition">
+              <Hotel className="h-5 w-5 shrink-0" />
             </Link>
-            <Link href="/bus" title="اتوبوس" className="p-2 text-gray-700 hover:text-afghanibaba-primary rounded transition">
-              <Bus className="h-5 w-5" />
+            <Link href="/bus" title="اتوبوس" className="flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-gray-700 hover:text-orange-500 active:bg-orange-50 rounded-lg transition">
+              <Bus className="h-5 w-5 shrink-0" />
             </Link>
-            <Link href="/taxi" title="تاکسی" className="p-2 text-gray-700 hover:text-afghanibaba-primary rounded transition">
-              <ShoppingBag className="h-5 w-5" />
+            <Link href="/taxi" title="تاکسی" className="flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-gray-700 hover:text-orange-500 active:bg-orange-50 rounded-lg transition">
+              <ShoppingBag className="h-5 w-5 shrink-0" />
             </Link>
-            <Link href="/tour" title="تور" className="p-2 text-gray-700 hover:text-afghanibaba-primary rounded transition">
-              <Compass className="h-5 w-5" />
+            <Link href="/tour" title="تور" className="flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-gray-700 hover:text-orange-500 active:bg-orange-50 rounded-lg transition">
+              <Compass className="h-5 w-5 shrink-0" />
             </Link>
           </div>
 
@@ -163,65 +170,66 @@ export default function Navbar() {
               </div>
             )}
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - touch friendly */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-gray-700 hover:text-afghanibaba-primary transition"
+              className="md:hidden flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-gray-700 hover:text-orange-500 active:bg-orange-50 rounded-lg transition"
+              aria-label={mobileMenuOpen ? "بستن منو" : "باز کردن منو"}
             >
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - full width, touch friendly */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-gray-50 border-t border-gray-200 py-4 space-y-2">
-            <Link href="/flights" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
+          <div className="md:hidden bg-gray-50 border-t border-gray-200 py-4 px-3 space-y-1 max-h-[70vh] overflow-y-auto">
+            <Link href="/flights" className="flex items-center gap-3 px-4 py-3 min-h-[48px] text-gray-700 hover:bg-gray-100 active:bg-gray-200 rounded-lg transition">
               <Plane className="h-5 w-5" />
               <span>پروازها</span>
             </Link>
-            <Link href="/hotels" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
-              <Hotel className="h-5 w-5" />
+            <Link href="/hotels" className="flex items-center gap-3 px-4 py-3 min-h-[48px] text-gray-700 hover:bg-gray-100 active:bg-gray-200 rounded-lg transition">
+              <Hotel className="h-5 w-5 shrink-0" />
               <span>هتل</span>
             </Link>
-            <Link href="/bus" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
-              <Bus className="h-5 w-5" />
+            <Link href="/bus" className="flex items-center gap-3 px-4 py-3 min-h-[48px] text-gray-700 hover:bg-gray-100 active:bg-gray-200 rounded-lg transition">
+              <Bus className="h-5 w-5 shrink-0" />
               <span>اتوبوس</span>
             </Link>
-            <Link href="/taxi" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
-              <ShoppingBag className="h-5 w-5" />
+            <Link href="/taxi" className="flex items-center gap-3 px-4 py-3 min-h-[48px] text-gray-700 hover:bg-gray-100 active:bg-gray-200 rounded-lg transition">
+              <ShoppingBag className="h-5 w-5 shrink-0" />
               <span>تاکسی</span>
             </Link>
-            <Link href="/tour" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
-              <Compass className="h-5 w-5" />
+            <Link href="/tour" className="flex items-center gap-3 px-4 py-3 min-h-[48px] text-gray-700 hover:bg-gray-100 active:bg-gray-200 rounded-lg transition">
+              <Compass className="h-5 w-5 shrink-0" />
               <span>تور</span>
             </Link>
             <hr className="my-2 border-gray-300" />
-            <Link href="/help-center" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
-              <HelpCircle className="h-5 w-5" />
+            <Link href="/help-center" className="flex items-center gap-3 px-4 py-3 min-h-[48px] text-gray-700 hover:bg-gray-100 active:bg-gray-200 rounded-lg transition">
+              <HelpCircle className="h-5 w-5 shrink-0" />
               <span>پشتیبانی</span>
             </Link>
-            <Link href="/my-bookings" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
-              <MapPin className="h-5 w-5" />
+            <Link href="/my-bookings" className="flex items-center gap-3 px-4 py-3 min-h-[48px] text-gray-700 hover:bg-gray-100 active:bg-gray-200 rounded-lg transition">
+              <MapPin className="h-5 w-5 shrink-0" />
               <span>سفرهای من</span>
             </Link>
             {isAuthenticated && user ? (
               <>
                 <hr className="my-2 border-gray-300" />
-                <Link href="/profile" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
-                  <User className="h-5 w-5" />
+                <Link href="/profile" className="flex items-center gap-3 px-4 py-3 min-h-[48px] text-gray-700 hover:bg-gray-100 active:bg-gray-200 rounded-lg transition">
+                  <User className="h-5 w-5 shrink-0" />
                   <span>پروفایل</span>
                 </Link>
-                <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 rounded transition w-full text-right">
-                  <LogOut className="h-5 w-5" />
+                <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 min-h-[48px] text-red-600 hover:bg-red-50 active:bg-red-100 rounded-lg transition w-full text-right">
+                  <LogOut className="h-5 w-5 shrink-0" />
                   <span>خروج</span>
                 </button>
               </>
             ) : (
               <>
                 <hr className="my-2 border-gray-300" />
-                <Link href="/login" className="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition">
-                  <User className="h-5 w-5" />
+                <Link href="/login" className="flex items-center gap-3 px-4 py-3 min-h-[48px] text-gray-700 hover:bg-gray-100 active:bg-gray-200 rounded-lg transition">
+                  <User className="h-5 w-5 shrink-0" />
                   <span>ورود / ثبت‌نام</span>
                 </Link>
               </>

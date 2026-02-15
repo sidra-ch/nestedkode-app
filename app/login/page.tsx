@@ -17,7 +17,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [loginUserInfo, setLoginUserInfo] = useState<{ name: string; email: string; role: string } | null>(null);
-  const { login, isAuthenticated, user } = useAuthStore();
+  const { login, isAuthenticated } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +51,7 @@ export default function LoginPage() {
         }, 2000);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      setError(err instanceof Error ? err.message : "ورود ناموفق بود");
     } finally {
       setLoading(false);
     }
@@ -63,39 +63,39 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" dir="rtl">
       <Navbar />
       <main className="max-w-md mx-auto px-4 py-20">
         <div className="bg-white rounded-lg shadow-sm p-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">Login</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-6">ورود</h1>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 text-right">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm text-gray-600 mb-2">Email</label>
+              <label className="block text-sm text-gray-600 mb-2 text-right">ایمیل</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-right focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-600 mb-2">Password</label>
+              <label className="block text-sm text-gray-600 mb-2 text-right">رمز عبور</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm pr-10 focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm pr-10 text-right focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                 />
                 <button
                   type="button"
@@ -110,16 +110,16 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-yellow-400 py-3 text-sm font-semibold text-black hover:bg-yellow-500 disabled:opacity-60"
+              className="w-full rounded-lg bg-orange-500 py-3 text-sm font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
             >
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "در حال ورود..." : "ورود"}
             </button>
           </form>
 
           <p className="mt-4 text-center text-sm text-gray-600">
-            Don't have an account?{" "}
-            <Link href="/register" className="text-yellow-600 font-semibold hover:underline">
-              Register
+            حساب کاربری ندارید؟{" "}
+            <Link href="/register" className="text-orange-600 font-semibold hover:underline">
+              ثبت‌نام
             </Link>
           </p>
         </div>
@@ -135,36 +135,36 @@ export default function LoginPage() {
               </div>
               
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                Login Successful!
+                ورود موفق!
               </h2>
               
               <p className="text-gray-600 mb-4">
-                Welcome back, <span className="font-semibold text-gray-900">{loginUserInfo.name}</span>
+                خوش آمدید، <span className="font-semibold text-gray-900">{loginUserInfo.name}</span>
               </p>
               
               <div className="bg-gray-50 rounded-lg p-4 w-full mb-4">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-gray-600">Email:</span>
+                  <span className="text-sm text-gray-600">ایمیل:</span>
                   <span className="text-sm font-semibold text-gray-900">{loginUserInfo.email}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Role:</span>
+                  <span className="text-sm text-gray-600">نقش:</span>
                   <span className={`text-sm font-semibold px-3 py-1 rounded-full ${
                     loginUserInfo.role === 'admin' ? 'bg-purple-100 text-purple-700' :
                     loginUserInfo.role === 'vendor' ? 'bg-blue-100 text-blue-700' :
-                    'bg-yellow-100 text-yellow-700'
+                    'bg-orange-100 text-orange-700'
                   }`}>
-                    {loginUserInfo.role.charAt(0).toUpperCase() + loginUserInfo.role.slice(1)}
+                    {loginUserInfo.role === 'admin' ? 'ادمین' : loginUserInfo.role === 'vendor' ? 'فروشنده' : 'کاربر'}
                   </span>
                 </div>
               </div>
               
               <p className="text-sm text-gray-500">
-                Redirecting to your dashboard...
+                در حال انتقال به داشبورد...
               </p>
               
               <div className="mt-4 w-full bg-gray-200 rounded-full h-1">
-                <div className="bg-yellow-400 h-1 rounded-full animate-progress" style={{width: '100%'}}></div>
+                <div className="bg-orange-500 h-1 rounded-full animate-progress" style={{width: '100%'}}></div>
               </div>
             </div>
           </div>

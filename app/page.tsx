@@ -66,6 +66,14 @@ export default function Home() {
 
   const handleSearch = () => {
     const searchParams = new URLSearchParams();
+    if (activeTab === "اتوبوس") {
+      searchParams.set("type", "bus");
+      searchParams.set("from", selectedOrigin);
+      searchParams.set("to", selectedDestination);
+      searchParams.set("date", departureDate);
+      window.location.href = `/search-results?${searchParams.toString()}`;
+      return;
+    }
     searchParams.set('origin', selectedOrigin);
     searchParams.set('destination', selectedDestination);
     searchParams.set('departure', departureDate);
@@ -105,15 +113,15 @@ export default function Home() {
             style={{ backgroundImage: `url('/assets/home-page.webp')` }}
           />
           <div className="absolute inset-0 bg-white/60" />
-          <div className="container mx-auto px-4 pt-20 relative z-10">
+          <div className="container mx-auto px-3 sm:px-4 pt-20 relative z-10">
           </div>
         </div>
 
-        {/* Search Card */}
-        <div className="container mx-auto px-4 -mt-16 md:-mt-20 lg:-mt-24 relative z-20 mb-12 md:mb-16">
-          <div className="bg-white rounded-xl shadow-xl border border-gray-200 p-4 md:p-6 lg:p-8">
-            {/* Tabs with Icons */}
-            <div className="flex gap-4 align-center  justify-between -md:gap-6 lg:gap-8 border-b border-gray-800 mb-4 md:mb-6 overflow-x-auto">
+        {/* Search Card - sticky below navbar on mobile/tablet (Alibaba.ir style) */}
+        <div className="container mx-auto px-3 sm:px-4 -mt-12 sm:-mt-16 md:-mt-20 lg:-mt-24 sticky top-14 sm:top-16 md:top-20 lg:static z-[90] mb-8 sm:mb-12 md:mb-16">
+          <div className="bg-white rounded-xl shadow-xl border border-gray-200 p-3 sm:p-4 md:p-6 lg:p-8 overflow-hidden">
+            {/* Tabs - horizontal scroll on mobile, no wrap */}
+            <div className="flex gap-2 sm:gap-4 md:gap-6 lg:gap-8 border-b border-gray-200 mb-4 md:mb-6 overflow-x-auto scrollbar-hide -mx-3 px-3 sm:mx-0 sm:px-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {[
                 { key: "پرواز داخلی", icon: Plane },
                 { key: "پرواز خارجی", icon: Plane },
@@ -125,13 +133,13 @@ export default function Home() {
                 <button
                   key={key}
                   onClick={() => setActiveTab(key as TabKey)}
-                  className={`pb-3 md:pb-4 flex items-center gap-2 transition-all whitespace-nowrap ${
+                  className={`pb-3 md:pb-4 flex items-center gap-1.5 sm:gap-2 transition-all whitespace-nowrap flex-shrink-0 text-sm sm:text-base md:text-lg lg:text-xl font-bold min-h-[48px] ${
                     activeTab === key
-                      ? 'border-b-2 border-orange-500 text-orange-500 font-bold text-lg md:text-xl'
-                      : 'text-gray-800 hover:text-gray-800 font-bold text-lg md:text-xl'
+                      ? 'border-b-2 border-orange-500 text-orange-500'
+                      : 'text-gray-700 hover:text-gray-900 border-b-2 border-transparent'
                   }`}
                 >
-                  <Icon className="h-6 w-6 md:h-6 md:w-6" />
+                  <Icon className="h-5 w-5 sm:h-6 sm:w-6 shrink-0" />
                   {key}
                 </button>
               ))}
@@ -140,6 +148,57 @@ export default function Home() {
             {/* Search Form */}
             {activeTab === "تاکسی" || activeTab === "تور" ? (
               activeTab === "تاکسی" ? <TaxiForm /> : <div className="text-center text-gray-500 py-8">فرم تور در حال توسعه است</div>
+            ) : activeTab === "اتوبوس" ? (
+              /* Bus-only form - stack on mobile, row on tablet+ */
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex flex-wrap items-end gap-3 sm:gap-4 md:gap-6">
+                <div className="relative w-full">
+                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مبدا (شهر، پایانه)</div>
+                  <input
+                    type="text"
+                    placeholder="شهر یا پایانه"
+                    value={selectedOrigin || originSearch}
+                    onChange={(e) => { setOriginSearch(e.target.value); setOriginDropdown(true); if (!e.target.value) setSelectedOrigin(""); }}
+                    onFocus={() => setOriginDropdown(true)}
+                    className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-base"
+                  />
+                  <ChevronDown className="absolute left-3 top-10 md:top-11 h-4 w-4 text-gray-400 pointer-events-none" />
+                  {originDropdown && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-lg shadow-lg z-[110] max-h-48 overflow-y-auto">
+                      {provinces.filter((p) => p.name.includes(originSearch) || !originSearch).map((p) => (
+                        <button key={p.name} onClick={() => { setSelectedOrigin(p.name); setOriginSearch(""); setOriginDropdown(false); }} className="w-full px-4 py-3 min-h-[44px] text-right hover:bg-orange-50 flex items-center justify-between">
+                          <span>{p.name}</span><span>{p.icon}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="relative w-full">
+                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مقصد (شهر، پایانه)</div>
+                  <input
+                    type="text"
+                    placeholder="شهر یا پایانه"
+                    value={selectedDestination || destinationSearch}
+                    onChange={(e) => { setDestinationSearch(e.target.value); setDestinationDropdown(true); if (!e.target.value) setSelectedDestination(""); }}
+                    onFocus={() => setDestinationDropdown(true)}
+                    className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-base"
+                  />
+                  <ChevronDown className="absolute left-3 top-10 md:top-11 h-4 w-4 text-gray-400 pointer-events-none" />
+                  {destinationDropdown && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-lg shadow-lg z-[110] max-h-48 overflow-y-auto">
+                      {provinces.filter((p) => p.name.includes(destinationSearch) || !destinationSearch).map((p) => (
+                        <button key={p.name} onClick={() => { setSelectedDestination(p.name); setDestinationSearch(""); setDestinationDropdown(false); }} className="w-full px-4 py-3 min-h-[44px] text-right hover:bg-orange-50 flex items-center justify-between">
+                          <span>{p.name}</span><span>{p.icon}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="relative w-full sm:col-span-2 lg:flex-1 lg:min-w-[160px]">
+                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ حرکت</div>
+                  <input type="date" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-right text-base" />
+                </div>
+                <button onClick={handleSearch} className="w-full sm:col-span-2 lg:w-auto lg:flex-shrink-0 px-6 md:px-8 py-3 md:py-3.5 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition shadow-md min-h-[48px]">جستجو</button>
+              </div>
             ) : (
               <div className="space-y-4 md:space-y-6">
                 {(activeTab === "پرواز داخلی" || activeTab === "پرواز خارجی") && (
@@ -167,13 +226,13 @@ export default function Home() {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between gap-2 flex-wrap lg:flex-nowrap">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-nowrap lg:items-center gap-3 sm:gap-4 lg:gap-2">
                   {/* Origin City Dropdown */}
-                  <div className="relative flex-1 min-w-[200px]">
+                  <div className="relative w-full lg:flex-1 lg:min-w-[140px]">
                     <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مبدا</div>
                     <input
                       type="text"
-                      placeholder="Origin (city)"
+                      placeholder="شهر مبدا"
                       value={selectedOrigin || originSearch}
                       onChange={(e) => {
                         setOriginSearch(e.target.value);
@@ -188,7 +247,7 @@ export default function Home() {
                     <ChevronDown className="absolute left-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-gray-400 pointer-events-none" />
                     
                     {originDropdown && (
-                      <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-48 md:max-h-60 overflow-y-auto">
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-[110] max-h-48 md:max-h-60 overflow-y-auto">
                         {provinces
                           .filter((p) =>
                             p.name.includes(originSearch) || originSearch === ""
@@ -211,20 +270,21 @@ export default function Home() {
                     )}
                   </div>
 
-                  {/* Swap Icon */}
-                  <button
-                    onClick={handleSwapCities}
-                    className="p-2.5 md:p-3 rounded-full bg-orange-500 hover:bg-orange-600 transition flex-shrink-0 mt-6 md:mt-7 xl:mt-8 shadow-md"
-                  >
-                    <ArrowRightLeft className="h-4 w-4 md:h-5 md:w-5 text-white" />
-                  </button>
+{/* Swap Icon - center on mobile row */}
+                <button
+                  onClick={handleSwapCities}
+                  className="hidden lg:flex p-2.5 md:p-3 rounded-full bg-orange-500 hover:bg-orange-600 transition flex-shrink-0 shadow-md items-center justify-center min-w-[44px] min-h-[44px]"
+                  aria-label="تعویض مبدا و مقصد"
+                >
+                  <ArrowRightLeft className="h-4 w-4 md:h-5 md:w-5 text-white" />
+                </button>
 
                   {/* Destination City Dropdown */}
-                  <div className="relative flex-1 min-w-[200px]">
+                  <div className="relative w-full lg:flex-1 lg:min-w-[140px]">
                     <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مقصد</div>
                     <input
                       type="text"
-                      placeholder="Destination (city)"
+                      placeholder="شهر مقصد"
                       value={selectedDestination || destinationSearch}
                       onChange={(e) => {
                         setDestinationSearch(e.target.value);
@@ -239,7 +299,7 @@ export default function Home() {
                     <ChevronDown className="absolute left-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-gray-400 pointer-events-none" />
                     
                     {destinationDropdown && (
-                      <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-48 md:max-h-60 overflow-y-auto">
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-[110] max-h-48 md:max-h-60 overflow-y-auto">
                         {provinces
                           .filter((p) =>
                             p.name.includes(destinationSearch) || destinationSearch === ""
@@ -263,18 +323,18 @@ export default function Home() {
                   </div>
 
                   {/* Date Selector - Mobile & Tablet: Combined, Large Desktop: Separate */}
-                  <div className="relative flex-1 min-w-[180px] xl:hidden">
+                  <div className="relative w-full sm:col-span-2 lg:col-span-1 lg:flex-1 xl:hidden">
                     <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ</div>
                     <div
                       onClick={() => setDateDropdown(!dateDropdown)}
                       className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer flex items-center justify-between"
                     >
-                      <span className="text-gray-500">Move date</span>
+                      <span className="text-gray-500">تاریخ حرکت</span>
                       <Calendar className="h-4 w-4 md:h-5 md:w-5 text-gray-400" />
                     </div>
                     
                     {dateDropdown && (
-                      <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4 space-y-3">
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-[110] p-4 space-y-3">
                         {/* Departure Date Block */}
                         <div className="p-3 border border-gray-200 rounded-lg">
                           <label className="text-xs md:text-sm text-gray-700 mb-2 block text-right font-medium">تاریخ رفت</label>
@@ -312,7 +372,7 @@ export default function Home() {
                   </div>
 
                   {/* Date gone - Large Desktop only (1280px+) */}
-                  <div className="relative flex-1 min-w-[180px] hidden xl:block">
+                  <div className="relative w-full lg:flex-1 min-w-0 hidden xl:block">
                     <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ رفت</div>
                     <input
                       type="date"
@@ -325,7 +385,7 @@ export default function Home() {
 
                   {/* Return date - Large Desktop only (1280px+) */}
                   {tripType === "رفت و برگشت" && (
-                    <div className="relative flex-1 min-w-[180px] hidden xl:block">
+                    <div className="relative w-full lg:flex-1 min-w-0 hidden xl:block">
                       <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ برگشت</div>
                       <input
                         type="date"
@@ -338,26 +398,26 @@ export default function Home() {
                   )}
 
                   {/* Passengers */}
-                  <div className="relative flex-1 min-w-[160px]">
+                  <div className="relative w-full sm:col-span-2 lg:col-span-1 lg:flex-1 lg:min-w-0">
                     <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مسافران</div>
                     <Users className="absolute left-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-gray-400 pointer-events-none" />
                     <select 
                       value={passengers}
                       onChange={(e) => setPassengers(e.target.value)}
-                      className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer">
-                      <option value="">Passengers</option>
-                      <option value="1 Passenger">1 Passenger</option>
-                      <option value="2 Passengers">2 Passengers</option>
-                      <option value="3 Passengers">3 Passengers</option>
-                      <option value="4 Passengers">4 Passengers</option>
+                      className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-base text-gray-900 cursor-pointer min-h-[48px]">
+                      <option value="">مسافران</option>
+                      <option value="1 Passenger">۱ مسافر</option>
+                      <option value="2 Passengers">۲ مسافر</option>
+                      <option value="3 Passengers">۳ مسافر</option>
+                      <option value="4 Passengers">۴ مسافر</option>
                     </select>
                   </div>
 
-                  {/* Search Button */}
+                  {/* Search Button - full width on mobile */}
                   <button 
                     onClick={handleSearch}
-                    className="px-6 md:px-8 py-3 md:py-3.5 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition text-sm md:text-base whitespace-nowrap flex-shrink-0 mt-6 md:mt-7 xl:mt-8 shadow-md">
-                    Search
+                    className="w-full sm:w-auto col-span-1 sm:col-span-2 lg:col-span-1 px-6 md:px-8 py-3 md:py-3.5 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition text-sm md:text-base whitespace-nowrap flex-shrink-0 shadow-md min-h-[48px]">
+                    جستجو
                   </button>
                 </div>
               </div>
@@ -366,15 +426,15 @@ export default function Home() {
         </div>
 
         {/* Other Afghanibaba Services */}
-        <div className="container mx-auto px-4 mb-8 md:mb-12">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-right">خدمات دیگر افغانی‌بابا</h1>
+        <div className="container mx-auto px-3 sm:px-4 mb-8 md:mb-12">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-6 md:mb-8 text-right">خدمات دیگر افغانی‌بابا</h1>
           
-          <div className="border border-gray-300 rounded-xl p-6 md:p-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="border border-gray-300 rounded-xl p-4 sm:p-6 md:p-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
               {/* Travel Visa */}
               <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition">
                 <div className="flex items-center gap-3">
-                  <img src="/assets/Home-page/home-card-1.svg" alt="Travel Visa" className="h-12 w-12 md:h-16 md:w-16 object-contain" />
+                  <Image src="/assets/Home-page/home-card-1.svg" alt="Travel Visa" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
                   <h3 className="text-lg md:text-xl font-bold text-gray-900">تاشیره سفر</h3>
                 </div>
                 <p className="text-sm md:text-base text-gray-600">اخذ تاشیره برای کشورهای مختلف</p>
@@ -383,7 +443,7 @@ export default function Home() {
               {/* Installment Travel */}
               <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition">
                 <div className="flex items-center gap-3">
-                  <img src="/assets/Home-page/home-card-2.svg" alt="Installment Travel" className="h-12 w-12 md:h-16 md:w-16 object-contain" />
+                  <Image src="/assets/Home-page/home-card-2.svg" alt="Installment Travel" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
                   <h3 className="text-lg md:text-xl font-bold text-gray-900">سفر اقساط</h3>
                 </div>
                 <p className="text-sm md:text-base text-gray-600">پرداخت هزینه سفر به صورت اقساط</p>
@@ -392,7 +452,7 @@ export default function Home() {
               {/* Travel Card */}
               <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition">
                 <div className="flex items-center gap-3">
-                  <img src="/assets/Home-page/home-card-3.svg" alt="Travel Card" className="h-12 w-12 md:h-16 md:w-16 object-contain" />
+                  <Image src="/assets/Home-page/home-card-3.svg" alt="Travel Card" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
                   <h3 className="text-lg md:text-xl font-bold text-gray-900">کارت سفر</h3>
                 </div>
                 <p className="text-sm md:text-base text-gray-600">کارت ویژه برای مسافران</p>
@@ -402,7 +462,7 @@ export default function Home() {
         </div>
 
         {/* Premium Services Section - 2 Cards with Image & Text */}
-        <div className="container mx-auto px-4 mb-14 md:mb-16">
+        <div className="container mx-auto px-3 sm:px-4 mb-14 md:mb-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {/* Card 1 */}
             <div className="p-4 md:p-6 rounded-xl overflow-hidden hover:shadow-lg transition">
@@ -429,7 +489,7 @@ export default function Home() {
         </div>
 
         {/* Mobile App Download Section */}
-        <div className="container mx-auto px-4 mb-16">
+        <div className="container mx-auto px-3 sm:px-4 mb-16">
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 p-6 md:p-12">
               {/* QR Code Section */}
@@ -480,7 +540,7 @@ export default function Home() {
         </div>
 
         {/* FAQ Section - Airline Questions */}
-        <div className="container mx-auto px-4 mb-16">
+        <div className="container mx-auto px-3 sm:px-4 mb-16">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-right">سوالات رایج درباره بلیط هواپیما</h2>
           <div className="space-y-4">
             {[
@@ -521,7 +581,7 @@ export default function Home() {
         </div>
 
         {/* Benefits Section */}
-        <div className="container mx-auto px-4 mb-16">
+        <div className="container mx-auto px-3 sm:px-4 mb-16">
           <div className="bg-white rounded-xl p-8 md:p-12" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
             <div className="text-center mb-8">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">خرید بلیط هواپیما از افغانی‌بابا</h2>
@@ -563,7 +623,7 @@ export default function Home() {
         </div>
 
         {/* Flight Search Filters Section */}
-        <div className="container mx-auto px-4 mb-16">
+        <div className="container mx-auto px-3 sm:px-4 mb-16">
           <div className="bg-white rounded-xl p-8 md:p-12" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-right">فیلترهای جستجوی پرواز</h2>
             
@@ -622,7 +682,7 @@ export default function Home() {
         </div>
 
         {/* Airlines Section */}
-        <div className="container mx-auto px-4 mb-16">
+        <div className="container mx-auto px-3 sm:px-4 mb-16">
           <div className="bg-white rounded-xl p-8 md:p-12" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-right">خرید بلیط از معتبرترین ایرلاین‌ها</h2>
             <p className="text-gray-600 mb-8 text-right">
@@ -676,7 +736,7 @@ export default function Home() {
         </div>
 
         {/* Why Choose Us Section */}
-        <div className="container mx-auto px-4 mb-16">
+        <div className="container mx-auto px-3 sm:px-4 mb-16">
           <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-8 md:p-12 text-white">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div className="text-right">
@@ -706,7 +766,7 @@ export default function Home() {
         </div>
 
         {/* Trust Badges */}
-        <div className="container mx-auto px-4 mb-16">
+        <div className="container mx-auto px-3 sm:px-4 mb-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex items-center gap-4 p-6 bg-white rounded-xl" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
               <div className="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center">
@@ -741,7 +801,7 @@ export default function Home() {
         </div>
 
         {/* Services Section */}
-        <div className="container mx-auto px-4 mb-16">
+        <div className="container mx-auto px-3 sm:px-4 mb-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-8 text-right">خدمات ما</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link href="/flights" className="group p-8 bg-white rounded-xl hover:shadow-lg transition text-right">

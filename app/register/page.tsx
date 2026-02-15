@@ -45,12 +45,12 @@ export default function RegisterPage() {
     setError(null);
 
     if (!allPasswordChecksPassed) {
-      setError("Please meet all password requirements");
+      setError("لطفاً تمام شرایط رمز عبور را رعایت کنید");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("رمز عبور و تکرار آن یکسان نیستند");
       return;
     }
 
@@ -71,7 +71,7 @@ export default function RegisterPage() {
         router.push("/bus");
       }, 2000);
     } catch (err: any) {
-      setError(err?.response?.data?.error || err.message || "Registration failed");
+      setError(err?.response?.data?.error || err.message || "ثبت‌نام ناموفق بود");
     } finally {
       setLoading(false);
     }
@@ -83,60 +83,60 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" dir="rtl">
       <Navbar />
       <main className="max-w-md mx-auto px-4 py-20">
         <div className="bg-white rounded-lg shadow-sm p-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">Create Account</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-6">ثبت‌نام</h1>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 text-right">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm text-gray-600 mb-2">Full Name *</label>
+              <label className="block text-sm text-gray-600 mb-2 text-right">نام و نام خانوادگی *</label>
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-right focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-600 mb-2">Email *</label>
+              <label className="block text-sm text-gray-600 mb-2 text-right">ایمیل *</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-right focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-600 mb-2">Phone (optional)</label>
+              <label className="block text-sm text-gray-600 mb-2 text-right">شماره تماس (اختیاری)</label>
               <input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-right focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-600 mb-2">Password *</label>
+              <label className="block text-sm text-gray-600 mb-2 text-right">رمز عبور *</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm pr-10 focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm pr-10 text-right focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                 />
                 <button
                   type="button"
@@ -148,36 +148,36 @@ export default function RegisterPage() {
               </div>
 
               {password && (
-                <div className="mt-2 space-y-1 text-xs">
+                <div className="mt-2 space-y-1 text-xs text-right">
                   <div className={passwordValidation.length ? "text-green-600" : "text-gray-500"}>
-                    {passwordValidation.length ? <CheckCircle2 size={14} className="inline mr-1" /> : <XCircle size={14} className="inline mr-1" />}
-                    At least 8 characters
+                    {passwordValidation.length ? <CheckCircle2 size={14} className="inline ml-1" /> : <XCircle size={14} className="inline ml-1" />}
+                    حداقل ۸ کاراکتر
                   </div>
                   <div className={passwordValidation.uppercase ? "text-green-600" : "text-gray-500"}>
-                    {passwordValidation.uppercase ? <CheckCircle2 size={14} className="inline mr-1" /> : <XCircle size={14} className="inline mr-1" />}
-                    One uppercase letter
+                    {passwordValidation.uppercase ? <CheckCircle2 size={14} className="inline ml-1" /> : <XCircle size={14} className="inline ml-1" />}
+                    یک حرف بزرگ
                   </div>
                   <div className={passwordValidation.lowercase ? "text-green-600" : "text-gray-500"}>
-                    {passwordValidation.lowercase ? <CheckCircle2 size={14} className="inline mr-1" /> : <XCircle size={14} className="inline mr-1" />}
-                    One lowercase letter
+                    {passwordValidation.lowercase ? <CheckCircle2 size={14} className="inline ml-1" /> : <XCircle size={14} className="inline ml-1" />}
+                    یک حرف کوچک
                   </div>
                   <div className={passwordValidation.number ? "text-green-600" : "text-gray-500"}>
-                    {passwordValidation.number ? <CheckCircle2 size={14} className="inline mr-1" /> : <XCircle size={14} className="inline mr-1" />}
-                    One number
+                    {passwordValidation.number ? <CheckCircle2 size={14} className="inline ml-1" /> : <XCircle size={14} className="inline ml-1" />}
+                    یک عدد
                   </div>
                 </div>
               )}
             </div>
 
             <div>
-              <label className="block text-sm text-gray-600 mb-2">Confirm Password *</label>
+              <label className="block text-sm text-gray-600 mb-2 text-right">تکرار رمز عبور *</label>
               <div className="relative">
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm pr-10 focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm pr-10 text-right focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                 />
                 <button
                   type="button"
@@ -188,23 +188,23 @@ export default function RegisterPage() {
                 </button>
               </div>
               {confirmPassword && password !== confirmPassword && (
-                <p className="mt-1 text-xs text-red-600">Passwords do not match</p>
+                <p className="mt-1 text-xs text-red-600 text-right">رمز عبور و تکرار آن یکسان نیستند</p>
               )}
             </div>
 
             <button
               type="submit"
               disabled={loading || !allPasswordChecksPassed}
-              className="w-full rounded-lg bg-yellow-400 py-3 text-sm font-semibold text-black hover:bg-yellow-500 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full rounded-lg bg-orange-500 py-3 text-sm font-semibold text-white hover:bg-orange-600 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {loading ? "Creating account..." : "Create Account"}
+              {loading ? "در حال ثبت‌نام..." : "ثبت‌نام"}
             </button>
           </form>
 
           <p className="mt-4 text-center text-sm text-gray-600">
-            Already have an account?{" "}
-            <Link href="/login" className="text-yellow-600 font-semibold hover:underline">
-              Login
+            قبلاً ثبت‌نام کرده‌اید؟{" "}
+            <Link href="/login" className="text-orange-600 font-semibold hover:underline">
+              ورود
             </Link>
           </p>
         </div>
@@ -220,30 +220,30 @@ export default function RegisterPage() {
               </div>
               
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                Account Created!
+                ثبت‌نام با موفقیت انجام شد!
               </h2>
               
               <p className="text-gray-600 mb-4">
-                Welcome to Afghan Baba, <span className="font-semibold text-gray-900">{registerUserInfo.name}</span>
+                به افغانی‌بابا خوش آمدید، <span className="font-semibold text-gray-900">{registerUserInfo.name}</span>
               </p>
               
               <div className="bg-gray-50 rounded-lg p-4 w-full mb-4">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-gray-600">Email:</span>
+                  <span className="text-sm text-gray-600">ایمیل:</span>
                   <span className="text-sm font-semibold text-gray-900">{registerUserInfo.email}</span>
                 </div>
                 <div className="flex items-center justify-center mt-3 text-green-600">
-                  <CheckCircle2 size={16} className="mr-1" />
-                  <span className="text-sm font-semibold">Account verified</span>
+                  <CheckCircle2 size={16} className="ml-1" />
+                  <span className="text-sm font-semibold">حساب تایید شد</span>
                 </div>
               </div>
               
               <p className="text-sm text-gray-500">
-                Redirecting to bus booking...
+                در حال انتقال به صفحه اتوبوس...
               </p>
               
               <div className="mt-4 w-full bg-gray-200 rounded-full h-1">
-                <div className="bg-yellow-400 h-1 rounded-full animate-progress" style={{width: '100%'}}></div>
+                <div className="bg-orange-500 h-1 rounded-full animate-progress" style={{width: '100%'}}></div>
               </div>
             </div>
           </div>

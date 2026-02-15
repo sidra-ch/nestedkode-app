@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { CheckCircle, Download, Printer, MapPin, Calendar, Users, CreditCard, Bus, Plane, Hotel, Compass } from "lucide-react";
+import { CheckCircle, Download, Printer, Calendar, Users, CreditCard, Bus } from "lucide-react";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
@@ -39,18 +39,12 @@ export default function BookingConfirmPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (bookingId) {
-      fetchBookingDetails();
-    }
-  }, [bookingId]);
-
-  const fetchBookingDetails = async () => {
+  // useCallback to avoid missing dependency warning
+  const fetchBookingDetails = React.useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`${API_BASE}/api/bookings/${bookingId}`);
       const data = await response.json();
-      
       if (data.success) {
         setBooking(data.booking);
       } else {
@@ -62,7 +56,15 @@ export default function BookingConfirmPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [bookingId]);
+
+  useEffect(() => {
+    if (bookingId) {
+      fetchBookingDetails();
+    }
+  }, [bookingId, fetchBookingDetails]);
+
+  // fetchBookingDetails is now defined with useCallback above
 
   const handlePrint = () => {
     window.print();

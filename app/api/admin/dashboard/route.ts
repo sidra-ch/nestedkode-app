@@ -75,10 +75,10 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Admin dashboard error:', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to fetch dashboard data', error: error.message },
+      { success: false, message: 'Failed to fetch dashboard data', error: (error as Error).message },
       { status: 500 }
     );
   }

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { Plane, Calendar, Users, MapPin, Clock, Star } from "lucide-react";
+import { Plane, Users, MapPin, Clock, Star } from "lucide-react";
 
 interface Flight {
   _id: string;
@@ -75,7 +75,7 @@ const mockFlights: Flight[] = [
 ];
 
 export default function FlightsPage() {
-  const [flights, setFlights] = useState<Flight[]>(mockFlights);
+  const [flights] = useState<Flight[]>(mockFlights);
   const [filterType, setFilterType] = useState<"all" | "domestic" | "international">("all");
 
   const filteredFlights = filterType === "all" 
@@ -92,7 +92,7 @@ export default function FlightsPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative h-72 bg-gradient-to-r from-blue-500 to-blue-600">
+        <section className="relative h-72 bg-gradient-to-r from-orange-500 to-orange-600">
           <div className="absolute inset-0 bg-black/30" />
           <div className="relative z-10 mx-auto h-full max-w-6xl px-4 flex flex-col justify-center">
             <h1 className="text-4xl font-bold text-white mb-3">رزرو پرواز</h1>

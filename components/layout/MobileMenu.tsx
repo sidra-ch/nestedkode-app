@@ -21,7 +21,6 @@ const mobileNavItems = [
   { label: "🗺️ تور", href: "/tour" },
   { label: "🛂 ویزا", href: "#" },
   { label: "🚕 تاکسی", href: "/taxi" },
-  { label: "🛡️ بیمه سفر", href: "/insurance" },
 ];
 
 export default function MobileMenu({ 
