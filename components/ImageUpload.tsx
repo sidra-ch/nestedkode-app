@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Upload, X } from 'lucide-react';
 
 interface ImageUploadProps {
@@ -133,9 +134,11 @@ export default function ImageUpload({
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {currentImages.map((url, index) => (
             <div key={index} className="relative group">
-              <img
+              <Image
                 src={url}
                 alt={`تصویر ${index + 1}`}
+                width={200}
+                height={128}
                 className="w-full h-32 object-cover rounded-lg border border-gray-200"
               />
               <button

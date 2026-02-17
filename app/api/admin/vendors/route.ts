@@ -45,3 +45,53 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+// POST - Create a new vendor
+export async function POST(request: NextRequest) {
+  try {
+    const user = getUserFromRequest(request);
+    if (!user || user.role !== 'admin') {
+      return NextResponse.json(
+        { success: false, message: 'Admin access required' },
+        { status: 401 }
+      );
+    }
+
+    await connectDB();
+    const body = await request.json();
+    const { name, email } = body;
+    if (!name || !email) {
+      return NextResponse.json(
+        { success: false, message: 'Name and email are required' },
+        { status: 400 }
+      );
+    }
+
+    // Check if vendor already exists
+    const existing = await User.findOne({ email: email.toLowerCase() });
+    if (existing) {
+      return NextResponse.json(
+        { success: false, message: 'Vendor with this email already exists' },
+        { status: 409 }
+      );
+    }
+
+    const newVendor = new User({
+      name,
+      email: email.toLowerCase(),
+      role: 'vendor',
+      isApproved: false,
+    });
+    await newVendor.save();
+
+    return NextResponse.json(
+      { success: true, vendor: { id: newVendor._id, name: newVendor.name, email: newVendor.email, isApproved: newVendor.isApproved } },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error('Create vendor error:', error);
+    return NextResponse.json(
+      { success: false, message: 'Failed to create vendor', error: (error as Error).message },
+      { status: 500 }
+    );
+  }
+}

@@ -27,7 +27,7 @@ export default function AdminRoutesPage() {
         if (!res.ok) throw new Error("FAILED_TO_LOAD");
         const data = await res.json();
         if (active) setRoutes(data.items || []);
-      } catch (fetchError) {
+      } catch {
         if (active) setError("Failed to load routes.");
       } finally {
         if (active) setLoading(false);

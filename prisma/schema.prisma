@@ -1,0 +1,69 @@
+// This is a basic Prisma schema for a travel booking app. You can expand it as needed.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @map("_id") @default(auto()) @db.ObjectId
+  email     String   @unique
+  name      String?
+  password  String
+  bookings  Booking[]
+}
+
+model Booking {
+  id         String   @id @map("_id") @default(auto()) @db.ObjectId
+  userId     String
+  user       User?    @relation(fields: [userId], references: [id])
+  type       String   // bus, flight, hotel, taxi, tour
+  origin     String
+  destination String
+  departure  DateTime
+  return     DateTime?
+  passengers Int
+  createdAt  DateTime @default(now())
+}
+
+model Bus {
+  id         String   @id @map("_id") @default(auto()) @db.ObjectId
+  route      String
+  seats      Int
+  price      Float
+}
+
+model Flight {
+  id         String   @id @map("_id") @default(auto()) @db.ObjectId
+  airline    String
+  route      String
+  seats      Int
+  price      Float
+}
+
+model Hotel {
+  id         String   @id @map("_id") @default(auto()) @db.ObjectId
+  name       String
+  city       String
+  rooms      Int
+  price      Float
+}
+
+model Taxi {
+  id         String   @id @map("_id") @default(auto()) @db.ObjectId
+  route      String
+  seats      Int
+  price      Float
+}
+
+model Tour {
+  id         String   @id @map("_id") @default(auto()) @db.ObjectId
+  name       String
+  route      String
+  days       Int
+  price      Float
+}

@@ -96,12 +96,12 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { status, paymentStatus } = body;
+    const { status, paymentStatus, passengerDetails, contactEmail, contactPhone } = body;
 
     // Only allow certain roles to update
-    if (user.role === 'user' && status !== 'cancelled') {
+    if (user.role === 'user' && status !== 'cancelled' && status !== 'confirmed') {
       return NextResponse.json(
-        { success: false, message: 'Users can only cancel bookings' },
+        { success: false, message: 'Users can only confirm or cancel bookings' },
         { status: 403 }
       );
     }
@@ -113,9 +113,14 @@ export async function PUT(
       });
     }
 
+    const updateFields: any = { status, paymentStatus };
+    if (passengerDetails !== undefined) updateFields.passengerDetails = passengerDetails;
+    if (contactEmail !== undefined) updateFields.contactEmail = contactEmail;
+    if (contactPhone !== undefined) updateFields.contactPhone = contactPhone;
+
     const updatedBooking = await Booking.findByIdAndUpdate(
       id,
-      { status, paymentStatus },
+      updateFields,
       { new: true }
     );
 

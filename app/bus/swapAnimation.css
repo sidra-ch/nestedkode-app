@@ -1,0 +1,8 @@
+.animate-spin-swap {
+  animation: spin-swap 0.4s linear;
+}
+
+@keyframes spin-swap {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

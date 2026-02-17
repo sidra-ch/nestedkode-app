@@ -16,9 +16,21 @@ export async function GET(request: NextRequest) {
 
     const query: any = { isActive: true };
 
+
     if (from) query.from = new RegExp(from, 'i');
     if (to) query.to = new RegExp(to, 'i');
     if (vendorId) query.vendorId = vendorId;
+
+    // Date filtering (assume date is in YYYY-MM-DD format)
+    if (date) {
+      // If your Bus model stores date as a string ("YYYY-MM-DD")
+      query["departureDate"] = date;
+      // If your Bus model stores date as a Date object, use:
+      // const start = new Date(date);
+      // const end = new Date(date);
+      // end.setHours(23, 59, 59, 999);
+      // query["departureDate"] = { $gte: start, $lte: end };
+    }
 
     const buses = await Bus.find(query).sort({ departureTime: 1 });
 

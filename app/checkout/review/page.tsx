@@ -36,6 +36,8 @@ export default function BookingReview() {
           passengerDetails: bookingData.passengers,
           contactEmail: bookingData.contactInfo.email,
           contactPhone: bookingData.contactInfo.phone,
+          status: "confirmed",
+          paymentStatus: "pending",
         }),
       });
 

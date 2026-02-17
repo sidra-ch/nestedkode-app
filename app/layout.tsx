@@ -32,6 +32,8 @@ export default function RootLayout({
         className={`antialiased min-h-screen overflow-x-hidden ${notoSansArabic.variable} ${plusJakartaSans.variable}`}
       >
         {children}
+        {/* Mobile sticky icon bar scroll logic */}
+        <script src="/mobile-navbar-scroll.js" suppressHydrationWarning />
       </body>
     </html>
   );

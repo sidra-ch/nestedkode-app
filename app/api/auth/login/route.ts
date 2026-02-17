@@ -75,10 +75,16 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    // Extra logging for debugging
     console.error('Login error:', error);
-    return NextResponse.json(
-      { success: false, message: 'Login failed', error: (error as Error).message },
-      { status: 500 }
-    );
+    try {
+      return NextResponse.json(
+        { success: false, message: 'Login failed', error: (error as Error).message },
+        { status: 500 }
+      );
+    } catch (jsonError) {
+      // Fallback: return plain text if JSON response fails
+      return new Response('Login failed: ' + (error as Error).message, { status: 500, headers: { 'Content-Type': 'text/plain' } });
+    }
   }
 }

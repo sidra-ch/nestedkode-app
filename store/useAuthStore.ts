@@ -32,23 +32,49 @@ const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
 
       login: async (email, password) => {
-        const res = await fetch(`${API_BASE}/api/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        });
+        try {
+          const res = await fetch(`${API_BASE}/api/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
 
-        if (!res.ok) {
-          const errorData = await res.json().catch(() => ({}));
-          throw new Error(errorData.message || errorData.error || "Login failed");
+          const contentType = res.headers.get("content-type");
+          let data;
+          if (!res.ok) {
+            // Try to parse JSON, fallback to text
+            if (contentType && contentType.includes("application/json")) {
+              data = await res.json();
+            } else {
+              const text = await res.text();
+              console.error("Login error: Non-JSON response", text);
+              throw new Error("Login failed: Non-JSON response");
+            }
+            throw new Error(data?.message || data?.error || "Login failed");
+          }
+          // Success: parse JSON
+          if (contentType && contentType.includes("application/json")) {
+            data = await res.json();
+          } else {
+            const text = await res.text();
+            console.error("Login error: Non-JSON response", text);
+            throw new Error("Login failed: Non-JSON response");
+          }
+          // Map _id to id for frontend consistency
+          let user = data.user;
+          if (user && user._id) {
+            user = { ...user, id: user._id };
+            delete user._id;
+          }
+          set({
+            token: data.token,
+            user,
+            isAuthenticated: true,
+          });
+        } catch (err) {
+          console.error("Login fetch error:", err);
+          throw err;
         }
-
-        const data = await res.json();
-        set({
-          token: data.token,
-          user: data.user,
-          isAuthenticated: true,
-        });
       },
 
       register: async (name, email, password, phone = "") => {

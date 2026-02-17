@@ -10,135 +10,108 @@ export default function TaxiForm() {
   const [time, setTime] = useState("");
   const [passengerCount, setPassengerCount] = useState("1");
 
-  const kabulDistricts = [
-    "شیر پور",
-    "کارته سه",
-    "کارته چار",
-    "سپیضار",
-    "دیار پول",
-    "خانآباد",
-    "وزیرآباد",
-    "تیموری",
-  ];
-
-  const handleSearch = () => {
-    if (!pickup || !destination || !date) {
-      alert("لطفاً تمام فیلدها را پر کنید");
-      return;
-    }
-    console.log({ pickup, destination, date, time, passengerCount });
-    // TODO: Navigate to taxi search results
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // You can replace this with your actual search logic or API call
+    alert(
+      `Pickup: ${pickup}\nDestination: ${destination}\nDate: ${date}\nTime: ${time}\nPassengers: ${passengerCount}`
+    );
   };
 
   return (
-    <div className="w-full space-y-4 rounded-2xl bg-white p-6 shadow-lg">
-      <h3 className="text-lg font-bold text-right text-gray-900">تاکسی را رزرو کنید</h3>
-
-      {/* Pickup & Destination */}
-      <div className="grid gap-3 md:grid-cols-2">
-        <div>
-          <label className="mb-2 block text-sm font-semibold text-gray-700">
-            <MapPin className="mb-1 inline h-4 w-4" /> مکان برداشتن
+    <form
+      className="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6 flex flex-col gap-6"
+      onSubmit={handleSubmit}
+    >
+      <div className="flex flex-col md:flex-row gap-4 items-center">
+        {/* Pickup Location */}
+        <div className="flex-1 w-full">
+          <label className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+            <MapPin className="w-5 h-5 text-gray-500" />
+            Pickup Location
           </label>
           <input
             type="text"
-            list="pickup-options"
+            placeholder="Enter pickup location"
             value={pickup}
-            onChange={(e) => setPickup(e.target.value)}
-            placeholder="کارته سه، کابل"
-            className="w-full rounded-lg border border-gray-300 bg-white p-3 text-right text-sm"
+            onChange={e => setPickup(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+            required
           />
-          <datalist id="pickup-options">
-            {kabulDistricts.map((district) => (
-              <option key={district} value={district} />
-            ))}
-          </datalist>
         </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-semibold text-gray-700">
-            <MapPin className="mb-1 inline h-4 w-4" /> مقصد
+        {/* Destination */}
+        <div className="flex-1 w-full">
+          <label className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+            <MapPin className="w-5 h-5 text-gray-500" />
+            Destination
           </label>
           <input
             type="text"
-            list="dest-options"
+            placeholder="Enter destination"
             value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-            placeholder="ایر پورت حامد کرزی"
-            className="w-full rounded-lg border border-gray-300 bg-white p-3 text-right text-sm"
+            onChange={e => setDestination(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+            required
           />
-          <datalist id="dest-options">
-            {kabulDistricts.concat(["ایر پورت حامد کرزی"]).map((district) => (
-              <option key={district} value={district} />
-            ))}
-          </datalist>
         </div>
       </div>
-
-      {/* Date, Time, Passengers */}
-      <div className="grid gap-3 md:grid-cols-3">
-        <div>
-          <label className="mb-2 block text-sm font-semibold text-gray-700">
-            <Clock className="mb-1 inline h-4 w-4" /> تاریخ
+      <div className="flex flex-col md:flex-row gap-4 items-center">
+        {/* Date */}
+        <div className="flex-1 w-full">
+          <label className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+            <Clock className="w-5 h-5 text-gray-500" />
+            Date
           </label>
           <input
             type="date"
             value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 bg-white p-3 text-right text-sm"
+            onChange={e => setDate(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+            required
           />
         </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-semibold text-gray-700">
-            <Clock className="mb-1 inline h-4 w-4" /> وقت
+        {/* Time */}
+        <div className="flex-1 w-full">
+          <label className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+            <Clock className="w-5 h-5 text-gray-500" />
+            Time
           </label>
           <input
             type="time"
             value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 bg-white p-3 text-right text-sm"
+            onChange={e => setTime(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+            required
           />
         </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-semibold text-gray-700">
-            <Users className="mb-1 inline h-4 w-4" /> مسافران
+        {/* Passengers */}
+        <div className="flex-1 w-full">
+          <label className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+            <Users className="w-5 h-5 text-gray-500" />
+            Passengers
           </label>
           <select
             value={passengerCount}
-            onChange={(e) => setPassengerCount(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 bg-white p-3 text-right text-sm"
+            onChange={e => setPassengerCount(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+            required
           >
-            <option value="1">۱ نفر</option>
-            <option value="2">۲ نفر</option>
-            <option value="3">۳ نفر</option>
-            <option value="4">۴ نفر</option>
-            <option value="5">۵ نفر</option>
-            <option value="6">۶ نفر</option>
-            <option value="7">۷ نفر</option>
+            {[...Array(8)].map((_, i) => (
+              <option key={i + 1} value={i + 1}>{i + 1} Passenger{i === 0 ? "" : "s"}</option>
+            ))}
           </select>
         </div>
+        {/* Search Button */}
+        <div className="flex items-end justify-end w-full md:w-auto mt-4 md:mt-0">
+          <button
+            type="submit"
+            className="px-8 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition text-base shadow-md flex items-center gap-2"
+          >
+            <Search className="w-5 h-5" />
+            Search
+          </button>
+        </div>
       </div>
-
-      {/* Search Button */}
-      <button
-        onClick={handleSearch}
-        className="w-full rounded-lg px-6 py-3 font-semibold text-white transition"
-        style={{ backgroundColor: '#F97316' }}
-        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C2410C')}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F97316')}
-      >
-        <Search className="mb-1 inline h-4 w-4" /> جستجوی تاکسی
-      </button>
-
-      {/* Info Text */}
-      <div className="flex items-start gap-2 rounded-lg bg-blue-50 p-3 text-xs text-blue-700">
-        <span>💡</span>
-        <p>
-          قیمت نهایی بسته به فاصله و کلاس خودرو متفاوت است. قیمت دقیق پس از انتخاب تاکسی نمایش داده خواهد شد.
-        </p>
-      </div>
-    </div>
+    </form>
   );
 }

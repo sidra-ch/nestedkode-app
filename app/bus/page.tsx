@@ -25,15 +25,39 @@ interface Bus {
 
 const provinces = [
   { name: "کابل", icon: "🏛️" },
-  { name: "کندهار", icon: "🏜️" },
   { name: "هرات", icon: "🌆" },
-  { name: "بلخ", icon: "🕌" },
-  { name: "ننگرهار", icon: "⛰️" },
-  { name: "لغمان", icon: "🌲" },
-  { name: "پیشاور", icon: "🏘️" },
+  { name: "قندهار", icon: "🏜️" },
+  { name: "مزار شریف", icon: "🕌" },
+  { name: "جلال‌آباد", icon: "🍊" },
+  { name: "کندز", icon: "🌾" },
   { name: "بامیان", icon: "❄️" },
   { name: "غزنی", icon: "🏔️" },
-  { name: "زابل", icon: "🌅" },
+  { name: "بدخشان", icon: "💎" },
+  { name: "پکتیا", icon: "🌲" },
+  { name: "پکتیکا", icon: "⛰️" },
+  { name: "خوست", icon: "🥜" },
+  { name: "هلمند", icon: "🌊" },
+  { name: "نیمروز", icon: "☀️" },
+  { name: "فراه", icon: "🏜️" },
+  { name: "بادغیس", icon: "🌰" },
+  { name: "غور", icon: "🏰" },
+  { name: "دایکندی", icon: "🌸" },
+  { name: "ارزگان", icon: "🍑" },
+  { name: "زابل", icon: "🏹" },
+  { name: "میدان وردک", icon: "🍎" },
+  { name: "لوگر", icon: "⛏️" },
+  { name: "پروان", icon: "🍇" },
+  { name: "کاپیسا", icon: "🍓" },
+  { name: "پنجشیر", icon: "🦁" },
+  { name: "لغمان", icon: "🥦" },
+  { name: "کنر", icon: "🌲" },
+  { name: "نورستان", icon: "🏔️" },
+  { name: "تخار", icon: "🧂" },
+  { name: "بغلان", icon: "🏭" },
+  { name: "سمنگان", icon: "🥜" },
+  { name: "سرپل", icon: "🛢️" },
+  { name: "جوزجان", icon: "🔥" },
+  { name: "فاریاب", icon: "🍇" }
 ];
 
 const mockBuses: Bus[] = [
@@ -98,6 +122,7 @@ export default function BusPage() {
   const [selectedOrigin, setSelectedOrigin] = useState("");
   const [selectedDestination, setSelectedDestination] = useState("");
   const [departureDate, setDepartureDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
   const [passengers, setPassengers] = useState("1 Passenger");
 
   // Fetch buses from API
@@ -130,9 +155,9 @@ export default function BusPage() {
 
   const handleSearch = () => {
     const searchParams = new URLSearchParams();
-    searchParams.set('origin', selectedOrigin);
-    searchParams.set('destination', selectedDestination);
-    searchParams.set('departure', departureDate);
+    searchParams.set('from', selectedOrigin);
+    searchParams.set('to', selectedDestination);
+    searchParams.set('date', departureDate);
     searchParams.set('passengers', passengers);
     window.location.href = `/search-results?type=bus&${searchParams.toString()}`;
   };
@@ -153,7 +178,7 @@ export default function BusPage() {
       <main className="flex-1">
         {/* Hero Section with Image */}
         <div className="w-full h-[250px] md:h-[350px] lg:h-[400px] relative overflow-hidden">
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url('/assets/bus-page/bus-page.webp')` }}
           />
@@ -183,11 +208,14 @@ export default function BusPage() {
                         setSelectedOrigin("");
                       }
                     }}
-                    onFocus={() => setOriginDropdown(true)}
+                    onFocus={() => {
+                      setOriginDropdown(true);
+                      setOriginSearch(""); // Clear search
+                    }}
                     className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer"
                   />
                   <ChevronDown className="absolute left-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-gray-400 pointer-events-none" />
-                  
+
                   {originDropdown && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-48 md:max-h-60 overflow-y-auto">
                       {provinces
@@ -234,11 +262,14 @@ export default function BusPage() {
                         setSelectedDestination("");
                       }
                     }}
-                    onFocus={() => setDestinationDropdown(true)}
+                    onFocus={() => {
+                      setDestinationDropdown(true);
+                      setDestinationSearch(""); // Clear search
+                    }}
                     className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer"
                   />
                   <ChevronDown className="absolute left-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-gray-400 pointer-events-none" />
-                  
+
                   {destinationDropdown && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-48 md:max-h-60 overflow-y-auto">
                       {provinces
@@ -273,7 +304,7 @@ export default function BusPage() {
                     <span className="text-gray-500">Move date</span>
                     <Calendar className="h-4 w-4 md:h-5 md:w-5 text-gray-400" />
                   </div>
-                  
+
                   {dateDropdown && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4 space-y-3">
                       <div className="p-3 border border-gray-200 rounded-lg">
@@ -286,18 +317,18 @@ export default function BusPage() {
                           onClick={(e) => e.currentTarget.showPicker?.()}
                         />
                       </div>
-                      
+
                       <div className="p-3 border border-gray-200 rounded-lg">
                         <label className="text-xs md:text-sm text-gray-700 mb-2 block text-right font-medium">تاریخ برگشت (اختیاری)</label>
                         <input
                           type="date"
-                          value={departureDate}
-                          onChange={(e) => setDepartureDate(e.target.value)}
+                          value={returnDate}
+                          onChange={(e) => setReturnDate(e.target.value)}
                           className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-right text-sm md:text-base text-gray-900 cursor-pointer"
                           onClick={(e) => e.currentTarget.showPicker?.()}
                         />
                       </div>
-                      
+
                       <button
                         onClick={() => setDateDropdown(false)}
                         className="w-full py-2.5 bg-orange-500 text-white rounded-lg text-sm md:text-base font-medium hover:bg-orange-600 transition"
@@ -325,8 +356,8 @@ export default function BusPage() {
                   <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ برگشت (اختیاری)</div>
                   <input
                     type="date"
-                    value={departureDate}
-                    onChange={(e) => setDepartureDate(e.target.value)}
+                    value={returnDate}
+                    onChange={(e) => setReturnDate(e.target.value)}
                     className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer"
                     onClick={(e) => e.currentTarget.showPicker?.()}
                   />
@@ -336,7 +367,7 @@ export default function BusPage() {
                 <div className="relative flex-1 min-w-[160px]">
                   <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مسافران</div>
                   <Users className="absolute left-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-gray-400 pointer-events-none" />
-                  <select 
+                  <select
                     value={passengers}
                     onChange={(e) => setPassengers(e.target.value)}
                     className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer">
@@ -349,7 +380,7 @@ export default function BusPage() {
                 </div>
 
                 {/* Search Button */}
-                <button 
+                <button
                   onClick={handleSearch}
                   className="px-6 md:px-8 py-3 md:py-3.5 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition text-sm md:text-base whitespace-nowrap flex-shrink-0 mt-6 md:mt-7 xl:mt-8 shadow-md">
                   Search
@@ -367,81 +398,81 @@ export default function BusPage() {
               <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-orange-500"></div>
             </div>
           ) : (
-          <div className="space-y-4">
-            {buses.map((bus) => (
-              <div key={bus._id} className="rounded-xl border border-gray-200 bg-white p-6 transition hover:shadow-md">
-                <div className="grid md:grid-cols-5 gap-6 items-center">
-                  {/* Operator Info */}
-                  <div className="md:col-span-1 text-right">
-                    <p className="text-sm text-gray-600">اپراتور</p>
-                    <p className="text-lg font-bold text-gray-900">{bus.operatorName}</p>
-                    <p className="text-xs text-gray-500 mt-1">{getBusTypeLabel(bus.busType)}</p>
-                    {bus.rating && (
-                      <div className="flex items-center justify-end gap-1 mt-2">
-                        <span className="text-sm font-semibold text-gray-700">{bus.rating}</span>
-                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+            <div className="space-y-4">
+              {buses.map((bus) => (
+                <div key={bus._id} className="rounded-xl border border-gray-200 bg-white p-6 transition hover:shadow-md">
+                  <div className="grid md:grid-cols-5 gap-6 items-center">
+                    {/* Operator Info */}
+                    <div className="md:col-span-1 text-right">
+                      <p className="text-sm text-gray-600">اپراتور</p>
+                      <p className="text-lg font-bold text-gray-900">{bus.operatorName}</p>
+                      <p className="text-xs text-gray-500 mt-1">{getBusTypeLabel(bus.busType)}</p>
+                      {bus.rating && (
+                        <div className="flex items-center justify-end gap-1 mt-2">
+                          <span className="text-sm font-semibold text-gray-700">{bus.rating}</span>
+                          <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Route */}
+                    <div className="md:col-span-1 text-right">
+                      <div className="flex items-center justify-end gap-2 mb-2">
+                        <span className="font-semibold text-gray-900">{bus.from}</span>
+                        <MapPin className="h-4 w-4 text-red-500" />
                       </div>
-                    )}
-                  </div>
-
-                  {/* Route */}
-                  <div className="md:col-span-1 text-right">
-                    <div className="flex items-center justify-end gap-2 mb-2">
-                      <span className="font-semibold text-gray-900">{bus.from}</span>
-                      <MapPin className="h-4 w-4 text-red-500" />
-                    </div>
-                    <div className="border-r-2 border-gray-300 h-6 mr-2" />
-                    <div className="flex items-center justify-end gap-2 mt-2">
-                      <span className="font-semibold text-gray-900">{bus.to}</span>
-                      <MapPin className="h-4 w-4 text-green-500" />
-                    </div>
-                  </div>
-
-                  {/* Time */}
-                  <div className="md:col-span-1 text-right">
-                    <div className="flex items-center justify-end gap-2 mb-3">
-                      <span className="font-semibold text-gray-900">حرکت: {bus.departureTime}</span>
-                      <Clock className="h-4 w-4 text-blue-500" />
-                    </div>
-                    <div className="flex items-center justify-end gap-2">
-                      <span className="text-sm text-gray-600">ورود: {bus.arrivalTime}</span>
-                      <Clock className="h-4 w-4 text-gray-400" />
-                    </div>
-                  </div>
-
-                  {/* Seats */}
-                  <div className="md:col-span-1 text-right">
-                    <div className="flex items-center justify-end gap-2 mb-2">
-                      <span className="text-sm">
-                        {bus.availableSeats} / {bus.totalSeats} صندلی
-                      </span>
-                      <Users className="h-4 w-4 text-purple-500" />
-                    </div>
-                    {bus.amenities?.length > 0 && (
-                      <div className="mt-2">
-                        <p className="text-xs text-gray-500">
-                          {bus.amenities.join(" • ")}
-                        </p>
+                      <div className="border-r-2 border-gray-300 h-6 mr-2" />
+                      <div className="flex items-center justify-end gap-2 mt-2">
+                        <span className="font-semibold text-gray-900">{bus.to}</span>
+                        <MapPin className="h-4 w-4 text-green-500" />
                       </div>
-                    )}
-                  </div>
+                    </div>
 
-                  {/* Price & Book */}
-                  <div className="md:col-span-1 text-right">
-                    <p className="text-xs text-gray-500 mb-1">قیمت</p>
-                    <p className="text-3xl font-bold text-orange-500">${bus.price}</p>
-                    <p className="text-xs text-gray-600 mb-3">به ازای هر نفر</p>
-                    <Link
-                      href={`/bus-booking/${bus._id}`}
-                      className="block w-full rounded-lg px-6 py-3 font-semibold text-center text-white bg-orange-500 hover:bg-orange-600 transition"
-                    >
-                      رزرو بلیط
-                    </Link>
+                    {/* Time */}
+                    <div className="md:col-span-1 text-right">
+                      <div className="flex items-center justify-end gap-2 mb-3">
+                        <span className="font-semibold text-gray-900">{bus.departureTime}</span>
+                        <Clock className="h-4 w-4 text-blue-500" />
+                      </div>
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="text-sm text-gray-600">{bus.arrivalTime}</span>
+                        <Clock className="h-4 w-4 text-gray-400" />
+                      </div>
+                    </div>
+
+                    {/* Seats */}
+                    <div className="md:col-span-1 text-right">
+                      <div className="flex items-center justify-end gap-2 mb-2">
+                        <span className="text-sm">
+                          {bus.availableSeats} / {bus.totalSeats} صندلی
+                        </span>
+                        <Users className="h-4 w-4 text-purple-500" />
+                      </div>
+                      {bus.amenities?.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs text-gray-500">
+                            {bus.amenities.join(" • ")}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Price & Book */}
+                    <div className="md:col-span-1 text-right">
+                      <p className="text-xs text-gray-500 mb-1">قیمت</p>
+                      <p className="text-3xl font-bold text-orange-500">${bus.price}</p>
+                      <p className="text-xs text-gray-600 mb-3">به ازای هر نفر</p>
+                      <Link
+                        href={`/bus-booking/${bus._id}`}
+                        className="block w-full rounded-lg px-6 py-3 font-semibold text-center text-white bg-orange-500 hover:bg-orange-600 transition"
+                      >
+                        رزرو بلیط
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           )}
         </section>
 
