@@ -117,12 +117,14 @@ export default function BusSearchForm() {
 
   return (
     <div className="bg-white rounded-xl shadow-xl border border-black p-4 md:p-6 lg:p-8 max-w-6xl mx-auto">
-      <div className="flex justify-center gap-4 md:gap-8 mb-6 md:mb-8 overflow-x-auto scrollbar-hide">
+      <div className="flex justify-center gap-4 md:gap-8 mb-6 md:mb-8 overflow-x-auto scrollbar-hide" tabIndex={0} role="tablist">
         {tabList.map(tab => (
           <button
             key={tab.key}
             onClick={() => handleTabClick(tab.key)}
-            className={`flex flex-col items-center group focus:outline-none flex-shrink-0 ${activeTab === tab.key ? "text-black" : "text-gray-400"}`}
+            className={`flex flex-col items-center group focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-lg flex-shrink-0 ${activeTab === tab.key ? "text-black" : "text-gray-400"}`}
+            role="tab"
+            aria-selected={activeTab === tab.key}
           >
             <span className={`mb-2 ${activeTab === tab.key ? "text-black" : "text-gray-400"}`}>{tab.icon}</span>
             <span className={`text-sm md:text-xl font-bold whitespace-nowrap ${activeTab === tab.key ? "text-black" : "text-gray-400"}`}>{tab.label}</span>
@@ -131,7 +133,7 @@ export default function BusSearchForm() {
       </div>
       {/* Render form for each tab */}
       {["bus", "domestic", "foreign", "tour", "hotel", "taxi"].includes(activeTab) && (
-        <div className="flex items-start md:items-center justify-between gap-3 flex-wrap">
+        <div className="flex items-end justify-between gap-3 flex-wrap">
           {/* Origin City Dropdown */}
           <div className="relative flex-1 min-w-[160px] w-full md:w-auto">
             <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مبدا</div>
@@ -177,7 +179,7 @@ export default function BusSearchForm() {
           {/* Swap Icon */}
           <button
             onClick={handleSwapCities}
-            className="p-2.5 rounded-full bg-orange-500 hover:bg-orange-600 transition flex-shrink-0 self-end mb-1 md:mt-6 shadow-md"
+            className="p-2.5 rounded-full bg-orange-500 hover:bg-orange-600 transition flex-shrink-0 mb-1 shadow-md"
           >
             <ArrowRightLeft className="h-4 w-4 text-white" />
           </button>
@@ -261,7 +263,7 @@ export default function BusSearchForm() {
           {/* Search Button */}
           <button
             onClick={handleSearch}
-            className="w-full md:w-auto px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition text-sm whitespace-nowrap flex-shrink-0 self-end md:mt-6 shadow-md">
+            className="w-full md:w-auto px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition text-sm whitespace-nowrap flex-shrink-0 shadow-md">
             Search
           </button>
         </div>
