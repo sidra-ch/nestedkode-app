@@ -242,25 +242,25 @@ export default function Navbar() {
         )}
       </div>
       {/* Mobile: Sticky Icon Bar (hidden initially, shown on scroll via JS) */}
-      <div id="mobile-sticky-icons" className="fixed bottom-0 left-0 right-0 z-[120] bg-white border-t border-gray-200 flex justify-around items-center py-2 md:hidden transition-all duration-300" style={{ boxShadow: '0 -2px 8px rgba(0,0,0,0.04)' }}>
-        <Link href="/flights" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/flights') ? 'text-orange-400' : 'text-white'}`}>
-          <Plane className="h-6 w-6 mb-1" color={pathname.startsWith('/flights') ? '#fb923c' : 'white'} />
+      <div id="mobile-sticky-icons" className="fixed bottom-0 left-0 right-0 z-[120] bg-white border-t border-gray-200 flex justify-around items-center py-2 md:hidden transition-all duration-300" style={{ boxShadow: '0 -2px 8px rgba(0,0,0,0.04)', paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
+        <Link href="/flights" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/flights') ? 'text-orange-500' : 'text-gray-600'}`}>
+          <Plane className="h-6 w-6 mb-1" color={pathname.startsWith('/flights') ? '#f97316' : '#4b5563'} />
           <span className="hidden xs:block">پرواز</span>
         </Link>
-        <Link href="/bus" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/bus') ? 'text-orange-400' : 'text-white'}`}>
-          <Bus className="h-6 w-6 mb-1" color={pathname.startsWith('/bus') ? '#fb923c' : 'white'} />
+        <Link href="/bus" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/bus') ? 'text-orange-500' : 'text-gray-600'}`}>
+          <Bus className="h-6 w-6 mb-1" color={pathname.startsWith('/bus') ? '#f97316' : '#4b5563'} />
           <span className="hidden xs:block">اتوبوس</span>
         </Link>
-        <Link href="/hotels" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/hotels') ? 'text-orange-400' : 'text-white'}`}>
-          <Hotel className="h-6 w-6 mb-1" color={pathname.startsWith('/hotels') ? '#fb923c' : 'white'} />
+        <Link href="/hotels" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/hotels') ? 'text-orange-500' : 'text-gray-600'}`}>
+          <Hotel className="h-6 w-6 mb-1" color={pathname.startsWith('/hotels') ? '#f97316' : '#4b5563'} />
           <span className="hidden xs:block">هتل</span>
         </Link>
-        <Link href="/tour" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/tour') ? 'text-orange-400' : 'text-white'}`}>
-          <Compass className="h-6 w-6 mb-1" color={pathname.startsWith('/tour') ? '#fb923c' : 'white'} />
+        <Link href="/tour" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/tour') ? 'text-orange-500' : 'text-gray-600'}`}>
+          <Compass className="h-6 w-6 mb-1" color={pathname.startsWith('/tour') ? '#f97316' : '#4b5563'} />
           <span className="hidden xs:block">تور</span>
         </Link>
-        <Link href="/taxi" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/taxi') ? 'text-orange-400' : 'text-white'}`}>
-          <Car className="h-6 w-6 mb-1" color={pathname.startsWith('/taxi') ? '#fb923c' : 'white'} />
+        <Link href="/taxi" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/taxi') ? 'text-orange-500' : 'text-gray-600'}`}>
+          <Car className="h-6 w-6 mb-1" color={pathname.startsWith('/taxi') ? '#f97316' : '#4b5563'} />
           <span className="hidden xs:block">تاکسی</span>
         </Link>
       </div>

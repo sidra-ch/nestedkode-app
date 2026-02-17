@@ -22,10 +22,11 @@ export default function ServiceGrid({ services }: { services: Service[] }) {
 
   return (
     <motion.div
-      className={`rounded-2xl bg-white shadow-lg p-4 flex flex-row justify-between items-center transition-all ${isSticky ? 'fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur' : 'relative mt-[-60px]'}`}
+      className={`rounded-2xl bg-white shadow-lg p-4 flex flex-row justify-between items-center transition-all ${isSticky ? 'fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-sm' : 'relative mt-[-60px]'}`}
       animate={{ height: isSticky ? 56 : 120, opacity: isSticky ? 0.95 : 1 }}
       transition={{ duration: 0.3 }}
       aria-label="خدمات اصلی"
+      style={isSticky ? { paddingTop: 'env(safe-area-inset-top, 0px)' } : undefined}
     >
       {services.map((service) => (
         <button

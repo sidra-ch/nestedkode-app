@@ -55,11 +55,11 @@ export default function PromoBannerCarousel({ banners }: { banners: Banner[] }) 
       aria-label="بنرهای تبلیغاتی"
       style={{ WebkitOverflowScrolling: 'touch' }}
     >
-      <div className="flex gap-4 px-2 whitespace-nowrap">
+      <div className="flex gap-4 px-1 whitespace-nowrap">
         {banners.map((banner) => (
             <motion.div
               key={banner._id}
-              className="promo-slide min-w-[80vw] max-w-[90vw] sm:min-w-[320px] sm:max-w-[360px] bg-yellow-100 rounded-2xl shadow-lg flex items-center justify-between p-4 whitespace-normal"
+              className="promo-slide min-w-[85vw] max-w-[90vw] sm:min-w-[320px] sm:max-w-[360px] bg-yellow-100 rounded-2xl shadow-lg flex items-center justify-between p-4 whitespace-normal"
               whileHover={{ scale: 1.02 }}
             >
             <div className="flex-1 text-right pr-4">

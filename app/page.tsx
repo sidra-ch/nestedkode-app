@@ -43,7 +43,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50" style={{ direction: "rtl" }}>
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1 pb-20 md:pb-0">
         {/* Mobile Only: New UX */}
         <div className="block md:hidden">
           {/* Service Grid (Sticky on scroll) */}
