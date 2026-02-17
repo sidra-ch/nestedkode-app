@@ -1,74 +1,69 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
-// import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import dynamic from "next/dynamic";
-import ServiceGrid from "@/components/mobile/ServiceGrid";
-import OtherServicesCarousel from "@/components/mobile/OtherServicesCarousel";
-import PromoBannerCarousel from "@/components/mobile/PromoBannerCarousel";
+import MobileHeader from "@/components/mobile/MobileHeader";
+import MobileHero from "@/components/mobile/MobileHero";
+import MobileSearchTabs from "@/components/mobile/MobileSearchTabs";
+import QuickServices from "@/components/mobile/QuickServices";
+import PopularDestinations from "@/components/mobile/PopularDestinations";
+import PromotionalOffers from "@/components/mobile/PromotionalOffers";
+import BottomNav from "@/components/mobile/BottomNav";
+import MobileMenu from "@/components/layout/MobileMenu";
 
 const CloudinaryGallery = dynamic(() => import("@/components/CloudinaryGallery"), { ssr: false });
-// import { ChevronDown, ArrowRightLeft, Users } from "lucide-react";
-
-
-
 
 import SearchTabs from "@/components/search/SearchTabs";
 
 export default function Home() {
-  // Afghanistan Provinces
-  // ...existing code...
-  // Placeholder dynamic data (replace with MongoDB fetch)
-  const services = [
-    { _id: '1', name: 'پرواز', icon: <span>✈️</span>, route: '/flights' },
-    { _id: '2', name: 'اتوبوس', icon: <span>🚌</span>, route: '/bus' },
-    { _id: '3', name: 'هتل', icon: <span>🏨</span>, route: '/hotels' },
-    { _id: '4', name: 'تور', icon: <span>🎫</span>, route: '/tour' },
-    { _id: '5', name: 'تاکسی', icon: <span>🚕</span>, route: '/taxi' },
-  ];
-  const otherCards = [
-    { _id: '1', title: 'ویزا', description: 'اخذ ویزای سفر', icon: <span>🛂</span>, route: '/visa' },
-    { _id: '2', title: 'سفر اقساط', description: 'پرداخت هزینه سفر به صورت اقساط', icon: <span>💳</span>, route: '/installment' },
-    { _id: '3', title: 'سفر شرکتی', description: 'خدمات سفر برای شرکت‌ها', icon: <span>🏢</span>, route: '/corporate' },
-  ];
-  const banners = [
-    { _id: '1', image: '/assets/banner-1.jpg', text: 'سفر ویژه با تخفیف', cta: 'رزرو کنید', link: '/special' },
-    { _id: '2', image: '/assets/banner-2.jpg', text: 'تورهای جدید افغانستان', cta: 'مشاهده تورها', link: '/tour' },
-  ];
-
-  // ...existing code...
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50" style={{ direction: "rtl" }}>
-      <Navbar />
-      <main className="flex-1 pb-20 md:pb-0">
-        {/* Mobile Only: New UX */}
-        <div className="block md:hidden">
-          {/* Service Grid (Sticky on scroll) */}
-          <div className="container mx-auto px-3 mt-[-60px] mb-6">
-            <ServiceGrid services={services} />
-          </div>
-          {/* Other Services Carousel */}
-          <div className="container mx-auto px-3 mb-6">
-            <OtherServicesCarousel cards={otherCards} />
-          </div>
-          {/* Promotional Banner Carousel */}
-          <div className="container mx-auto px-3 mb-8">
-            <PromoBannerCarousel banners={banners} />
-          </div>
-          {/* Search Card */}
-          <div className="w-full px-0 mt-4 relative z-20 mb-12">
-            <SearchTabs />
-          </div>
+      {/* Mobile Layout */}
+      <div className="block md:hidden">
+        {/* Mobile Header - Transparent over hero */}
+        <MobileHeader onMenuOpen={() => setMobileMenuOpen(true)} />
+        
+        {/* Mobile Menu Drawer */}
+        {mobileMenuOpen && (
+          <MobileMenu onClose={() => setMobileMenuOpen(false)} />
+        )}
+
+        <main className="flex-1 pb-20">
+          {/* Hero Section */}
+          <MobileHero />
+
+          {/* Search Tabs */}
+          <MobileSearchTabs />
+
+          {/* Quick Services Grid */}
+          <QuickServices />
+
+          {/* Popular Destinations Carousel */}
+          <PopularDestinations />
+
+          {/* Promotional Offers */}
+          <PromotionalOffers />
+
           {/* Cloudinary Gallery Section */}
-          <div className="container mx-auto px-3 mb-12">
+          <div className="px-4 py-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4 text-right">مقاصد گردشگری</h2>
             <CloudinaryGallery />
           </div>
-        </div>
-        {/* Desktop/Tablet Only: Original Layout */}
-        <div className="hidden md:block">
+        </main>
+
+        {/* Bottom Navigation */}
+        <BottomNav />
+      </div>
+
+      {/* Desktop Layout - Keep existing */}
+      <div className="hidden md:block">
+        <Navbar />
+        <main className="flex-1 pb-0">
           {/* Hero Section without Afghanistan Map */}
           <div className="w-full h-[250px] md:h-[350px] lg:h-[400px] relative overflow-hidden flex items-center justify-center">
             <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('/assets/bus-page/bus-page.webp')` }} />
@@ -276,9 +271,9 @@ export default function Home() {
               <a href="/bus" className="group p-8 bg-white rounded-xl hover:shadow-lg transition text-right"><div className="text-4xl mb-4">🚌</div><h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-afghanibaba-primary transition">بلیط اتوبوس</h3><p className="text-gray-600">رزرو اتوبوس‌های بین‌شهری با امکانات کامل</p></a>
             </div>
           </div>
-        </div>
-      </main>
-      <Footer />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }
