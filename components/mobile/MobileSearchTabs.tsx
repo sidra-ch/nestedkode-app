@@ -17,6 +17,8 @@ const tabs: SearchTab[] = [
   { key: "hotel", label: "هتل", icon: <Hotel className="h-5 w-5" /> },
 ];
 
+const DROPDOWN_CLOSE_DELAY = 200;
+
 const provinces = [
   "کابل", "هرات", "قندهار", "مزار شریف", "جلال‌آباد", "کندز",
   "بامیان", "غزنی", "بدخشان", "پکتیا", "پکتیکا", "خوست",
@@ -42,8 +44,6 @@ export default function MobileSearchTabs() {
     let route = "/flights";
     if (activeTab === "bus") route = "/bus";
     else if (activeTab === "hotel") route = "/hotels";
-    else if (activeTab === "tour") route = "/tour";
-    else if (activeTab === "taxi") route = "/taxi";
 
     router.push(route);
   };
@@ -87,7 +87,7 @@ export default function MobileSearchTabs() {
                 value={origin}
                 onChange={(e) => setOrigin(e.target.value)}
                 onFocus={() => setShowOriginDropdown(true)}
-                onBlur={() => setTimeout(() => setShowOriginDropdown(false), 200)}
+                onBlur={() => setTimeout(() => setShowOriginDropdown(false), DROPDOWN_CLOSE_DELAY)}
                 placeholder="انتخاب شهر"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg text-right focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
@@ -132,7 +132,7 @@ export default function MobileSearchTabs() {
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
                 onFocus={() => setShowDestDropdown(true)}
-                onBlur={() => setTimeout(() => setShowDestDropdown(false), 200)}
+                onBlur={() => setTimeout(() => setShowDestDropdown(false), DROPDOWN_CLOSE_DELAY)}
                 placeholder="انتخاب شهر"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg text-right focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />

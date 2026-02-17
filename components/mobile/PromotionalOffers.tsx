@@ -57,7 +57,7 @@ export default function PromotionalOffers() {
         <div className="overflow-hidden rounded-xl">
           <div
             className="flex transition-transform duration-300 ease-in-out"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            style={{ transform: `translateX(${currentSlide * 100}%)` }}
           >
             {offers.map((offer) => (
               <div key={offer.id} className="min-w-full">

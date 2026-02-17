@@ -69,7 +69,7 @@ export default function PopularDestinations() {
         <div className="overflow-hidden rounded-xl">
           <div
             className="flex transition-transform duration-300 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            style={{ transform: `translateX(${currentIndex * 100}%)` }}
           >
             {destinations.map((dest) => (
               <div key={dest.id} className="min-w-full">
