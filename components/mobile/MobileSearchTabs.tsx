@@ -11,12 +11,10 @@ interface SearchTab {
 }
 
 const tabs: SearchTab[] = [
-  { key: "domestic-flight", label: "پرواز داخلی", icon: <Plane className="h-6 w-6" /> },
-  { key: "international-flight", label: "پرواز خارجی", icon: <Globe className="h-6 w-6" /> },
-  { key: "bus", label: "اتوبوس", icon: <Bus className="h-6 w-6" /> },
-  { key: "hotel", label: "هتل", icon: <Hotel className="h-6 w-6" /> },
-  { key: "tour", label: "تور", icon: <Compass className="h-6 w-6" /> },
-  { key: "taxi", label: "تاکسی", icon: <Car className="h-6 w-6" /> },
+  { key: "domestic-flight", label: "پرواز داخلی", icon: <Plane className="h-5 w-5" /> },
+  { key: "international-flight", label: "پرواز خارجی", icon: <Globe className="h-5 w-5" /> },
+  { key: "bus", label: "اتوبوس", icon: <Bus className="h-5 w-5" /> },
+  { key: "hotel", label: "هتل", icon: <Hotel className="h-5 w-5" /> },
 ];
 
 const provinces = [
@@ -64,14 +62,14 @@ export default function MobileSearchTabs() {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`flex flex-col items-center justify-center min-w-[80px] py-3 px-2 transition-all flex-shrink-0 ${
+            className={`flex flex-col items-center justify-center flex-1 min-w-[70px] py-3 px-2 transition-all ${
               activeTab === tab.key
-                ? "text-orange-500 border-b-2 border-orange-500"
+                ? "text-orange-500 border-b-2 border-orange-500 bg-orange-50/30"
                 : "text-gray-500"
             }`}
           >
             {tab.icon}
-            <span className="text-xs mt-1 font-medium">{tab.label}</span>
+            <span className="text-xs mt-1 font-medium whitespace-nowrap">{tab.label}</span>
           </button>
         ))}
       </div>

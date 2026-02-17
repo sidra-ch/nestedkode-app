@@ -11,6 +11,7 @@ import MobileSearchTabs from "@/components/mobile/MobileSearchTabs";
 import QuickServices from "@/components/mobile/QuickServices";
 import PopularDestinations from "@/components/mobile/PopularDestinations";
 import PromotionalOffers from "@/components/mobile/PromotionalOffers";
+import TourismDestinations from "@/components/mobile/TourismDestinations";
 import BottomNav from "@/components/mobile/BottomNav";
 import MobileMenu from "@/components/layout/MobileMenu";
 
@@ -52,7 +53,7 @@ export default function Home() {
           {/* Cloudinary Gallery Section */}
           <div className="px-4 py-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4 text-right">مقاصد گردشگری</h2>
-            <CloudinaryGallery />
+            <TourismDestinations />
           </div>
         </main>
 
