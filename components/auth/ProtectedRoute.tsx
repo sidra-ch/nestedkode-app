@@ -59,7 +59,7 @@ export default function ProtectedRoute({
         <div className="text-center max-w-md px-4">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Access Denied</h1>
           <p className="text-gray-600 mb-6">
-            You don't have permission to access this page.
+            You don&apos;t have permission to access this page.
           </p>
           <button
             onClick={() => router.back()}
