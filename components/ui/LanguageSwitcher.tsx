@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Globe } from 'lucide-react';
-import { Language, t, setLanguage } from '@/lib/i18n';
+import { Language, setLanguage, getCurrentLanguage } from '@/lib/i18n';
 
 const languages = [
   { code: 'fa' as Language, name: 'فارسی', flag: '🇦🇫' },
@@ -12,14 +12,7 @@ const languages = [
 
 export default function LanguageSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState<Language>('fa');
-
-  useEffect(() => {
-    const savedLang = localStorage.getItem('language') as Language;
-    if (savedLang && ['fa', 'ps', 'en'].includes(savedLang)) {
-      setCurrentLang(savedLang);
-    }
-  }, []);
+  const [currentLang, setCurrentLang] = useState<Language>(getCurrentLanguage);
 
   const handleLanguageChange = (lang: Language) => {
     setCurrentLang(lang);

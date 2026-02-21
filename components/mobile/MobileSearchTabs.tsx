@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plane, Bus, Hotel, Compass, Car, Globe, ArrowRightLeft, Calendar, Users, ChevronDown } from "lucide-react";
+import { Plane, Bus, Hotel, Globe, ArrowRightLeft, Calendar, Users, ChevronDown } from "lucide-react";
 
 interface SearchTab {
   key: string;
@@ -192,7 +192,7 @@ export default function MobileSearchTabs() {
         </div>
 
         {/* Passengers */}
-        {activeTab !== "hotel" && activeTab !== "taxi" && (
+        {activeTab !== "hotel" && (
           <div>
             <label className="block text-sm text-gray-600 mb-1 text-right">مسافران</label>
             <div className="relative">
