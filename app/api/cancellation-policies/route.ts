@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const serviceType = searchParams.get('serviceType');
     const serviceId = searchParams.get('serviceId');
 
-    const query: any = { isActive: true };
+    let query: any = { isActive: true };
 
     if (serviceType) {
       query.serviceType = serviceType;

@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Noto_Sans_Arabic, Plus_Jakarta_Sans } from "next/font/google";
-import Script from "next/script";
 
 const notoSansArabic = Noto_Sans_Arabic({
   subsets: ["arabic"],
@@ -34,7 +33,7 @@ export default function RootLayout({
       >
         {children}
         {/* Mobile sticky icon bar scroll logic */}
-        <Script src="/mobile-navbar-scroll.js" strategy="afterInteractive" />
+        <script src="/mobile-navbar-scroll.js" suppressHydrationWarning />
       </body>
     </html>
   );

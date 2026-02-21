@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
 
     await connectDB();
 
-    const query: any = {};
+    let query: any = {};
 
     // Filter based on role
     if (user.role === 'user') {

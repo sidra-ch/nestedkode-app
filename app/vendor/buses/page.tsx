@@ -39,7 +39,7 @@ export default function VendorBusesPage() {
     fetchBuses();
   }, [isAuthenticated, user, router, token]);
   const fetchBuses = async () => {
-    const active = true;
+    let active = true;
     setLoading(true);
     setError(null);
     try {
@@ -124,7 +124,7 @@ export default function VendorBusesPage() {
           <p className="text-gray-600">Loading buses...</p>
         ) : buses.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-            <p className="text-gray-600 mb-4">You haven&apos;t added any buses yet.</p>
+            <p className="text-gray-600 mb-4">You haven't added any buses yet.</p>
             <a
               href="/vendor/add-bus"
               className="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-lg"

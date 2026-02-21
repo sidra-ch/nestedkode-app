@@ -1,4 +1,3 @@
-"use client";
 
 import React, { useRef, useState, useEffect } from "react";
 import { Airplay, Globe, Bed, Bus, Car, ArrowRightLeft, ChevronDown, Users, MapPin } from "lucide-react";

@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 
     await connectDB();
 
-    const query: any = {};
+    let query: any = {};
     
     if (user.role === 'user') {
       query.userId = user.userId;
