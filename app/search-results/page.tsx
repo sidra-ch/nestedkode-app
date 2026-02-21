@@ -22,23 +22,28 @@ export default function SearchResultsPage() {
 
   useEffect(() => {
     if (type !== "bus") return;
-    setLoading(true);
-    setError("");
-    const params = new URLSearchParams();
-    if (from) params.set("from", from);
-    if (to) params.set("to", to);
-    if (date) params.set("date", date);
-    fetch(`/api/buses?${params.toString()}`)
-      .then(res => res.json())
-      .then(data => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError("");
+      const params = new URLSearchParams();
+      if (from) params.set("from", from);
+      if (to) params.set("to", to);
+      if (date) params.set("date", date);
+      try {
+        const res = await fetch(`/api/buses?${params.toString()}`);
+        const data = await res.json();
         if (data.success) {
           setBuses(data.buses);
         } else {
           setError(data.message || "نتایج یافت نشد.");
         }
-      })
-      .catch(() => setError("خطا در دریافت نتایج."))
-      .finally(() => setLoading(false));
+      } catch {
+        setError("خطا در دریافت نتایج.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, [type, from, to, date]);
 
   return (
