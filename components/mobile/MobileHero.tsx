@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 
-export default function MobileHero() {
+export default function MobileHero({ image, alt }: { image: string; alt?: string }) {
   return (
     <div className="relative w-full h-[400px] overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/assets/banner-1.jpg"
-          alt="Afghanistan Travel"
+          src={image}
+          alt={alt || "Afghanistan Travel"}
           fill
           className="object-cover"
           priority

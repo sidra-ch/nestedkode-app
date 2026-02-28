@@ -47,8 +47,7 @@ const useAuthStore = create<AuthState>()(
               data = await res.json();
             } else {
               const text = await res.text();
-              console.error("Login error: Non-JSON response", text);
-              throw new Error("Login failed: Non-JSON response");
+              throw new Error("Login failed: Non-JSON response\n" + text);
             }
             throw new Error(data?.message || data?.error || "Login failed");
           }
@@ -57,8 +56,7 @@ const useAuthStore = create<AuthState>()(
             data = await res.json();
           } else {
             const text = await res.text();
-            console.error("Login error: Non-JSON response", text);
-            throw new Error("Login failed: Non-JSON response");
+            throw new Error("Login failed: Non-JSON response\n" + text);
           }
           // Map _id to id for frontend consistency
           let user = data.user;
@@ -72,8 +70,11 @@ const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
           });
         } catch (err) {
-          console.error("Login fetch error:", err);
-          throw err;
+          // Only log real errors, not empty objects
+          if (err instanceof Error && err.message && err.message !== "Login failed") {
+            console.error("Login fetch error:", err.message);
+          }
+          throw err instanceof Error ? err : new Error("Login failed: " + String(err));
         }
       },
 

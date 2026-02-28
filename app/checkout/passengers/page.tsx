@@ -8,7 +8,7 @@ import Footer from "@/components/layout/Footer";
 function PassengerDetailsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const bookingId = searchParams.get("bookingId");
+  const bookingId = searchParams?.get("bookingId");
 
   const [passengers, setPassengers] = useState([
     { name: "", age: "", gender: "male", seatNumber: "" },

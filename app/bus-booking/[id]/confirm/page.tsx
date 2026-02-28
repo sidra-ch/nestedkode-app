@@ -10,10 +10,10 @@ export default function BusBookingConfirmPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const busId = params.id as string;
-  const seats = searchParams.get("seats") || "";
-  const date = searchParams.get("date") || "";
-  const passengers = searchParams.get("passengers") || "";
+  const busId = params?.id as string || "";
+  const seats = searchParams?.get("seats") || "";
+  const date = searchParams?.get("date") || "";
+  const passengers = searchParams?.get("passengers") || "";
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

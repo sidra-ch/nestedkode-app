@@ -55,10 +55,10 @@ const formatDate = (dateString: string) => {
 
 function BusSearchContent() {
   const searchParams = useSearchParams();
-  const origin = searchParams.get("origin") || "";
-  const destination = searchParams.get("destination") || "";
-  const date = searchParams.get("date") || "";
-  const passengersCount = Math.max(Number(searchParams.get("passengers") || 1), 1);
+  const origin = searchParams?.get("origin") || "";
+  const destination = searchParams?.get("destination") || "";
+  const date = searchParams?.get("date") || "";
+  const passengersCount = Math.max(Number(searchParams?.get("passengers") || 1), 1);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [buses, setBuses] = useState<Bus[]>([]);
   const [loading, setLoading] = useState(false);

@@ -1,0 +1,41 @@
+/**
+ * 34 provinces of Afghanistan – single source of truth for search dropdowns
+ */
+export const AFGHANISTAN_PROVINCES = [
+  { name: "کابل", icon: "🏛️" },
+  { name: "هرات", icon: "🌆" },
+  { name: "قندهار", icon: "🏜️" },
+  { name: "مزار شریف", icon: "🕌" },
+  { name: "جلال‌آباد", icon: "🍊" },
+  { name: "کندز", icon: "🌾" },
+  { name: "بامیان", icon: "❄️" },
+  { name: "غزنی", icon: "🏔️" },
+  { name: "بدخشان", icon: "💎" },
+  { name: "پکتیا", icon: "🌲" },
+  { name: "پکتیکا", icon: "⛰️" },
+  { name: "خوست", icon: "🥜" },
+  { name: "هلمند", icon: "🌊" },
+  { name: "نیمروز", icon: "☀️" },
+  { name: "فراه", icon: "🏜️" },
+  { name: "بادغیس", icon: "🌰" },
+  { name: "غور", icon: "🏰" },
+  { name: "دایکندی", icon: "🌸" },
+  { name: "ارزگان", icon: "🍑" },
+  { name: "زابل", icon: "🏹" },
+  { name: "میدان وردک", icon: "🍎" },
+  { name: "لوگر", icon: "⛏️" },
+  { name: "پروان", icon: "🍇" },
+  { name: "کاپیسا", icon: "🍓" },
+  { name: "پنجشیر", icon: "🦁" },
+  { name: "لغمان", icon: "🥦" },
+  { name: "کنر", icon: "🌲" },
+  { name: "نورستان", icon: "🏔️" },
+  { name: "تخار", icon: "🧂" },
+  { name: "بغلان", icon: "🏭" },
+  { name: "سمنگان", icon: "🥜" },
+  { name: "سرپل", icon: "🛢️" },
+  { name: "جوزجان", icon: "🔥" },
+  { name: "فاریاب", icon: "🍇" },
+] as const;
+
+export type ProvinceName = (typeof AFGHANISTAN_PROVINCES)[number]["name"];

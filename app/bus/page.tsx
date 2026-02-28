@@ -180,7 +180,7 @@ export default function BusPage() {
         <div className="w-full h-[250px] md:h-[350px] lg:h-[400px] relative overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url('/assets/bus-page/bus-page.webp')` }}
+            style={{ backgroundImage: `url('https://res.cloudinary.com/dwmxdyvd2/image/upload/v1772226635/busimg_p2a9hu.webp')` }}
           />
           <div className="absolute inset-0 bg-white/60" />
           <div className="container mx-auto px-4 pt-20 relative z-10">

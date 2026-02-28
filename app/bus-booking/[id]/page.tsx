@@ -26,10 +26,10 @@ export default function BusBookingPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const busId = params.id as string;
+  const busId = params?.id as string || "";
   
-  const date = searchParams.get("date") || new Date().toISOString().split("T")[0];
-  const passengers = searchParams.get("passengers") || "1";
+  const date = searchParams?.get("date") || new Date().toISOString().split("T")[0];
+  const passengers = searchParams?.get("passengers") || "1";
 
   const [bus, setBus] = useState<BusDetails | null>(null);
   const [loading, setLoading] = useState(true);

@@ -2,15 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import { ChevronDown, User, LogOut, LayoutDashboard, Plane, Hotel, Bus, Compass, ShoppingBag, Menu, X, HelpCircle, MapPin, Car } from "lucide-react";
 
 export default function Navbar() {
     const pathname = usePathname();
-  const router = useRouter();
-  const { user, isAuthenticated, logout } = useAuthStore();
+    const safePathname = pathname || "";
+    const router = useRouter();
+    const { user, isAuthenticated, logout } = useAuthStore();
   const [flightDropdownOpen, setFlightDropdownOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,21 +21,18 @@ export default function Navbar() {
     router.push("/");
   };
 
-  return (
-    <nav
-      className="sticky top-0 left-0 right-0 z-[100] bg-white border-b border-gray-300 shadow-sm"
-      style={{ direction: "rtl", paddingTop: "env(safe-area-inset-top, 0px)" }}
-    >
-      {/* Mobile: Centered Logo Row */}
-      <div id="mobile-navbar-logo" className="block md:hidden w-full bg-white border-b border-gray-200 transition-colors duration-300">
-        <div className="flex items-center justify-center h-14">
-          <Link href="/" className="flex items-center justify-center" style={{ width: '100%' }}>
-            <span className="text-xl font-extrabold text-gray-800 tracking-tight">افغانی‌بابا</span>
-          </Link>
-        </div>
-      </div>
-      <div className="container mx-auto px-3 sm:px-4">
-        <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 px-2 sm:px-0">
+  // State to track mobile sticky icon bar background
+
+
+  // Hydration-safe: use only Tailwind/static classes for sticky bar
+
+    return (
+      <nav
+        className="sticky top-0 left-0 right-0 z-[100] bg-white border-b border-gray-300 shadow-sm"
+        style={{ direction: "rtl", paddingTop: "env(safe-area-inset-top, 0px)" }}
+      >
+        <div className="container mx-auto px-3 sm:px-4">
+          <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 px-2 sm:px-0">
           {/* Mobile Menu Button - Left Side on Mobile (RTL) */}
           <button
             className="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
@@ -43,19 +41,14 @@ export default function Navbar() {
             <Menu className="h-6 w-6" />
           </button>
 
-          {/* Logo - Hidden on mobile, Visible on Desktop */}
-          <Link href="/" className="hidden md:flex items-center gap-1 flex-shrink-0">
-            <div className="text-xl md:text-2xl font-bold text-afghanibaba-primary">افغانی‌بابا</div>
-          </Link>
-
-          {/* Mobile Center - Just an icon or empty? User said "only icons visible, logo hidden". 
-              Let's put the user icon on the left (RTL end) and maybe a home icon or just space. 
-              Actually, usually search/home icons are key. Let's keep it simple. */}
-
-          {/* Right Side: Main Navigation - Desktop */}
-          <div className="hidden md:flex items-center gap-2 md:gap-4 flex-1 mr-4">
-            {/* Desktop Nav Links ... (existing) */}
-            <div className="hidden md:flex items-center gap-1">
+          {/* Desktop: Logo and Nav Links together on right (RTL) */}
+          <div className="hidden md:flex items-center gap-2">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-1 flex-shrink-0">
+              <div className="text-xl md:text-2xl font-bold text-afghanibaba-primary">افغانی‌بابا</div>
+            </Link>
+            {/* Nav Links */}
+            <div className="flex items-center gap-1">
               {/* Flight Dropdown */}
               <div className="relative group">
                 <button className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-afghanibaba-primary hover:bg-orange-50 rounded transition text-sm">
@@ -72,7 +65,6 @@ export default function Navbar() {
                   </Link>
                 </div>
               </div>
-
               {/* Other Links */}
               <Link href="/bus" className="flex items-center px-3 py-2 text-gray-700 hover:text-black font-medium text-[15px] transition-colors rounded-md">
                 <span>بلیط اتوبوس</span>
@@ -88,7 +80,6 @@ export default function Navbar() {
               </Link>
             </div>
           </div>
-
           {/* Left Section: User Actions */}
           <div className="flex items-center gap-3">
             {/* Mobile User Icon */}
@@ -169,6 +160,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
+        </div>
 
         {/* Mobile Menu Overlay */}
         {mobileMenuOpen && (
@@ -240,48 +232,34 @@ export default function Navbar() {
             </div>
           </div>
         )}
-      </div>
-      {/* Mobile: Sticky Icon Bar (hidden initially, shown on scroll via JS) */}
-      <div id="mobile-sticky-icons" className="fixed bottom-0 left-0 right-0 z-[120] bg-white border-t border-gray-200 flex justify-around items-center py-2 md:hidden transition-all duration-300" style={{ boxShadow: '0 -2px 8px rgba(0,0,0,0.04)', paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
-        <Link href="/flights" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/flights') ? 'text-orange-500' : 'text-gray-600'}`}>
-          <Plane className="h-6 w-6 mb-1" color={pathname.startsWith('/flights') ? '#f97316' : '#4b5563'} />
-          <span className="hidden xs:block">پرواز</span>
-        </Link>
-        <Link href="/bus" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/bus') ? 'text-orange-500' : 'text-gray-600'}`}>
-          <Bus className="h-6 w-6 mb-1" color={pathname.startsWith('/bus') ? '#f97316' : '#4b5563'} />
-          <span className="hidden xs:block">اتوبوس</span>
-        </Link>
-        <Link href="/hotels" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/hotels') ? 'text-orange-500' : 'text-gray-600'}`}>
-          <Hotel className="h-6 w-6 mb-1" color={pathname.startsWith('/hotels') ? '#f97316' : '#4b5563'} />
-          <span className="hidden xs:block">هتل</span>
-        </Link>
-        <Link href="/tour" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/tour') ? 'text-orange-500' : 'text-gray-600'}`}>
-          <Compass className="h-6 w-6 mb-1" color={pathname.startsWith('/tour') ? '#f97316' : '#4b5563'} />
-          <span className="hidden xs:block">تور</span>
-        </Link>
-        <Link href="/taxi" className={`flex flex-col items-center font-bold text-xs ${pathname.startsWith('/taxi') ? 'text-orange-500' : 'text-gray-600'}`}>
-          <Car className="h-6 w-6 mb-1" color={pathname.startsWith('/taxi') ? '#f97316' : '#4b5563'} />
-          <span className="hidden xs:block">تاکسی</span>
-        </Link>
-      </div>
-      {/* Mobile navbar color change on scroll */}
-      <script suppressHydrationWarning>{`
-        if (typeof window !== 'undefined') {
-          window.addEventListener('scroll', function() {
-            var logo = document.getElementById('mobile-navbar-logo');
-            var icons = document.getElementById('mobile-sticky-icons');
-            if (window.scrollY > 40) {
-              if (logo) logo.style.background = '#111';
-              if (logo) logo.style.color = '#fff';
-              if (icons) icons.style.background = '#111';
-            } else {
-              if (logo) logo.style.background = '#fff';
-              if (logo) logo.style.color = '#222';
-              if (icons) icons.style.background = '#fff';
-            }
-          });
-        }
-      `}</script>
-    </nav>
-  );
+        {/* Mobile: Sticky Icon Bar (hidden initially, shown on scroll via JS) */}
+        <div
+          id="mobile-sticky-icons"
+          className="fixed bottom-0 left-0 right-0 z-[120] border-t border-gray-200 bg-white flex justify-around items-center py-2 md:hidden transition-all duration-300 shadow-[0_-2px_8px_rgba(0,0,0,0.04)] pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))]"
+          /* Removed all dynamic style props for hydration safety */
+        >
+          <Link href="/flights" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/flights') ? 'text-orange-500' : 'text-gray-600'}`}>
+            <Plane className="h-6 w-6 mb-1" color={safePathname.startsWith('/flights') ? '#f97316' : '#4b5563'} />
+            <span className="hidden xs:block">پرواز</span>
+          </Link>
+          <Link href="/bus" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/bus') ? 'text-orange-500' : 'text-gray-600'}`}>
+            <Bus className="h-6 w-6 mb-1" color={safePathname.startsWith('/bus') ? '#f97316' : '#4b5563'} />
+            <span className="hidden xs:block">اتوبوس</span>
+          </Link>
+          <Link href="/hotels" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/hotels') ? 'text-orange-500' : 'text-gray-600'}`}>
+            <Hotel className="h-6 w-6 mb-1" color={safePathname.startsWith('/hotels') ? '#f97316' : '#4b5563'} />
+            <span className="hidden xs:block">هتل</span>
+          </Link>
+          <Link href="/tour" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/tour') ? 'text-orange-500' : 'text-gray-600'}`}>
+            <Compass className="h-6 w-6 mb-1" color={safePathname.startsWith('/tour') ? '#f97316' : '#4b5563'} />
+            <span className="hidden xs:block">تور</span>
+          </Link>
+          <Link href="/taxi" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/taxi') ? 'text-orange-500' : 'text-gray-600'}`}>
+            <Car className="h-6 w-6 mb-1" color={safePathname.startsWith('/taxi') ? '#f97316' : '#4b5563'} />
+            <span className="hidden xs:block">تاکسی</span>
+          </Link>
+        </div>
+        {/* Mobile navbar color change on scroll handled in React useEffect */}
+      </nav>
+    );
 }

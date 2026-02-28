@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plane, Bus, Hotel, Globe, ArrowRightLeft, Calendar, Users, ChevronDown } from "lucide-react";
+import { Plane, Bus, Hotel, Globe, ArrowRightLeft, Calendar, Users, ChevronDown, Car } from "lucide-react";
 
 interface SearchTab {
   key: string;
@@ -15,6 +15,7 @@ const tabs: SearchTab[] = [
   { key: "international-flight", label: "پرواز خارجی", icon: <Globe className="h-5 w-5" /> },
   { key: "bus", label: "اتوبوس", icon: <Bus className="h-5 w-5" /> },
   { key: "hotel", label: "هتل", icon: <Hotel className="h-5 w-5" /> },
+  { key: "taxi", label: "تاکسی", icon: <Car className="h-5 w-5" /> },
 ];
 
 const DROPDOWN_CLOSE_DELAY = 200;
@@ -24,9 +25,14 @@ const provinces = [
   "بامیان", "غزنی", "بدخشان", "پکتیا", "پکتیکا", "خوست",
 ];
 
-export default function MobileSearchTabs() {
+
+interface MobileSearchTabsProps {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+}
+
+export default function MobileSearchTabs({ activeTab, setActiveTab }: MobileSearchTabsProps) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("domestic-flight");
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [departureDate, setDepartureDate] = useState("");

@@ -33,7 +33,7 @@ type BookingDetails = {
 
 export default function BookingConfirmPage() {
   const params = useParams();
-  const bookingId = params.id as string;
+  const bookingId = params?.id as string || "";
   
   const [booking, setBooking] = useState<BookingDetails | null>(null);
   const [loading, setLoading] = useState(true);

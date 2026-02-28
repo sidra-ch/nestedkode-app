@@ -7,10 +7,10 @@ import Footer from "@/components/layout/Footer";
 export default function BusBookingSuccessPage() {
   const params = useParams();
   const searchParams = useSearchParams();
-  const busId = params.id as string;
-  const seats = searchParams.get("seats") || "";
-  const date = searchParams.get("date") || "";
-  const passengers = searchParams.get("passengers") || "";
+  const busId = params?.id as string || "";
+  const seats = searchParams?.get("seats") || "";
+  const date = searchParams?.get("date") || "";
+  const passengers = searchParams?.get("passengers") || "";
 
   return (
     <div className="min-h-screen bg-gray-50">
