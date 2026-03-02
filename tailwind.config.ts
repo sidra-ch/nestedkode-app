@@ -10,12 +10,13 @@ const config: Config = {
     extend: {
       colors: {
         afghanibaba: {
-          primary: '#F97316',
+          primary: '#F97316', // Original Logo Orange
           secondary: '#FB923C',
-          dark: '#C2410C',
-          accent: '#F59E0B',
-          gold: '#FDB713',
-          light: '#FED7AA',
+          dark: '#001a3a',
+          accent: '#D4AF37', // Gold
+          gold: '#D4AF37',
+          blue: '#002855', // New Brand Blue
+          light: '#004c99',
           muted: '#6B7280',
         },
       },

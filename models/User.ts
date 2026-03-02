@@ -9,6 +9,8 @@ export interface IUser {
   phone?: string;
   vendorId?: string;
   isApproved: boolean;
+  lastLogin?: Date;
+  loginCount?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -48,6 +50,13 @@ const UserSchema = new Schema<IUser>(
     isApproved: {
       type: Boolean,
       default: true,
+    },
+    lastLogin: {
+      type: Date,
+    },
+    loginCount: {
+      type: Number,
+      default: 0,
     },
   },
   {

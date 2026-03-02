@@ -2,128 +2,110 @@ import mongoose, { Schema, Model } from 'mongoose';
 
 export interface IBooking {
   _id?: string;
+  bookingReference: string; // AFB-YYYY-00001
+  bookingType: "FLIGHT" | "UMRAH" | "TOUR" | "BUS";
   userId: string;
   userName: string;
   userEmail: string;
-  busId: string;
-  busName: string;
-  busNumber: string;
-  vendorId: string;
-  from: string;
-  to: string;
-  departureTime: string;
-  arrivalTime: string;
-  travelDate: Date;
-  seats: string[];
-  totalSeats: number;
-  pricePerSeat: number;
-  totalPrice: number;
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
-  paymentStatus: 'pending' | 'paid' | 'refunded';
-  paymentId?: string;
-  passengerDetails?: {
-    name: string;
-    age: number;
+
+  tripDetails: {
+    from: string;
+    to: string;
+    departureDate: Date;
+    returnDate?: Date;
+    airline?: string;
+    busId?: string;
+  };
+
+  travelers: {
+    fullName: string;
     gender: string;
-    seatNumber: string;
+    dateOfBirth: Date;
+    passportNumber?: string;
+    passportExpiry?: Date;
+    seatNumber?: string;
   }[];
-  bookingDate: Date;
+
+  contact: {
+    phone: string;
+    whatsapp?: string;
+    email: string;
+    province?: string;
+    city?: string;
+  };
+
+  paymentMethod?: "OFFICE" | "BANK" | "MPAISA";
+  paymentStatus: "pending_office_payment" | "pending_verification" | "paid";
+  bookingStatus: "pending_payment" | "confirmed" | "cancelled";
+
+  transactionId?: string;
+  receiptImage?: string;
+  totalAmount: number;
+  holdExpiresAt: Date;
+
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 const BookingSchema = new Schema<IBooking>(
   {
-    userId: {
+    bookingReference: { type: String, unique: true, required: true },
+    bookingType: {
       type: String,
-      required: true,
-      index: true,
+      enum: ["FLIGHT", "UMRAH", "TOUR", "BUS"],
+      required: true
     },
-    userName: {
+    userId: { type: String, required: true, index: true },
+    userName: { type: String, required: true },
+    userEmail: { type: String, required: true },
+
+    tripDetails: {
+      from: { type: String, required: true },
+      to: { type: String, required: true },
+      departureDate: { type: Date, required: true },
+      returnDate: { type: Date },
+      airline: { type: String },
+      busId: { type: String },
+    },
+
+    travelers: [
+      {
+        fullName: { type: String, required: true },
+        gender: { type: String, required: true },
+        dateOfBirth: { type: Date, required: true },
+        passportNumber: { type: String },
+        passportExpiry: { type: Date },
+        seatNumber: { type: String },
+      },
+    ],
+
+    contact: {
+      phone: { type: String, required: true },
+      whatsapp: { type: String },
+      email: { type: String, required: true },
+      province: { type: String },
+      city: { type: String },
+    },
+
+    paymentMethod: {
       type: String,
-      required: true,
-    },
-    userEmail: {
-      type: String,
-      required: true,
-    },
-    busId: {
-      type: String,
-      required: true,
-      index: true,
-    },
-    busName: {
-      type: String,
-      required: true,
-    },
-    busNumber: {
-      type: String,
-      required: true,
-    },
-    vendorId: {
-      type: String,
-      required: true,
-      index: true,
-    },
-    from: {
-      type: String,
-      required: true,
-    },
-    to: {
-      type: String,
-      required: true,
-    },
-    departureTime: {
-      type: String,
-      required: true,
-    },
-    arrivalTime: {
-      type: String,
-      required: true,
-    },
-    travelDate: {
-      type: Date,
-      required: true,
-    },
-    seats: {
-      type: [String],
-      required: true,
-    },
-    totalSeats: {
-      type: Number,
-      required: true,
-    },
-    pricePerSeat: {
-      type: Number,
-      required: true,
-    },
-    totalPrice: {
-      type: Number,
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: ['pending', 'confirmed', 'cancelled', 'completed'],
-      default: 'pending',
+      enum: ["OFFICE", "BANK", "MPAISA"],
     },
     paymentStatus: {
       type: String,
-      enum: ['pending', 'paid', 'refunded'],
-      default: 'pending',
+      enum: ["pending_office_payment", "pending_verification", "paid"],
+      default: "pending_verification",
     },
-    paymentId: {
+    bookingStatus: {
       type: String,
+      enum: ["pending_payment", "confirmed", "cancelled"],
+      default: "pending_payment",
     },
-    passengerDetails: [{
-      name: String,
-      age: Number,
-      gender: String,
-      seatNumber: String,
-    }],
-    bookingDate: {
-      type: Date,
-      default: Date.now,
-    },
+
+    transactionId: { type: String },
+    receiptImage: { type: String },
+    totalAmount: { type: Number, required: true },
+    holdExpiresAt: { type: Date, required: true },
   },
   {
     timestamps: true,
@@ -131,9 +113,9 @@ const BookingSchema = new Schema<IBooking>(
 );
 
 // Create indexes for faster queries
-BookingSchema.index({ userId: 1, status: 1 });
-BookingSchema.index({ vendorId: 1, status: 1 });
-BookingSchema.index({ travelDate: 1 });
+BookingSchema.index({ userId: 1, bookingStatus: 1 });
+BookingSchema.index({ bookingReference: 1 });
+BookingSchema.index({ holdExpiresAt: 1 }, { expireAfterSeconds: 0 }); // Automatic deletion after expiry if needed, or just for query
 
 const Booking: Model<IBooking> = mongoose.models.Booking || mongoose.model<IBooking>('Booking', BookingSchema);
 

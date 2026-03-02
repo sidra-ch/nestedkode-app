@@ -111,29 +111,29 @@ function Home() {
             <div className="border border-gray-300 rounded-xl p-4 sm:p-6 md:p-8">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                 {/* Travel Visa */}
-                <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition cursor-pointer border border-transparent hover:border-orange-400">
+                <a href="/visa" className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition cursor-pointer border border-transparent hover:border-orange-400 group">
                   <div className="flex items-center gap-3">
                     <Image src="/assets/Home-page/home-card-1.svg" alt="Travel Visa" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900">تاشیره سفر</h3>
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900 group-hover:text-orange-600 transition">تاشیره سفر</h3>
                   </div>
                   <p className="text-sm md:text-base text-gray-600">اخذ تاشیره برای کشورهای مختلف</p>
-                </div>
+                </a>
                 {/* Installment Travel */}
-                <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition">
+                <a href="/installment" className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition cursor-pointer border border-transparent hover:border-orange-400 group">
                   <div className="flex items-center gap-3">
                     <Image src="/assets/Home-page/home-card-2.svg" alt="Installment Travel" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900">سفر اقساط</h3>
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900 group-hover:text-orange-600 transition">سفر اقساط</h3>
                   </div>
                   <p className="text-sm md:text-base text-gray-600">پرداخت هزینه سفر به صورت اقساط</p>
-                </div>
+                </a>
                 {/* Travel Card */}
-                <div className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition">
+                <a href="/travel-card" className="flex flex-col items-center text-center gap-4 p-4 rounded-lg hover:bg-orange-50 transition cursor-pointer border border-transparent hover:border-orange-400 group">
                   <div className="flex items-center gap-3">
                     <Image src="/assets/Home-page/home-card-3.svg" alt="Travel Card" width={64} height={64} className="h-12 w-12 md:h-16 md:w-16 object-contain" />
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900">کارت سفر</h3>
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900 group-hover:text-orange-600 transition">کارت سفر</h3>
                   </div>
                   <p className="text-sm md:text-base text-gray-600">کارت ویژه برای مسافران</p>
-                </div>
+                </a>
               </div>
             </div>
           </div>
@@ -195,7 +195,7 @@ function Home() {
             <div className="bg-white rounded-xl p-8 md:p-12" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
               <div className="text-center mb-8">
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">خرید بلیط هواپیما از افغانی‌بابا</h2>
-                <p className="text-gray-600 max-w-3xl mx-auto leading-relaxed text-right">افغانی‌بابا، بزرگ‌ترین و معتبرترین پلتفرم آنلاین خرید بلیط هواپیما و اتوبوس در کشور است. این سیستم از سال 2014 با هدف تسهیل خدمات سفر آنلاین فعالیت می‌کند.</p>
+                <p className="text-gray-600 max-w-3xl mx-auto leading-relaxed text-right">افغانی‌بابا، بزرگ‌ترین و معتبرترین پلتفرم آنلاین خرید بلیط هواپیما و اتوبوس در کشور است. این سیستم از سال 2026 با هدف تسهیل خدمات سفر آنلاین فعالیت می‌کند.</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="text-center p-6 bg-orange-50 rounded-xl"><div className="text-4xl mb-3">⭐</div><h3 className="font-bold text-gray-900 mb-2">97.2% رضایت مشتری</h3><p className="text-sm text-gray-600">رضایت کامل کاربران از خدمات پلتفرم</p></div>

@@ -9,10 +9,10 @@ export async function comparePassword(password: string, hashedPassword: string):
   return bcrypt.compare(password, hashedPassword);
 }
 
-export function generateBookingId(): string {
-  const timestamp = Date.now().toString(36);
-  const randomStr = Math.random().toString(36).substring(2, 8);
-  return `BK${timestamp}${randomStr}`.toUpperCase();
+export function generateBookingReference(): string {
+  const year = new Date().getFullYear();
+  const random = Math.floor(10000 + Math.random() * 90000);
+  return `AFB-${year}-${random}`;
 }
 
 export function generateTransactionId(): string {

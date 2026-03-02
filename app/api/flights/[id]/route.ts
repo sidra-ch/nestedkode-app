@@ -84,6 +84,11 @@ export async function PUT(
     await connectDB();
     const { id } = await params;
 
+    // Validate ObjectId
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return NextResponse.json({ success: false, error: "شناسه پرواز نامعتبر است" }, { status: 400 });
+    }
+
     const flight = await Flight.findById(id);
 
     if (!flight) {
@@ -148,6 +153,11 @@ export async function DELETE(
 
     await connectDB();
     const { id } = await params;
+
+    // Validate ObjectId
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return NextResponse.json({ success: false, error: "شناسه پرواز نامعتبر است" }, { status: 400 });
+    }
 
     const flight = await Flight.findByIdAndDelete(id);
 

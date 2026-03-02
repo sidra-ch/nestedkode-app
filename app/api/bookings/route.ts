@@ -4,7 +4,32 @@ import Booking from '@/models/Booking';
 import Bus from '@/models/Bus';
 import User from '@/models/User';
 import { getUserFromRequest } from '@/lib/auth';
-import { generateBookingId } from '@/lib/helpers';
+import { generateBookingReference } from '@/lib/helpers';
+import { z } from 'zod';
+
+const bookingSchema = z.object({
+  bookingType: z.enum(["FLIGHT", "UMRAH", "TOUR", "BUS"]),
+  tripDetails: z.object({
+    from: z.string(),
+    to: z.string(),
+    departureDate: z.string().or(z.date()),
+    busId: z.string().optional(),
+    airline: z.string().optional(),
+  }),
+  travelers: z.array(z.object({
+    fullName: z.string(),
+    gender: z.string(),
+    dateOfBirth: z.string().or(z.date()),
+    passportNumber: z.string().optional(),
+  })),
+  contact: z.object({
+    phone: z.string(),
+    email: z.string().email(),
+    whatsapp: z.string().optional(),
+  }),
+  totalAmount: z.number(),
+  paymentMethod: z.enum(["OFFICE", "BANK", "MPAISA"]),
+});
 
 // GET - Get bookings
 export async function GET(request: NextRequest) {
@@ -49,7 +74,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Create booking
+// POST - Create booking (Unified for Flight/Bus/Tour)
 export async function POST(request: NextRequest) {
   try {
     const user = getUserFromRequest(request);
@@ -64,73 +89,60 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     const body = await request.json();
-    const { busId, seats, travelDate, passengerDetails } = body;
+    const {
+      bookingType,
+      tripDetails,
+      travelers,
+      contact,
+      totalAmount,
+      paymentMethod
+    } = body;
 
-    // Validation
-    if (!busId || !seats || seats.length === 0 || !travelDate) {
+    // Validation with Zod
+    const validation = bookingSchema.safeParse(body);
+    if (!validation.success) {
       return NextResponse.json(
-        { success: false, message: 'Bus ID, seats, and travel date are required' },
+        { success: false, message: 'Invalid input data', errors: validation.error.format() },
         { status: 400 }
       );
     }
 
-    // Get bus details
-    const bus = await Bus.findById(busId);
-    if (!bus) {
-      return NextResponse.json(
-        { success: false, message: 'Bus not found' },
-        { status: 404 }
-      );
+    // Set hold expiry (15 minutes from now)
+    const holdExpiresAt = new Date();
+    holdExpiresAt.setMinutes(holdExpiresAt.getMinutes() + 15);
+
+    // Set statuses based on payment method
+    let paymentStatus: "pending_office_payment" | "pending_verification" | "paid" = "pending_verification";
+    if (paymentMethod === "OFFICE") {
+      paymentStatus = "pending_office_payment";
     }
 
-    // Check seat availability
-    if (bus.availableSeats < seats.length) {
-      return NextResponse.json(
-        { success: false, message: 'Not enough seats available' },
-        { status: 400 }
-      );
-    }
-
-    // Get user details
+    // Get user details for name
     const userData = await User.findById(user.userId);
-
-    // Calculate total price
-    const totalSeats = seats.length;
-    const totalPrice = bus.price * totalSeats;
 
     // Create booking
     const booking = await Booking.create({
+      bookingReference: generateBookingReference(),
+      bookingType,
       userId: user.userId,
       userName: userData?.name || 'User',
-      userEmail: userData?.email || '',
-      busId: bus._id,
-      busName: bus.busName,
-      busNumber: bus.busNumber,
-      vendorId: bus.vendorId,
-      from: bus.from,
-      to: bus.to,
-      departureTime: bus.departureTime,
-      arrivalTime: bus.arrivalTime,
-      travelDate: new Date(travelDate),
-      seats,
-      totalSeats,
-      pricePerSeat: bus.price,
-      totalPrice,
-      status: 'pending',
-      paymentStatus: 'pending',
-      passengerDetails: passengerDetails || [],
-    });
-
-    // Update bus available seats
-    await Bus.findByIdAndUpdate(busId, {
-      $inc: { availableSeats: -totalSeats },
+      userEmail: user.email || '',
+      tripDetails,
+      travelers,
+      contact,
+      totalAmount,
+      paymentMethod,
+      paymentStatus,
+      bookingStatus: "pending_payment",
+      holdExpiresAt
     });
 
     return NextResponse.json(
       {
         success: true,
-        message: 'Booking created successfully',
-        booking,
+        message: 'Booking created successfully. Please complete payment within 15 minutes.',
+        bookingReference: booking.bookingReference,
+        holdExpiresAt: booking.holdExpiresAt
       },
       { status: 201 }
     );

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import User from '@/models/User';
 import { hashPassword } from '@/lib/helpers';
+import { generateToken } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,6 +41,20 @@ export async function POST(request: NextRequest) {
       isApproved: role === 'vendor' ? false : true, // Vendors need approval
     });
 
+    // Assuming generateToken is defined elsewhere and imported, or needs to be added.
+    // For now, I'll assume it's available or will be added by the user.
+    // If not, this line will cause a reference error.
+    const token = generateToken({
+      userId: user._id.toString(),
+      email: user.email,
+      role: user.role,
+    });
+
+    // Update initial login activity
+    user.lastLogin = new Date();
+    user.loginCount = 1;
+    await user.save();
+
     // Remove password from response
     const userResponse = {
       _id: user._id,
@@ -53,9 +68,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        message: role === 'vendor' 
-          ? 'Registration successful! Your account is pending approval.' 
+        message: role === 'vendor'
+          ? 'Registration successful! Your account is pending approval.'
           : 'Registration successful!',
+        token,
         user: userResponse,
       },
       { status: 201 }

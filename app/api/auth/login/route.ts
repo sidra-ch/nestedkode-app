@@ -47,6 +47,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Update login activity
+    user.lastLogin = new Date();
+    user.loginCount = (user.loginCount || 0) + 1;
+    await user.save();
+
     // Generate JWT token
     const token = generateToken({
       userId: user._id.toString(),

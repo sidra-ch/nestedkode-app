@@ -567,7 +567,7 @@ export default function BusPage() {
         </section>
       </main>
 
-      <Footer />
+      <Footer showBusLinks={true} />
     </div>
   );
 }

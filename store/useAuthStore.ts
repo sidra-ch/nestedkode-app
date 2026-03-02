@@ -7,6 +7,9 @@ export type User = {
   email: string;
   role: "admin" | "vendor" | "user";
   phone?: string;
+  vendorId?: string;
+  lastLogin?: string;
+  loginCount?: number;
 };
 
 type AuthState = {
