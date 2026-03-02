@@ -6,6 +6,8 @@ import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Calendar, Users, ChevronDown, ArrowRightLeft, Star, Phone, Clock, Shield, Headphones, Compass } from "lucide-react";
+import { formatDualDate } from "@/lib/date-utils";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 
 const provinces = [
   { name: "کابل", icon: "🏛️" },
@@ -366,7 +368,7 @@ export default function ToursPage() {
         <div className="w-full h-[250px] md:h-[350px] lg:h-[400px] relative overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url('/assets/home-page.webp')` }}
+            style={{ backgroundImage: `url('https://res.cloudinary.com/dwmxdyvd2/image/upload/v1772226653/tourimg_fkfaay.webp')` }}
           />
           <div className="absolute inset-0 bg-black/50" />
           <div className="container mx-auto px-4 pt-20 relative z-10">
@@ -447,16 +449,30 @@ export default function ToursPage() {
                 <div className="relative flex-1 min-w-[160px]">
                   <div className="text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">تاریخ</div>
                   <div onClick={() => setDateDropdown(!dateDropdown)} className="w-full px-4 py-3 border border-gray-400 rounded-lg cursor-pointer flex items-center justify-between hover:bg-gray-50 transition">
-                    <span className="text-gray-700">{departureDate || 'انتخاب تاریخ'}</span>
-                    <Calendar className="h-5 text-gray-400" />
+                    <ChevronDown className="h-4 w-4 text-gray-400" />
+                    <span className="font-bold text-gray-900">{departureDate || 'Select Date'}</span>
                   </div>
                   {dateDropdown && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-lg shadow-lg z-50 p-4 space-y-3">
                       <div>
                         <label className="text-sm text-gray-700 mb-2 block text-right font-medium">تاریخ</label>
-                        <input type="date" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} className="w-full px-3 py-2 border rounded-lg text-right" />
+                        <DatePicker
+                          value={departureDate}
+                          onChange={(date: any) => {
+                            const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                            setDepartureDate(dateStr);
+                          }}
+                          calendarPosition="bottom-right"
+                          fixMainPosition
+                          render={(value, openCalendar) => (
+                            <div className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-right text-sm text-gray-900 cursor-pointer flex items-center justify-between" onClick={openCalendar}>
+                              <ChevronDown className="h-4 w-4 text-gray-400" />
+                              <span className="font-bold">{departureDate || "Select Date"}</span>
+                            </div>
+                          )}
+                        />
                       </div>
-                      <button onClick={() => setDateDropdown(false)} className="w-full py-2.5 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600">تایید</button>
+                      <button onClick={() => setDateDropdown(false)} className="w-full py-2.5 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition">تایید</button>
                     </div>
                   )}
                 </div>

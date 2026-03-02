@@ -7,7 +7,7 @@ interface FooterProps {
 }
 
 export default function Footer({ showBusLinks = false }: FooterProps) {
-  const [lang, setLang] = useState(getCurrentLanguage());
+  const [lang, setLang] = useState<any>('fa');
 
   useEffect(() => {
     setLang(getCurrentLanguage());

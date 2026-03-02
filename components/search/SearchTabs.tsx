@@ -6,6 +6,8 @@ import { ChevronDown, ArrowRightLeft, Users } from "lucide-react";
 import { AFGHANISTAN_PROVINCES } from "@/lib/constants/provinces";
 import Toast from "@/components/ui/Toast";
 import type { TabKey } from "@/components/BookingTabs";
+import { formatDualDate } from "@/lib/date-utils";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 
 const inputBase =
   "w-full h-14 px-4 rounded-xl border border-gray-400 text-right text-gray-900 focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-all duration-200 font-bold placeholder:text-gray-400 cursor-pointer";
@@ -37,7 +39,7 @@ type TaxiFormState = {
 const defaultTravel: TravelFormState = {
   origin: "",
   destination: "",
-  departureDate: new Date().toISOString().slice(0, 10),
+  departureDate: "",
   returnDate: "",
   tripType: "oneway",
   adultCount: 1,
@@ -47,7 +49,7 @@ const defaultTravel: TravelFormState = {
 
 const defaultHotel: HotelFormState = {
   city: "",
-  checkIn: new Date().toISOString().slice(0, 10),
+  checkIn: "",
   checkOut: "",
   guests: 1,
 };
@@ -55,7 +57,7 @@ const defaultHotel: HotelFormState = {
 const defaultTaxi: TaxiFormState = {
   origin: "",
   destination: "",
-  date: new Date().toISOString().slice(0, 10),
+  date: "",
 };
 
 interface SearchTabsProps {
@@ -204,8 +206,9 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
       return;
     }
     router.push(
-      `/hotels?city=${encodeURIComponent(hotelForm.city)}&checkIn=${hotelForm.checkIn}&checkOut=${hotelForm.checkOut}&guests=${hotelForm.guests}`
+      `/search-results?type=hotel&city=${encodeURIComponent(hotelForm.city)}&checkIn=${hotelForm.checkIn}&checkOut=${hotelForm.checkOut}&guests=${hotelForm.guests}`
     );
+
   };
 
   const validateAndSubmitTaxi = () => {
@@ -387,24 +390,49 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
               {/* Departure */}
               <div className="w-full">
                 <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">تاریخ رفت</label>
-                <input
-                  type="date"
-                  value={travel.departureDate}
-                  onChange={(e) => setTravel((p) => ({ ...p, departureDate: e.target.value }))}
-                  className={inputBase}
-                />
+                <div className="relative group/date">
+                  <DatePicker
+                    value={travel.departureDate}
+                    onChange={(date: any) => {
+                      const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                      setTravel((p) => ({ ...p, departureDate: dateStr }));
+                    }}
+                    calendarPosition="bottom-right"
+                    fixMainPosition
+                    render={(value, openCalendar) => (
+                      <div className={`${inputBase} flex items-center justify-between text-sm`} onClick={openCalendar}>
+                        <ChevronDown className="h-4 w-4 text-gray-400" />
+                        <span className="font-bold">{travel.departureDate || "Select Date"}</span>
+                      </div>
+                    )}
+                  />
+                </div>
               </div>
 
               {/* Return (flights only) */}
               <div className="w-full">
                 <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">تاریخ برگشت</label>
-                <input
-                  type="date"
-                  value={travel.returnDate}
-                  onChange={(e) => setTravel((p) => ({ ...p, returnDate: e.target.value }))}
-                  className={inputBase}
-                  disabled={travel.tripType !== "roundtrip"}
-                />
+                <div className={`relative group/date ${travel.tripType !== "roundtrip" ? "opacity-50" : ""}`}>
+                  <DatePicker
+                    value={travel.returnDate}
+                    onChange={(date: any) => {
+                      const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                      setTravel((p) => ({ ...p, returnDate: dateStr }));
+                    }}
+                    calendarPosition="bottom-right"
+                    fixMainPosition
+                    disabled={travel.tripType !== "roundtrip"}
+                    render={(value, openCalendar) => (
+                      <div
+                        className={`${inputBase} flex items-center justify-between text-sm ${travel.tripType !== "roundtrip" ? "cursor-not-allowed" : "cursor-pointer"}`}
+                        onClick={travel.tripType === "roundtrip" ? openCalendar : undefined}
+                      >
+                        <ChevronDown className="h-4 w-4 text-gray-400" />
+                        <span className="font-bold">{travel.returnDate || "Select Date"}</span>
+                      </div>
+                    )}
+                  />
+                </div>
               </div>
 
               {/* Passengers */}
@@ -546,22 +574,41 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
             </div>
             <div className="w-full">
               <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">ورود</label>
-              <input
-                type="date"
+              <DatePicker
                 value={hotelForm.checkIn}
-                onChange={(e) => setHotelForm((p) => ({ ...p, checkIn: e.target.value }))}
-                className={inputBase}
+                onChange={(date: any) => {
+                  const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                  setHotelForm((p) => ({ ...p, checkIn: dateStr }));
+                }}
+                calendarPosition="bottom-right"
+                fixMainPosition
+                render={(value, openCalendar) => (
+                  <div className={`${inputBase} flex items-center justify-between text-sm`} onClick={openCalendar}>
+                    <ChevronDown className="h-4 w-4 text-gray-400" />
+                    <span className="font-bold">{hotelForm.checkIn || "Select Date"}</span>
+                  </div>
+                )}
               />
             </div>
             <div className="w-full">
               <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">خروج</label>
-              <input
-                type="date"
+              <DatePicker
                 value={hotelForm.checkOut}
-                onChange={(e) => setHotelForm((p) => ({ ...p, checkOut: e.target.value }))}
-                className={inputBase}
+                onChange={(date: any) => {
+                  const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                  setHotelForm((p) => ({ ...p, checkOut: dateStr }));
+                }}
+                calendarPosition="bottom-right"
+                fixMainPosition
+                render={(value, openCalendar) => (
+                  <div className={`${inputBase} flex items-center justify-between text-sm`} onClick={openCalendar}>
+                    <ChevronDown className="h-4 w-4 text-gray-400" />
+                    <span className="font-bold">{hotelForm.checkOut || "Select Date"}</span>
+                  </div>
+                )}
               />
             </div>
+
             <div className="w-full">
               <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">تعداد مهمان</label>
               <input
@@ -674,11 +721,20 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
             </div>
             <div className="w-full">
               <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">تاریخ</label>
-              <input
-                type="date"
+              <DatePicker
                 value={taxiForm.date}
-                onChange={(e) => setTaxiForm((p) => ({ ...p, date: e.target.value }))}
-                className={inputBase}
+                onChange={(date: any) => {
+                  const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                  setTaxiForm((p) => ({ ...p, date: dateStr }));
+                }}
+                calendarPosition="bottom-right"
+                fixMainPosition
+                render={(value, openCalendar) => (
+                  <div className={`${inputBase} flex items-center justify-between text-sm`} onClick={openCalendar}>
+                    <ChevronDown className="h-4 w-4 text-gray-400" />
+                    <span className="font-bold">{taxiForm.date || "Select Date"}</span>
+                  </div>
+                )}
               />
             </div>
             <button

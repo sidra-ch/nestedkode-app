@@ -56,6 +56,11 @@ function BusBookingContent() {
 
   const { user: authUser, isAuthenticated, register, login } = useAuthStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lang, setLang] = useState<any>('fa');
+
+  useEffect(() => {
+    setLang(getCurrentLanguage());
+  }, []);
 
   // Pre-fill user data if authenticated
   useEffect(() => {
@@ -138,7 +143,7 @@ function BusBookingContent() {
   const orig = bus?.origin || bus?.from || "کابل";
   const dest = bus?.destination || bus?.to || "مزار شریف";
   const prc = bus?.price || 800;
-  const lang = getCurrentLanguage();
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

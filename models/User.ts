@@ -1,18 +1,17 @@
-import mongoose, { Schema, Model } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
-export interface IUser {
-  _id?: string;
+export interface IUser extends Document {
   name: string;
   email: string;
-  password: string;
-  role: 'user' | 'vendor' | 'admin';
+  password?: string; // Optional for OTP-only users
+  role: 'user' | 'vendor' | 'admin' | 'agency_admin';
   phone?: string;
-  vendorId?: string;
-  isApproved: boolean;
+  agencyId?: mongoose.Types.ObjectId;
+  isVerified: boolean;
   lastLogin?: Date;
   loginCount?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -28,28 +27,28 @@ const UserSchema = new Schema<IUser>(
       unique: true,
       lowercase: true,
       trim: true,
+      index: true,
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
       minlength: [6, 'Password must be at least 6 characters'],
     },
     role: {
       type: String,
-      enum: ['user', 'vendor', 'admin'],
+      enum: ['user', 'vendor', 'admin', 'agency_admin'],
       default: 'user',
     },
     phone: {
       type: String,
       trim: true,
     },
-    vendorId: {
-      type: String,
-      trim: true,
+    agencyId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Agency',
     },
-    isApproved: {
+    isVerified: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     lastLogin: {
       type: Date,
@@ -63,7 +62,6 @@ const UserSchema = new Schema<IUser>(
     timestamps: true,
   }
 );
-
 
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
 

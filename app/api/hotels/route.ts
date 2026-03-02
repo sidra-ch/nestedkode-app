@@ -1,123 +1,53 @@
-import { NextRequest, NextResponse } from "next/server";
-import connectDB from "@/lib/db";
+import { NextResponse } from "next/server";
+import dbConnect from "@/lib/db";
 import Hotel from "@/models/Hotel";
-import { verifyToken } from "@/lib/auth";
+import Booking from "@/models/Booking";
 
-// GET /api/hotels - Search and list hotels
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   try {
-    await connectDB();
-
+    await dbConnect();
     const { searchParams } = new URL(request.url);
     const city = searchParams.get("city");
-    const stars = searchParams.get("stars");
-    const type = searchParams.get("type");
-    const minPrice = searchParams.get("minPrice");
-    const maxPrice = searchParams.get("maxPrice");
-    const vendorId = searchParams.get("vendorId");
 
-    const query: any = { isActive: true };
-
-    if (city) query.city = city;
-    if (stars) query.stars = parseInt(stars);
-    if (type) query.type = type;
-    if (vendorId) query.vendorId = vendorId;
-
-    if (minPrice || maxPrice) {
-      query["rooms.price"] = {};
-      if (minPrice) query["rooms.price"].$gte = parseInt(minPrice);
-      if (maxPrice) query["rooms.price"].$lte = parseInt(maxPrice);
+    // Basic query
+    let query: any = {};
+    if (city) {
+      query.city = { $regex: new RegExp(city, "i") };
     }
 
-    const hotels = await Hotel.find(query)
-      .sort({ rating: -1, stars: -1 })
-      .lean();
+    const hotels = await Hotel.find(query).sort({ rating: -1 }).lean();
 
-    return NextResponse.json({
-      success: true,
-      count: hotels.length,
-      hotels,
+    // PRODUCTION HARDENING: Filter rooms based on active holds/bookings
+    // 1. Get all active bookings/holds for these hotels
+    const hotelIds = hotels.map(h => h._id.toString());
+    const activeBookings = await Booking.find({
+      "tripDetails.hotelId": { $in: hotelIds },
+      bookingStatus: { $ne: "cancelled" },
+      holdExpiresAt: { $gt: new Date() } // Only count if not expired
+    }).lean();
+
+    // 2. Adjust availableRooms in memory for this search
+    const hotelsWithAvailability = hotels.map((hotel: any) => {
+      if (!hotel.rooms) return hotel;
+
+      const refinedRooms = hotel.rooms.map((room: any) => {
+        const heldCount = activeBookings.filter(b =>
+          b.tripDetails.hotelId === hotel._id.toString() &&
+          b.tripDetails.roomId === (room._id || room.roomType)
+        ).length;
+
+        return {
+          ...room,
+          availableRooms: Math.max(0, room.availableRooms - heldCount)
+        };
+      });
+
+      return { ...hotel, rooms: refinedRooms };
     });
-  } catch (error: any) {
+
+    return NextResponse.json({ success: true, hotels: hotelsWithAvailability });
+  } catch (error) {
     console.error("Error fetching hotels:", error);
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
-  }
-}
-
-// POST /api/hotels - Create new hotel (vendor/admin only)
-export async function POST(request: NextRequest) {
-  try {
-    const token = request.headers.get("authorization")?.replace("Bearer ", "");
-    if (!token) {
-      return NextResponse.json(
-        { success: false, error: "غیر مجاز" },
-        { status: 401 }
-      );
-    }
-
-    const decoded = verifyToken(token);
-    if (!decoded || (decoded.role !== "vendor" && decoded.role !== "admin")) {
-      return NextResponse.json(
-        { success: false, error: "دسترسی غیر مجاز" },
-        { status: 403 }
-      );
-    }
-
-    await connectDB();
-
-    const body = await request.json();
-
-    // Validate required fields
-    const requiredFields = [
-      "name",
-      "description",
-      "city",
-      "address",
-      "stars",
-      "type",
-      "rooms",
-    ];
-
-    for (const field of requiredFields) {
-      if (!body[field]) {
-        return NextResponse.json(
-          { success: false, error: `فیلد ${field} الزامی است` },
-          { status: 400 }
-        );
-      }
-    }
-
-    // Validate rooms
-    if (!Array.isArray(body.rooms) || body.rooms.length === 0) {
-      return NextResponse.json(
-        { success: false, error: "حداقل یک نوع اتاق باید تعریف شود" },
-        { status: 400 }
-      );
-    }
-
-    const hotelData = {
-      ...body,
-      vendorId: decoded.role === "vendor" ? decoded.userId : body.vendorId,
-    };
-
-    const hotel = await Hotel.create(hotelData);
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: "هتل با موفقیت ایجاد شد",
-        hotel,
-      },
-      { status: 201 }
-    );
-  } catch (error: any) {
-    console.error("Error creating hotel:", error);
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Failed to fetch hotels" }, { status: 500 });
   }
 }

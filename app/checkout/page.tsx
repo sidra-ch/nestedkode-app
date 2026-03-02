@@ -19,6 +19,8 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { motion, AnimatePresence } from "framer-motion";
 
+import BranchesMap from "@/components/maps/BranchesMap";
+
 // --- Types ---
 type Passenger = {
     fullName: string;
@@ -37,6 +39,19 @@ type ContactInfo = {
 };
 
 type PaymentMethod = "OFFICE" | "BANK" | "MPAISA";
+
+interface Branch {
+    _id: string;
+    name: string;
+    city: string;
+    address: string;
+    phone: string;
+    whatsapp: string;
+    email: string;
+    latitude: number;
+    longitude: number;
+    isMainBranch: boolean;
+}
 
 // --- Mock / Props Data ---
 const TRIP_DETAILS = {
@@ -68,12 +83,42 @@ function CheckoutContent() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSummaryMobile, setShowSummaryMobile] = useState(false);
 
+    const [branches, setBranches] = useState<Branch[]>([]);
+    const [selectedBranchId, setSelectedBranchId] = useState<string | undefined>(undefined);
+
+    // Fetch branches
+    useEffect(() => {
+        fetch('/api/branches')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    setBranches(data.branches);
+                }
+            });
+    }, []);
+
     // Timer logic
     useEffect(() => {
         if (timeLeft <= 0) return;
         const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
         return () => clearInterval(timer);
     }, [timeLeft]);
+
+    // Auto-select nearest branch based on city
+    useEffect(() => {
+        if (contact.city && branches.length > 0) {
+            const nearestBranch = branches.find(b =>
+                b.city.toLowerCase().includes(contact.city.toLowerCase()) ||
+                contact.city.toLowerCase().includes(b.city.toLowerCase())
+            );
+            if (nearestBranch) {
+                setSelectedBranchId(nearestBranch._id);
+            } else {
+                const mainBranch = branches.find(b => b.isMainBranch);
+                if (mainBranch) setSelectedBranchId(mainBranch._id);
+            }
+        }
+    }, [contact.city, branches]);
 
     const formatTime = (seconds: number) => {
         const min = Math.floor(seconds / 60);
@@ -109,11 +154,13 @@ function CheckoutContent() {
         // TODO: Connect to API
         setTimeout(() => {
             setIsSubmitting(false);
-            router.push("/booking/confirmation/AFB-2024-00001");
+            router.push("/booking-confirm/AFB-2024-00001");
         }, 1500);
     };
 
     const totalPrice = passengers.length * TRIP_DETAILS.pricePerPerson;
+
+    const selectedBranch = branches.find(b => b._id === selectedBranchId);
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col font-['Vazirmatn']" dir="rtl">
@@ -250,6 +297,16 @@ function CheckoutContent() {
                                             className="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl px-5 py-3 text-left outline-none focus:border-[#D4AF37] transition"
                                         />
                                     </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-700">ولایت / شهر</label>
+                                        <input
+                                            required
+                                            value={contact.city}
+                                            onChange={e => setContact({ ...contact, city: e.target.value })}
+                                            placeholder="کابل"
+                                            className="w-full bg-gray-50 border-2 border-gray-100 rounded-2xl px-5 py-3 outline-none focus:border-[#D4AF37] transition"
+                                        />
+                                    </div>
                                 </div>
                             </section>
 
@@ -288,11 +345,42 @@ function CheckoutContent() {
                                 {/* Conditional Fields */}
                                 <AnimatePresence mode="wait">
                                     {selectedPayment === "OFFICE" && (
-                                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="p-6 bg-blue-50/50 rounded-3xl border border-blue-100">
-                                            <p className="text-sm font-bold text-[#002855] leading-relaxed">
-                                                لطفا پس از تایید رزرو، حداکثر تا ۲ ساعت به نزدیک‌ترین دفتر افغانی‌بابا در شهر خود مراجعه کنید.
-                                                <br /><span className="text-gray-500 font-medium">آدرس: چهارراهی حاجی یعقوب، کابل، افغانستان</span>
-                                            </p>
+                                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="space-y-4">
+                                            <div className="p-6 bg-blue-50/50 rounded-3xl border border-blue-100">
+                                                <p className="text-sm font-bold text-[#002855] leading-relaxed">
+                                                    لطفا پس از تایید رزرو، حداکثر تا ۲ ساعت به نزدیک‌ترین دفتر افغانی‌بابا در شهر خود مراجعه کنید.
+                                                </p>
+                                                {selectedBranch && (
+                                                    <p className="text-gray-500 font-medium text-xs mt-2">
+                                                        <MapPin size={12} className="inline ml-1" />
+                                                        آدرس منتخب: {selectedBranch.address}
+                                                    </p>
+                                                )}
+                                            </div>
+
+                                            {/* Branch Selector Dropdown */}
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-700">انتخاب دفتر جهت پرداخت</label>
+                                                <select
+                                                    value={selectedBranchId}
+                                                    onChange={(e) => setSelectedBranchId(e.target.value)}
+                                                    className="w-full bg-white border-2 border-gray-100 rounded-2xl px-5 py-3 outline-none focus:border-[#D4AF37] transition font-medium"
+                                                >
+                                                    {branches.map(b => (
+                                                        <option key={b._id} value={b._id}>{b.name} ({b.city})</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+                                            {/* Interactive Map */}
+                                            <div className="h-[300px] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+                                                <BranchesMap
+                                                    branches={branches}
+                                                    selectedBranchId={selectedBranchId}
+                                                    onBranchSelect={(b) => setSelectedBranchId(b._id)}
+                                                    className="h-full w-full"
+                                                />
+                                            </div>
                                         </motion.div>
                                     )}
                                     {selectedPayment === "BANK" && (

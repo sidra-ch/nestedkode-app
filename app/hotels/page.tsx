@@ -6,6 +6,8 @@ import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Calendar, Users, Star, ChevronDown, Plane, Bus, Map, Instagram, Twitter, Facebook, Youtube, Phone, Mail } from "lucide-react";
+import { formatDualDate } from "@/lib/date-utils";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 
 const provinces = [
   { name: "کابل", icon: "🏛️" },
@@ -93,12 +95,14 @@ export default function HotelsPage() {
 
   const handleSearch = () => {
     const searchParams = new URLSearchParams();
-    searchParams.set('destination', selectedDestination);
-    searchParams.set('departure', departureDate);
-    searchParams.set('return', returnDate);
-    searchParams.set('passengers', passengers);
-    window.location.href = `/search-results?type=hotel&${searchParams.toString()}`;
+    searchParams.set('type', 'hotel');
+    searchParams.set('city', selectedDestination);
+    searchParams.set('checkIn', departureDate);
+    searchParams.set('checkOut', returnDate);
+    searchParams.set('guests', passengers);
+    window.location.href = `/search-results?${searchParams.toString()}`;
   };
+
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50" style={{ direction: 'rtl' }}>
@@ -109,16 +113,16 @@ export default function HotelsPage() {
         <div className="w-full h-[300px] md:h-[400px] lg:h-[500px] relative overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url('/assets/home-page.webp')` }}
+            style={{ backgroundImage: `url('https://res.cloudinary.com/dwmxdyvd2/image/upload/v1772226652/hotelimg_exmle5.webp')` }}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50" />
           <div className="container mx-auto px-4 h-full flex items-center relative z-10">
             <div className="max-w-2xl">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                خرید بلیط هواپیما، قطار و اتوبوس
+                رزرو بهترین هتل‌ها در سراسر افغانستان
               </h1>
               <p className="text-lg md:text-xl text-white/90 mb-8">
-                افغانی‌بابا، معتمدترین پلتفرم خرید آنلاین بلیط و خدمات گردشگری
+                با افغانی‌بابا، اقامتی راحت و مطمئن را تجربه کنید
               </p>
             </div>
           </div>
@@ -162,23 +166,49 @@ export default function HotelsPage() {
                 </div>
 
                 <div className="relative">
-                  <label className="text-sm text-gray-900 font-bold mb-2 block text-right">تاریخ ورود</label>
-                  <input
-                    type="date"
-                    value={departureDate}
-                    onChange={(e) => setDepartureDate(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right font-medium text-gray-900"
-                  />
+                  <div className="relative group/date">
+                    <label className="text-sm text-gray-900 font-bold mb-2 block text-right">تاریخ ورود</label>
+                    <div className="relative">
+                      <DatePicker
+                        value={departureDate}
+                        onChange={(date: any) => {
+                          const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                          setDepartureDate(dateStr);
+                        }}
+                        calendarPosition="bottom-right"
+                        fixMainPosition
+                        render={(value, openCalendar) => (
+                          <div className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-right font-medium text-gray-900 text-sm h-[46px] flex items-center justify-between cursor-pointer" onClick={openCalendar}>
+                            <ChevronDown className="h-4 w-4 text-gray-400" />
+                            <span className="font-bold">{departureDate || "Select Date"}</span>
+                          </div>
+                        )}
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="relative">
-                  <label className="text-sm text-gray-900 font-bold mb-2 block text-right">تاریخ خروج</label>
-                  <input
-                    type="date"
-                    value={returnDate}
-                    onChange={(e) => setReturnDate(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right font-medium text-gray-900"
-                  />
+                  <div className="relative group/date">
+                    <label className="text-sm text-gray-900 font-bold mb-2 block text-right">تاریخ خروج</label>
+                    <div className="relative">
+                      <DatePicker
+                        value={returnDate}
+                        onChange={(date: any) => {
+                          const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                          setReturnDate(dateStr);
+                        }}
+                        calendarPosition="bottom-right"
+                        fixMainPosition
+                        render={(value, openCalendar) => (
+                          <div className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-right font-medium text-gray-900 text-sm h-[46px] flex items-center justify-between cursor-pointer" onClick={openCalendar}>
+                            <ChevronDown className="h-4 w-4 text-gray-400" />
+                            <span className="font-bold">{returnDate || "Select Date"}</span>
+                          </div>
+                        )}
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="relative">
@@ -261,7 +291,7 @@ export default function HotelsPage() {
                         <span className="text-sm text-gray-600">{hotel.stars} ستاره</span>
                         <div className="flex items-center gap-1 text-orange-500">
                           <span className="text-sm font-medium">از</span>
-                          <span className="text-lg font-bold">{(Math.random() * 500 + 200).toFixed(0)}</span>
+                          <span className="text-lg font-bold">{((hotel.name.length * 13) % 300) + 200}</span>
                           <span className="text-sm">دالر</span>
                         </div>
                       </div>
@@ -404,97 +434,8 @@ export default function HotelsPage() {
           </div>
         </section>
 
-        {/* Comprehensive Footer */}
-        <footer className="bg-gray-900 text-white">
-          <div className="container mx-auto px-4 py-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-              {/* Company Info */}
-              <div className="lg:col-span-2">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold">اب</span>
-                  </div>
-                  <span className="text-xl font-bold">افغانی‌بابا</span>
-                </div>
-                <p className="text-gray-300 mb-4 text-sm leading-relaxed">
-                  معتمدترین پلتفرم خرید آنلاین بلیط و خدمات گردشگری در افغانستان
-                </p>
-                <div className="flex gap-3">
-                  <a href="#" className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors">
-                    <Instagram className="h-4 w-4" />
-                  </a>
-                  <a href="#" className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors">
-                    <Twitter className="h-4 w-4" />
-                  </a>
-                  <a href="#" className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors">
-                    <Facebook className="h-4 w-4" />
-                  </a>
-                  <a href="#" className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-500 transition-colors">
-                    <Youtube className="h-4 w-4" />
-                  </a>
-                </div>
-              </div>
+        <Footer />
 
-              {/* Services */}
-              <div>
-                <h3 className="font-bold mb-4">خدمات</h3>
-                <ul className="space-y-2 text-sm">
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">بلیط هواپیما</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">بلیط قطار</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">بلیط اتوبوس</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">رزرو هتل</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">تور</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">ویزا</a></li>
-                </ul>
-              </div>
-
-              {/* Company */}
-              <div>
-                <h3 className="font-bold mb-4">شرکت</h3>
-                <ul className="space-y-2 text-sm">
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">درباره ما</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">تماس با ما</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">چرا افغانی‌بابا؟</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">افغانی‌بابا پلاس</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">بیمه مسافرتی</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">مجله افغانی‌بابا</a></li>
-                </ul>
-              </div>
-
-              {/* Support */}
-              <div>
-                <h3 className="font-bold mb-4">پشتیبانی</h3>
-                <ul className="space-y-2 text-sm">
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">مرکز پشتیبانی آنلاین</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">راهنمای خرید</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">راهنمای استرداد</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">قوانین و مقررات</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">سوالات متداول</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">فروش سازمانی</a></li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Contact Info */}
-            <div className="border-t border-gray-800 mt-8 pt-8">
-              <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div className="flex items-center gap-6 text-sm">
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-orange-500" />
-                    <span className="text-gray-300">تلفن پشتیبانی: 021 - 43900000</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-orange-500" />
-                    <span className="text-gray-300">info@afghanibaba.com</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 text-xs text-gray-400">
-                  <span>© 2024 افغانی‌بابا. تمام حقوق محفوظ است.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </footer>
       </main>
     </div>
   );

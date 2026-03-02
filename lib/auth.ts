@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key';
 export interface JWTPayload {
   userId: string;
   email: string;
-  role: 'user' | 'vendor' | 'admin';
+  role: 'user' | 'vendor' | 'admin' | 'agency_admin';
 }
 
 export function generateToken(payload: JWTPayload): string {
@@ -23,20 +23,26 @@ export function verifyToken(token: string): JWTPayload | null {
 
 export function getTokenFromRequest(request: NextRequest): string | null {
   const authHeader = request.headers.get('authorization');
-  
+
   if (authHeader && authHeader.startsWith('Bearer ')) {
     return authHeader.substring(7);
   }
-  
+
   return null;
 }
 
 export function getUserFromRequest(request: NextRequest): JWTPayload | null {
   const token = getTokenFromRequest(request);
-  
+
   if (!token) {
     return null;
   }
-  
+
   return verifyToken(token);
+}
+
+import bcrypt from 'bcryptjs';
+export async function hashOTP(otp: string): Promise<string> {
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(otp, salt);
 }

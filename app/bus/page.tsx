@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { formatDualDate } from "@/lib/date-utils";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import { ChevronDown, ArrowRightLeft, Calendar, Users, Star, MapPin, Clock } from "lucide-react";
 
 interface Bus {
@@ -369,23 +371,39 @@ export default function BusPage() {
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4 space-y-3">
                       <div className="p-3 border border-gray-200 rounded-lg">
                         <label className="text-xs md:text-sm text-gray-700 mb-2 block text-right font-medium">تاریخ رفت</label>
-                        <input
-                          type="date"
+                        <DatePicker
                           value={departureDate}
-                          onChange={(e) => setDepartureDate(e.target.value)}
-                          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-right text-sm md:text-base text-gray-900 cursor-pointer"
-                          onClick={(e) => e.currentTarget.showPicker?.()}
+                          onChange={(date: any) => {
+                            const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                            setDepartureDate(dateStr);
+                          }}
+                          calendarPosition="bottom-right"
+                          fixMainPosition
+                          render={(value, openCalendar) => (
+                            <div className="w-full px-3 py-2.5 border border-gray-300 rounded-lg bg-white text-right text-sm md:text-base text-gray-900 cursor-pointer flex items-center justify-between" onClick={openCalendar}>
+                              <ChevronDown className="h-4 w-4 text-gray-400" />
+                              <span className="font-bold">{departureDate || "Select Date"}</span>
+                            </div>
+                          )}
                         />
                       </div>
 
                       <div className="p-3 border border-gray-200 rounded-lg">
                         <label className="text-xs md:text-sm text-gray-700 mb-2 block text-right font-medium">تاریخ برگشت (اختیاری)</label>
-                        <input
-                          type="date"
+                        <DatePicker
                           value={returnDate}
-                          onChange={(e) => setReturnDate(e.target.value)}
-                          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-right text-sm md:text-base text-gray-900 cursor-pointer"
-                          onClick={(e) => e.currentTarget.showPicker?.()}
+                          onChange={(date: any) => {
+                            const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                            setReturnDate(dateStr);
+                          }}
+                          calendarPosition="bottom-right"
+                          fixMainPosition
+                          render={(value, openCalendar) => (
+                            <div className="w-full px-3 py-2.5 border border-gray-300 rounded-lg bg-white text-right text-sm md:text-base text-gray-900 cursor-pointer flex items-center justify-between" onClick={openCalendar}>
+                              <ChevronDown className="h-4 w-4 text-gray-400" />
+                              <span className="font-bold">{returnDate || "Select Date"}</span>
+                            </div>
+                          )}
                         />
                       </div>
 
@@ -402,12 +420,20 @@ export default function BusPage() {
                 {/* Departure Date - Large Desktop only */}
                 <div className="relative flex-1 min-w-[180px] hidden xl:block">
                   <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ رفت</div>
-                  <input
-                    type="date"
+                  <DatePicker
                     value={departureDate}
-                    onChange={(e) => setDepartureDate(e.target.value)}
-                    className={getInputClass("date")}
-                    onClick={(e) => e.currentTarget.showPicker?.()}
+                    onChange={(date: any) => {
+                      const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                      setDepartureDate(dateStr);
+                    }}
+                    calendarPosition="bottom-right"
+                    fixMainPosition
+                    render={(value, openCalendar) => (
+                      <div className={getInputClass("date") + " flex justify-between items-center"} onClick={openCalendar}>
+                        <ChevronDown className="h-4 w-4 text-gray-400" />
+                        <span className="font-bold">{departureDate || "Select Date"}</span>
+                      </div>
+                    )}
                   />
                   {validationErrors.includes("date") && (
                     <span className="absolute left-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-red-500 font-bold flex items-center justify-center">!</span>
@@ -417,12 +443,20 @@ export default function BusPage() {
                 {/* Return Date - Large Desktop only */}
                 <div className="relative flex-1 min-w-[180px] hidden xl:block">
                   <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ برگشت (اختیاری)</div>
-                  <input
-                    type="date"
+                  <DatePicker
                     value={returnDate}
-                    onChange={(e) => setReturnDate(e.target.value)}
-                    className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer"
-                    onClick={(e) => e.currentTarget.showPicker?.()}
+                    onChange={(date: any) => {
+                      const dateStr = date instanceof DateObject ? date.format("YYYY-MM-DD") : (date ? new Date(date).toISOString().split('T')[0] : "");
+                      setReturnDate(dateStr);
+                    }}
+                    calendarPosition="bottom-right"
+                    fixMainPosition
+                    render={(value, openCalendar) => (
+                      <div className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg bg-white text-right text-sm md:text-base text-gray-900 cursor-pointer flex items-center justify-between" onClick={openCalendar}>
+                        <ChevronDown className="h-4 w-4 text-gray-400" />
+                        <span className="font-bold">{returnDate || "Select Date"}</span>
+                      </div>
+                    )}
                   />
                 </div>
 
