@@ -125,6 +125,9 @@ export default function BusPage() {
   const [returnDate, setReturnDate] = useState("");
   const [passengers, setPassengers] = useState("1 Passenger");
 
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const [showToast, setShowToast] = useState(false);
+
   // Fetch buses from API
   useEffect(() => {
     const fetchBuses = async () => {
@@ -147,6 +150,25 @@ export default function BusPage() {
     fetchBuses();
   }, []);
 
+  // Reactive Validation: Clear errors when inputs are filled
+  useEffect(() => {
+    if (selectedOrigin && validationErrors.includes("origin")) {
+      setValidationErrors(prev => prev.filter(e => e !== "origin"));
+    }
+  }, [selectedOrigin]);
+
+  useEffect(() => {
+    if (selectedDestination && validationErrors.includes("destination")) {
+      setValidationErrors(prev => prev.filter(e => e !== "destination"));
+    }
+  }, [selectedDestination]);
+
+  useEffect(() => {
+    if (departureDate && validationErrors.includes("date")) {
+      setValidationErrors(prev => prev.filter(e => e !== "date"));
+    }
+  }, [departureDate]);
+
   const handleSwapCities = () => {
     const temp = selectedOrigin;
     setSelectedOrigin(selectedDestination);
@@ -154,12 +176,33 @@ export default function BusPage() {
   };
 
   const handleSearch = () => {
+    const errors: string[] = [];
+    if (!selectedOrigin) errors.push("origin");
+    if (!selectedDestination) errors.push("destination");
+    if (!departureDate) errors.push("date");
+
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+      return;
+    }
+
+    setValidationErrors([]);
     const searchParams = new URLSearchParams();
     searchParams.set('from', selectedOrigin);
     searchParams.set('to', selectedDestination);
     searchParams.set('date', departureDate);
     searchParams.set('passengers', passengers);
     window.location.href = `/search-results?type=bus&${searchParams.toString()}`;
+  };
+
+  const getInputClass = (field: string) => {
+    const isError = validationErrors.includes(field);
+    return `w-full px-4 py-3 md:py-3.5 border rounded-lg focus:ring-2 focus:ring-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer transition-colors ${isError
+      ? "border-red-500 bg-red-50 focus:border-red-500 placeholder-red-300"
+      : "border-gray-400 focus:border-orange-500 font-bold text-gray-900 placeholder:text-gray-400"
+      }`;
   };
 
   const getBusTypeLabel = (type: string) => {
@@ -182,10 +225,18 @@ export default function BusPage() {
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url('https://res.cloudinary.com/dwmxdyvd2/image/upload/v1772226635/busimg_p2a9hu.webp')` }}
           />
-          <div className="absolute inset-0 bg-white/60" />
+          <div className="absolute inset-0 bg-black/50" />
           <div className="container mx-auto px-4 pt-20 relative z-10">
           </div>
         </div>
+
+        {/* Validation Toast */}
+        {showToast && (
+          <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] bg-red-500 text-white px-6 py-3 rounded-lg shadow-xl flex items-center gap-3 animate-fade-in-down">
+            <span className="text-xl">⚠️</span>
+            <span className="font-semibold text-sm">لطفاً تمام فیلدهای جستجو را تکمیل کنید.</span>
+          </div>
+        )}
 
         {/* Search Card */}
         <div className="container mx-auto px-4 -mt-16 md:-mt-20 lg:-mt-24 relative z-20 mb-12 md:mb-16">
@@ -196,7 +247,7 @@ export default function BusPage() {
               <div className="flex items-center justify-between gap-2 flex-wrap lg:flex-nowrap">
                 {/* Origin City Dropdown */}
                 <div className="relative flex-1 min-w-[200px]">
-                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مبدا</div>
+                  <div className="text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">مبدا</div>
                   <input
                     type="text"
                     placeholder="Origin (city)"
@@ -212,8 +263,11 @@ export default function BusPage() {
                       setOriginDropdown(true);
                       setOriginSearch(""); // Clear search
                     }}
-                    className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer"
+                    className={getInputClass("origin")}
                   />
+                  {validationErrors.includes("origin") && (
+                    <span className="absolute right-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-red-500 font-bold flex items-center justify-center">!</span>
+                  )}
                   <ChevronDown className="absolute left-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-gray-400 pointer-events-none" />
 
                   {originDropdown && (
@@ -250,7 +304,7 @@ export default function BusPage() {
 
                 {/* Destination City Dropdown */}
                 <div className="relative flex-1 min-w-[200px]">
-                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مقصد</div>
+                  <div className="text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">مقصد</div>
                   <input
                     type="text"
                     placeholder="Destination (city)"
@@ -266,8 +320,11 @@ export default function BusPage() {
                       setDestinationDropdown(true);
                       setDestinationSearch(""); // Clear search
                     }}
-                    className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer"
+                    className={getInputClass("destination")}
                   />
+                  {validationErrors.includes("destination") && (
+                    <span className="absolute right-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-red-500 font-bold flex items-center justify-center">!</span>
+                  )}
                   <ChevronDown className="absolute left-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-gray-400 pointer-events-none" />
 
                   {destinationDropdown && (
@@ -299,10 +356,13 @@ export default function BusPage() {
                   <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ</div>
                   <div
                     onClick={() => setDateDropdown(!dateDropdown)}
-                    className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer flex items-center justify-between"
+                    className={getInputClass("date") + " flex justify-between items-center"}
                   >
                     <span className="text-gray-500">Move date</span>
-                    <Calendar className="h-4 w-4 md:h-5 md:w-5 text-gray-400" />
+                    <div className="flex items-center gap-2">
+                      {validationErrors.includes("date") && <span className="text-red-500 font-bold text-lg">!</span>}
+                      <Calendar className="h-4 w-4 md:h-5 md:w-5 text-gray-400" />
+                    </div>
                   </div>
 
                   {dateDropdown && (
@@ -346,9 +406,12 @@ export default function BusPage() {
                     type="date"
                     value={departureDate}
                     onChange={(e) => setDepartureDate(e.target.value)}
-                    className="w-full px-4 py-3 md:py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-right text-sm md:text-base text-gray-900 cursor-pointer"
+                    className={getInputClass("date")}
                     onClick={(e) => e.currentTarget.showPicker?.()}
                   />
+                  {validationErrors.includes("date") && (
+                    <span className="absolute left-3 top-10 md:top-11 h-4 w-4 md:h-5 md:w-5 text-red-500 font-bold flex items-center justify-center">!</span>
+                  )}
                 </div>
 
                 {/* Return Date - Large Desktop only */}
@@ -463,7 +526,7 @@ export default function BusPage() {
                       <p className="text-3xl font-bold text-orange-500">${bus.price}</p>
                       <p className="text-xs text-gray-600 mb-3">به ازای هر نفر</p>
                       <Link
-                        href={`/bus-booking/${bus._id}`}
+                        href={`/bus-booking/${bus._id}?from=${encodeURIComponent(selectedOrigin || bus.from)}&to=${encodeURIComponent(selectedDestination || bus.to)}&date=${departureDate}&passengers=${passengers}`}
                         className="block w-full rounded-lg px-6 py-3 font-semibold text-center text-white bg-orange-500 hover:bg-orange-600 transition"
                       >
                         رزرو بلیط

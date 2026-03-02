@@ -16,9 +16,29 @@ if (!global.mongoose) {
 }
 
 async function connectDB() {
-  const MONGODB_URI = process.env.MONGODB_URI;
+  let MONGODB_URI = process.env.MONGODB_URI;
   if (!MONGODB_URI) {
     throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+  }
+
+  // FIX FOR WINDOWS NODE.JS DNS BUG:
+  // Node.js on some Windows networks fails to resolve mongodb+srv:// SRV records.
+  // We intercept the Atlas URI and convert it to the direct replica set seedlist format.
+  if (MONGODB_URI.includes("mongodb+srv://") && MONGODB_URI.includes("cluster0.3m6zgzj.mongodb.net")) {
+    const baseUri = "mongodb+srv://mssidrachaudhary_db_user:HUMSAFAR@cluster0.3m6zgzj.mongodb.net";
+    const replacement = "mongodb://mssidrachaudhary_db_user:HUMSAFAR@ac-xc4u4z8-shard-00-00.3m6zgzj.mongodb.net:27017,ac-xc4u4z8-shard-00-01.3m6zgzj.mongodb.net:27017,ac-xc4u4z8-shard-00-02.3m6zgzj.mongodb.net:27017/Humsafardb";
+
+    if (MONGODB_URI.startsWith(baseUri + "/")) {
+      MONGODB_URI = MONGODB_URI.replace(baseUri + "/", replacement);
+    } else {
+      MONGODB_URI = MONGODB_URI.replace(baseUri, replacement);
+    }
+
+    // Ensure SSL and auth options are appended for direct replSets
+    if (!MONGODB_URI.includes("ssl=true")) {
+      const joiner = MONGODB_URI.includes("?") ? "&" : "?";
+      MONGODB_URI += `${joiner}ssl=true&authSource=admin&retryWrites=true&w=majority`;
+    }
   }
 
   if (cached.conn) {

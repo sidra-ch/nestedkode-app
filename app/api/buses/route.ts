@@ -34,6 +34,39 @@ export async function GET(request: NextRequest) {
 
     const buses = await Bus.find(query).sort({ departureTime: 1 });
 
+    if (buses.length === 0) {
+      // Mock data so "search results" is never empty
+      const mockBuses = [
+        {
+          _id: "mock1-" + Date.now(),
+          busName: "SiMPLE Bus",
+          busNumber: "B-123",
+          busType: "VIP",
+          totalSeats: 51,
+          availableSeats: 48,
+          from: from || "کابل",
+          to: to || "مزار شریف",
+          departureTime: "04:00",
+          arrivalTime: "12:00",
+          departureDate: date ? new Date(date) : new Date(),
+          price: 800,
+          amenities: ["TV", "WiFi"],
+          images: [],
+          isActive: true
+        }
+      ];
+
+      return NextResponse.json(
+        {
+          success: true,
+          count: mockBuses.length,
+          buses: mockBuses,
+          isMock: true
+        },
+        { status: 200 }
+      );
+    }
+
     return NextResponse.json(
       {
         success: true,

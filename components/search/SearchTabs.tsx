@@ -8,7 +8,7 @@ import Toast from "@/components/ui/Toast";
 import type { TabKey } from "@/components/BookingTabs";
 
 const inputBase =
-  "w-full h-14 px-4 rounded-xl border border-gray-300 text-right text-gray-900 focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-all duration-200";
+  "w-full h-14 px-4 rounded-xl border border-gray-400 text-right text-gray-900 focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-all duration-200 font-bold placeholder:text-gray-400";
 
 type TravelFormState = {
   origin: string;
@@ -292,7 +292,7 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
             <div className="flex flex-col md:grid md:grid-cols-[1.2fr_auto_1.2fr_1fr_1fr_1fr_auto] gap-4 items-end space-y-3 md:space-y-0">
               {/* Origin */}
               <div className="relative w-full">
-                <label className="block text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مبدا</label>
+                <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">مبدا</label>
                 <input
                   type="text"
                   placeholder={originPlaceholder}
@@ -345,7 +345,7 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
 
               {/* Destination */}
               <div className="relative w-full">
-                <label className="block text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مقصد</label>
+                <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">مقصد</label>
                 <input
                   type="text"
                   placeholder={destPlaceholder}
@@ -386,7 +386,7 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
 
               {/* Departure */}
               <div className="w-full">
-                <label className="block text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ رفت</label>
+                <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">تاریخ رفت</label>
                 <input
                   type="date"
                   value={travel.departureDate}
@@ -397,7 +397,7 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
 
               {/* Return (flights only) */}
               <div className="w-full">
-                <label className="block text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ برگشت</label>
+                <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">تاریخ برگشت</label>
                 <input
                   type="date"
                   value={travel.returnDate}
@@ -409,7 +409,7 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
 
               {/* Passengers */}
               <div className="relative w-full">
-                <label className="block text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مسافران</label>
+                <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">مسافران</label>
                 <button
                   type="button"
                   className={`${inputBase} flex items-center justify-between bg-white`}
@@ -506,7 +506,7 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
         {isHotel && (
           <div className="flex flex-col md:grid md:grid-cols-[1.2fr_1fr_1fr_1fr_auto] gap-4 items-end space-y-3 md:space-y-0">
             <div className="relative w-full md:col-span-1">
-              <label className="block text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">شهر</label>
+              <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">شهر</label>
               <input
                 type="text"
                 placeholder="شهر یا استان"
@@ -545,7 +545,7 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
               )}
             </div>
             <div className="w-full">
-              <label className="block text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">ورود</label>
+              <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">ورود</label>
               <input
                 type="date"
                 value={hotelForm.checkIn}
@@ -554,7 +554,7 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
               />
             </div>
             <div className="w-full">
-              <label className="block text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">خروج</label>
+              <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">خروج</label>
               <input
                 type="date"
                 value={hotelForm.checkOut}
@@ -563,7 +563,7 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
               />
             </div>
             <div className="w-full">
-              <label className="block text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تعداد مهمان</label>
+              <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">تعداد مهمان</label>
               <input
                 type="number"
                 min={1}
@@ -673,7 +673,7 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
               )}
             </div>
             <div className="w-full">
-              <label className="block text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ</label>
+              <label className="block text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">تاریخ</label>
               <input
                 type="date"
                 value={taxiForm.date}

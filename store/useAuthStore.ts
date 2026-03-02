@@ -20,7 +20,7 @@ type AuthState = {
   setToken: (token: string | null) => void;
 };
 
-const API_BASE = typeof window !== "undefined" 
+const API_BASE = typeof window !== "undefined"
   ? process.env.NEXT_PUBLIC_API_URL || ""
   : "";
 
@@ -36,44 +36,45 @@ const useAuthStore = create<AuthState>()(
           const res = await fetch(`${API_BASE}/api/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email: email.trim(), password: password.trim() }),
           });
 
           const contentType = res.headers.get("content-type");
           let data;
+
           if (!res.ok) {
-            // Try to parse JSON, fallback to text
+            // Error handling
             if (contentType && contentType.includes("application/json")) {
               data = await res.json();
             } else {
               const text = await res.text();
-              throw new Error("Login failed: Non-JSON response\n" + text);
+              throw new Error("Login failed \n" + text);
             }
             throw new Error(data?.message || data?.error || "Login failed");
           }
-          // Success: parse JSON
+
+          // Success handling
           if (contentType && contentType.includes("application/json")) {
             data = await res.json();
           } else {
             const text = await res.text();
             throw new Error("Login failed: Non-JSON response\n" + text);
           }
+
           // Map _id to id for frontend consistency
           let user = data.user;
           if (user && user._id) {
             user = { ...user, id: user._id };
             delete user._id;
           }
+
           set({
             token: data.token,
             user,
             isAuthenticated: true,
           });
         } catch (err) {
-          // Only log real errors, not empty objects
-          if (err instanceof Error && err.message && err.message !== "Login failed") {
-            console.error("Login fetch error:", err.message);
-          }
+          console.error("Login fetch error:", err);
           throw err instanceof Error ? err : new Error("Login failed: " + String(err));
         }
       },

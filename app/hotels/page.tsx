@@ -108,11 +108,11 @@ export default function HotelsPage() {
       <main className="flex-1">
         {/* Hero Section with Image */}
         <div className="w-full h-[250px] md:h-[350px] lg:h-[400px] relative overflow-hidden">
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url('/assets/home-page.webp')` }}
           />
-          <div className="absolute inset-0 bg-white/60" />
+          <div className="absolute inset-0 bg-black/50" />
           <div className="container mx-auto px-4 pt-20 relative z-10">
           </div>
         </div>
@@ -123,7 +123,7 @@ export default function HotelsPage() {
             <div className="space-y-4 md:space-y-6">
               <div className="flex items-center gap-3 md:gap-4 flex-wrap lg:flex-nowrap">
                 <div className="relative flex-1 min-w-[180px]">
-                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مقصد یا هتل</div>
+                  <div className="text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">مقصد یا هتل</div>
                   <input
                     type="text"
                     placeholder="شهر یا نام هتل"
@@ -134,7 +134,7 @@ export default function HotelsPage() {
                       if (!e.target.value) setSelectedDestination("");
                     }}
                     onFocus={() => setDestinationDropdown(true)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-right"
+                    className="w-full px-4 py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-orange-500 text-right font-bold text-gray-900 placeholder:text-gray-400"
                   />
                   <ChevronDown className="absolute left-3 top-10 h-5 text-gray-400 pointer-events-none" />
                   {destinationDropdown && (
@@ -154,8 +154,8 @@ export default function HotelsPage() {
                 </div>
 
                 <div className="relative flex-1 min-w-[160px]">
-                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ ورود</div>
-                  <div onClick={() => setDateDropdown(!dateDropdown)} className="w-full px-4 py-3 border border-gray-300 rounded-lg cursor-pointer flex items-center justify-between">
+                  <div className="text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">تاریخ ورود</div>
+                  <div onClick={() => setDateDropdown(!dateDropdown)} className="w-full px-4 py-3 border border-gray-400 rounded-lg cursor-pointer flex items-center justify-between font-bold text-gray-900">
                     <span className="text-gray-500">انتخاب تاریخ</span>
                     <Calendar className="h-5 text-gray-400" />
                   </div>
@@ -175,9 +175,9 @@ export default function HotelsPage() {
                 </div>
 
                 <div className="relative flex-1 min-w-[140px]">
-                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مسافران و اتاق</div>
+                  <div className="text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">مسافران و اتاق</div>
                   <Users className="absolute left-3 top-10 h-5 text-gray-400 pointer-events-none" />
-                  <select value={passengers} onChange={(e) => setPassengers(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-right pr-10">
+                  <select value={passengers} onChange={(e) => setPassengers(e.target.value)} className="w-full px-4 py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-orange-500 text-right pr-10 font-bold text-gray-900">
                     <option value="1 بزرگسال، 1 اتاق">1 بزرگسال، 1 اتاق</option>
                     <option value="2 بزرگسال، 1 اتاق">2 بزرگسال، 1 اتاق</option>
                     <option value="2 بزرگسال، 2 اتاق">2 بزرگسال، 2 اتاق</option>

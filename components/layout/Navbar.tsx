@@ -5,13 +5,13 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
-import { ChevronDown, User, LogOut, LayoutDashboard, Plane, Hotel, Bus, Compass, ShoppingBag, Menu, X, HelpCircle, MapPin, Car } from "lucide-react";
+import { ChevronDown, ChevronRight, User, LogOut, LayoutDashboard, Plane, Hotel, Bus, Compass, ShoppingBag, Menu, X, HelpCircle, MapPin, Car } from "lucide-react";
 
 export default function Navbar() {
-    const pathname = usePathname();
-    const safePathname = pathname || "";
-    const router = useRouter();
-    const { user, isAuthenticated, logout } = useAuthStore();
+  const pathname = usePathname();
+  const safePathname = pathname || "";
+  const router = useRouter();
+  const { user, isAuthenticated, logout } = useAuthStore();
   const [flightDropdownOpen, setFlightDropdownOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -26,20 +26,31 @@ export default function Navbar() {
 
   // Hydration-safe: use only Tailwind/static classes for sticky bar
 
-    return (
-      <nav
-        className="sticky top-0 left-0 right-0 z-[100] bg-white border-b border-gray-300 shadow-sm"
-        style={{ direction: "rtl", paddingTop: "env(safe-area-inset-top, 0px)" }}
-      >
-        <div className="container mx-auto px-3 sm:px-4">
-          <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 px-2 sm:px-0">
-          {/* Mobile Menu Button - Left Side on Mobile (RTL) */}
-          <button
-            className="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <Menu className="h-6 w-6" />
-          </button>
+  return (
+    <nav
+      className="sticky top-0 left-0 right-0 z-[100] bg-white border-b border-gray-300 shadow-sm"
+      style={{ direction: "rtl", paddingTop: "env(safe-area-inset-top, 0px)" }}
+    >
+      <div className="container mx-auto px-3 sm:px-4">
+        <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 px-2 sm:px-0">
+          {/* Mobile Back & Menu Buttons - Left Side on Mobile (RTL) */}
+          <div className="md:hidden flex items-center gap-1">
+            <button
+              className="p-2 text-gray-700 hover:bg-gray-100 rounded-lg"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+            {safePathname !== "/" && (
+              <button
+                onClick={() => router.back()}
+                className="p-2 text-gray-700 hover:bg-gray-100 rounded-lg flex items-center gap-1"
+                aria-label="Back"
+              >
+                <ChevronRight className="h-6 w-6 text-orange-500" />
+              </button>
+            )}
+          </div>
 
           {/* Desktop: Logo and Nav Links together on right (RTL) */}
           <div className="hidden md:flex items-center gap-2">
@@ -160,106 +171,106 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        </div>
+      </div>
 
-        {/* Mobile Menu Overlay */}
-        {mobileMenuOpen && (
-          <div className="fixed inset-0 z-[200] md:hidden">
-            {/* Backdrop */}
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[200] md:hidden">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
 
-            {/* Drawer */}
-            <div className="absolute right-0 top-0 bottom-0 w-[280px] bg-white shadow-2xl flex flex-col">
-              <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
-                <span className="font-bold text-lg">افغانی‌بابا</span>
-                <button onClick={() => setMobileMenuOpen(false)} className="p-2 bg-white rounded-full hover:bg-gray-100 transition">
-                  <X className="h-5 w-5 text-gray-500" />
+          {/* Drawer */}
+          <div className="absolute right-0 top-0 bottom-0 w-[280px] bg-white shadow-2xl flex flex-col">
+            <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+              <span className="font-bold text-lg">افغانی‌بابا</span>
+              <button onClick={() => setMobileMenuOpen(false)} className="p-2 bg-white rounded-full hover:bg-gray-100 transition">
+                <X className="h-5 w-5 text-gray-500" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto py-2">
+              <div className="px-4 py-2">
+                <p className="text-xs font-semibold text-gray-500 mb-2">خدمات گردشگری</p>
+                <div className="space-y-1">
+                  <Link href="/flights" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
+                    <Plane className="h-5 w-5" />
+                    <span className="font-medium">بلیط هواپیما</span>
+                  </Link>
+                  <Link href="/bus" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
+                    <Bus className="h-5 w-5" />
+                    <span className="font-medium">بلیط اتوبوس</span>
+                  </Link>
+                  <Link href="/tour" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
+                    <Compass className="h-5 w-5" />
+                    <span className="font-medium">تور مسافرتی</span>
+                  </Link>
+                  <Link href="/hotels" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
+                    <Hotel className="h-5 w-5" />
+                    <span className="font-medium">هتل</span>
+                  </Link>
+                  <Link href="/taxi" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
+                    <Car className="h-5 w-5" />
+                    <span className="font-medium">تاکسی</span>
+                  </Link>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-100 my-2"></div>
+
+              <div className="px-4 py-2">
+                <p className="text-xs font-semibold text-gray-500 mb-2">سایر</p>
+                <div className="space-y-1">
+                  <Link href="/help-center" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition">
+                    <HelpCircle className="h-5 w-5" />
+                    <span className="font-medium">مرکز پشتیبانی</span>
+                  </Link>
+                  <Link href="/my-bookings" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition">
+                    <MapPin className="h-5 w-5" />
+                    <span className="font-medium">سفرهای من</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {isAuthenticated && user && (
+              <div className="p-4 border-t border-gray-100 bg-gray-50">
+                <button onClick={handleLogout} className="flex items-center justify-center gap-2 w-full py-3 bg-white border border-gray-200 text-red-600 rounded-lg hover:bg-red-50 transition font-medium">
+                  <LogOut className="h-5 w-5" />
+                  <span>خروج از حساب</span>
                 </button>
               </div>
-
-              <div className="flex-1 overflow-y-auto py-2">
-                <div className="px-4 py-2">
-                  <p className="text-xs font-semibold text-gray-500 mb-2">خدمات گردشگری</p>
-                  <div className="space-y-1">
-                    <Link href="/flights" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
-                      <Plane className="h-5 w-5" />
-                      <span className="font-medium">بلیط هواپیما</span>
-                    </Link>
-                    <Link href="/bus" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
-                      <Bus className="h-5 w-5" />
-                      <span className="font-medium">بلیط اتوبوس</span>
-                    </Link>
-                    <Link href="/tour" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
-                      <Compass className="h-5 w-5" />
-                      <span className="font-medium">تور مسافرتی</span>
-                    </Link>
-                    <Link href="/hotels" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
-                      <Hotel className="h-5 w-5" />
-                      <span className="font-medium">هتل</span>
-                    </Link>
-                    <Link href="/taxi" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
-                      <Car className="h-5 w-5" />
-                      <span className="font-medium">تاکسی</span>
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="border-t border-gray-100 my-2"></div>
-
-                <div className="px-4 py-2">
-                  <p className="text-xs font-semibold text-gray-500 mb-2">سایر</p>
-                  <div className="space-y-1">
-                    <Link href="/help-center" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition">
-                      <HelpCircle className="h-5 w-5" />
-                      <span className="font-medium">مرکز پشتیبانی</span>
-                    </Link>
-                    <Link href="/my-bookings" className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition">
-                      <MapPin className="h-5 w-5" />
-                      <span className="font-medium">سفرهای من</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
-              {isAuthenticated && user && (
-                <div className="p-4 border-t border-gray-100 bg-gray-50">
-                  <button onClick={handleLogout} className="flex items-center justify-center gap-2 w-full py-3 bg-white border border-gray-200 text-red-600 rounded-lg hover:bg-red-50 transition font-medium">
-                    <LogOut className="h-5 w-5" />
-                    <span>خروج از حساب</span>
-                  </button>
-                </div>
-              )}
-            </div>
+            )}
           </div>
-        )}
-        {/* Mobile: Sticky Icon Bar (hidden initially, shown on scroll via JS) */}
-        <div
-          id="mobile-sticky-icons"
-          className="fixed bottom-0 left-0 right-0 z-[120] border-t border-gray-200 bg-white flex justify-around items-center py-2 md:hidden transition-all duration-300 shadow-[0_-2px_8px_rgba(0,0,0,0.04)] pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))]"
-          /* Removed all dynamic style props for hydration safety */
-        >
-          <Link href="/flights" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/flights') ? 'text-orange-500' : 'text-gray-600'}`}>
-            <Plane className="h-6 w-6 mb-1" color={safePathname.startsWith('/flights') ? '#f97316' : '#4b5563'} />
-            <span className="hidden xs:block">پرواز</span>
-          </Link>
-          <Link href="/bus" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/bus') ? 'text-orange-500' : 'text-gray-600'}`}>
-            <Bus className="h-6 w-6 mb-1" color={safePathname.startsWith('/bus') ? '#f97316' : '#4b5563'} />
-            <span className="hidden xs:block">اتوبوس</span>
-          </Link>
-          <Link href="/hotels" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/hotels') ? 'text-orange-500' : 'text-gray-600'}`}>
-            <Hotel className="h-6 w-6 mb-1" color={safePathname.startsWith('/hotels') ? '#f97316' : '#4b5563'} />
-            <span className="hidden xs:block">هتل</span>
-          </Link>
-          <Link href="/tour" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/tour') ? 'text-orange-500' : 'text-gray-600'}`}>
-            <Compass className="h-6 w-6 mb-1" color={safePathname.startsWith('/tour') ? '#f97316' : '#4b5563'} />
-            <span className="hidden xs:block">تور</span>
-          </Link>
-          <Link href="/taxi" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/taxi') ? 'text-orange-500' : 'text-gray-600'}`}>
-            <Car className="h-6 w-6 mb-1" color={safePathname.startsWith('/taxi') ? '#f97316' : '#4b5563'} />
-            <span className="hidden xs:block">تاکسی</span>
-          </Link>
         </div>
-        {/* Mobile navbar color change on scroll handled in React useEffect */}
-      </nav>
-    );
+      )}
+      {/* Mobile: Sticky Icon Bar (hidden initially, shown on scroll via JS) */}
+      <div
+        id="mobile-sticky-icons"
+        className="fixed bottom-0 left-0 right-0 z-[120] border-t border-gray-200 bg-white flex justify-around items-center py-2 md:hidden transition-all duration-300 shadow-[0_-2px_8px_rgba(0,0,0,0.04)] pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))]"
+      /* Removed all dynamic style props for hydration safety */
+      >
+        <Link href="/flights" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/flights') ? 'text-orange-500' : 'text-gray-600'}`}>
+          <Plane className="h-6 w-6 mb-1" color={safePathname.startsWith('/flights') ? '#f97316' : '#4b5563'} />
+          <span className="hidden xs:block">پرواز</span>
+        </Link>
+        <Link href="/bus" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/bus') ? 'text-orange-500' : 'text-gray-600'}`}>
+          <Bus className="h-6 w-6 mb-1" color={safePathname.startsWith('/bus') ? '#f97316' : '#4b5563'} />
+          <span className="hidden xs:block">اتوبوس</span>
+        </Link>
+        <Link href="/hotels" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/hotels') ? 'text-orange-500' : 'text-gray-600'}`}>
+          <Hotel className="h-6 w-6 mb-1" color={safePathname.startsWith('/hotels') ? '#f97316' : '#4b5563'} />
+          <span className="hidden xs:block">هتل</span>
+        </Link>
+        <Link href="/tour" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/tour') ? 'text-orange-500' : 'text-gray-600'}`}>
+          <Compass className="h-6 w-6 mb-1" color={safePathname.startsWith('/tour') ? '#f97316' : '#4b5563'} />
+          <span className="hidden xs:block">تور</span>
+        </Link>
+        <Link href="/taxi" className={`flex flex-col items-center font-bold text-xs ${safePathname.startsWith('/taxi') ? 'text-orange-500' : 'text-gray-600'}`}>
+          <Car className="h-6 w-6 mb-1" color={safePathname.startsWith('/taxi') ? '#f97316' : '#4b5563'} />
+          <span className="hidden xs:block">تاکسی</span>
+        </Link>
+      </div>
+      {/* Mobile navbar color change on scroll handled in React useEffect */}
+    </nav>
+  );
 }

@@ -147,11 +147,11 @@ function TaxiPageContent() {
       <main className="flex-1">
         {/* Hero Section with Image */}
         <section className="relative h-72 overflow-hidden">
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url('/assets/taxi1.jpg')` }}
           />
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/50" />
           <div className="relative z-10 mx-auto h-full max-w-6xl px-4 flex flex-col justify-center">
             <h1 className="text-4xl font-bold text-white mb-3">تاکسی بین‌شهری</h1>
             <p className="text-white/90">سفری راحت و امن با تاکسی‌های معتبر</p>
@@ -273,7 +273,7 @@ function TaxiPageContent() {
                       <p className="text-xs text-gray-500 mb-1">قیمت</p>
                       <p className="text-3xl font-bold text-orange-500">{taxi.price}</p>
                       <p className="text-xs text-gray-600 mb-3">افغانی</p>
-                      <button 
+                      <button
                         className="w-full rounded-lg px-6 py-3 font-semibold text-white bg-orange-500 hover:bg-orange-600 transition"
                       >
                         رزرو تاکسی

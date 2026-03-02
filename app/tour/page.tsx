@@ -59,7 +59,7 @@ const tours: Tour[] = [
     duration: "۳ روز - هتل ۴ ستاره",
     price: 250,
     priceUSD: 180,
-    image: "/assets/tour1.jpg",
+    image: "/assets/bamyan-tour.jpg",
     category: "domestic",
     rating: 4.8,
     reviews: 124,
@@ -72,7 +72,7 @@ const tours: Tour[] = [
     duration: "۴ روز - هتل ۴ ستاره",
     price: 320,
     priceUSD: 230,
-    image: "/assets/tour2.jpg",
+    image: "/assets/heart-tour.jpg",
     category: "domestic",
     rating: 4.6,
     reviews: 89,
@@ -85,7 +85,7 @@ const tours: Tour[] = [
     duration: "۲ روز - هتل ۳ ستاره",
     price: 180,
     priceUSD: 130,
-    image: "/assets/tour3.jpg",
+    image: "/assets/mazar-tour.jpg",
     category: "domestic",
     rating: 4.7,
     reviews: 198,
@@ -98,7 +98,7 @@ const tours: Tour[] = [
     duration: "۳ روز - هتل ۳ ستاره",
     price: 200,
     priceUSD: 145,
-    image: "/assets/tour4.jpg",
+    image: "/assets/kandahar-tour.jpg",
     category: "domestic",
     rating: 4.4,
     reviews: 52,
@@ -111,7 +111,7 @@ const tours: Tour[] = [
     duration: "۱ روز - بدون پرواز",
     price: 80,
     priceUSD: 55,
-    image: "/assets/tour5.jpg",
+    image: "/assets/kabul-tour.jpg",
     category: "oneday",
     rating: 4.5,
     reviews: 67,
@@ -120,11 +120,11 @@ const tours: Tour[] = [
   {
     id: 6,
     title: "تور غزنی ۲ روزه",
-    description: "بازدید از آرامگاه احمد شاه درانی و اماکن تاریخی",
+    description: "بازدید از مناره‌های باستانی و اماکن تاریخی غزنی",
     duration: "۲ روز - هتل ۳ ستاره",
     price: 150,
     priceUSD: 110,
-    image: "/assets/tour6.jpg",
+    image: "/assets/ghazni-tour.jpg",
     category: "domestic",
     rating: 4.5,
     reviews: 45,
@@ -146,11 +146,11 @@ const tours: Tour[] = [
   {
     id: 8,
     title: "تور تخار ۲ روزه",
-    description: "بازدید از تاریخ کهن و فرهنگ باستانی تخار",
+    description: "بازدید از طبیعت زیبای شمال و چشمه‌های طبیعی",
     duration: "۲ روز - هتل ۳ ستاره",
     price: 170,
     priceUSD: 125,
-    image: "/assets/mazar-hero.jpg",
+    image: "/assets/tour1.jpg",
     category: "domestic",
     rating: 4.3,
     reviews: 36,
@@ -159,7 +159,7 @@ const tours: Tour[] = [
   {
     id: 9,
     title: "تاکسی شهری کابل",
-    description: "بازدید از ارگ، موزه ملی، بازار و مرکز شهر",
+    description: "گشت‌وگذار در پایتخت با راهنمای مجرب",
     duration: "۱ روز - تاکسی اختصاصی",
     price: 50,
     priceUSD: 35,
@@ -172,7 +172,7 @@ const tours: Tour[] = [
   {
     id: 10,
     title: "تاکسی بامیان",
-    description: "بازدید از بت‌های بامیان، دریاچه بند امیر و غار بامیان",
+    description: "ترانسفر اختصاصی به تمام نقاط دیدنی بامیان",
     duration: "۱ روز - تاکسی اختصاصی",
     price: 80,
     priceUSD: 55,
@@ -185,7 +185,7 @@ const tours: Tour[] = [
   {
     id: 11,
     title: "تاکسی مزار شریف",
-    description: "بازدید از آرامگاه Imam علی (ع)، موزه و بازار قدیم",
+    description: "ایاب و ذهاب راحت در شهر مزار و اطراف",
     duration: "۱ روز - تاکسی اختصاصی",
     price: 60,
     priceUSD: 42,
@@ -198,7 +198,7 @@ const tours: Tour[] = [
   {
     id: 12,
     title: "تاکسی هرات",
-    description: "بازدید از قلعه هرات، مسجد شمس‌الائمه و بازار تیموری",
+    description: "بازدید از اماکن تاریخی هرات با تاکسی لوکس",
     duration: "۱ روز - تاکسی اختصاصی",
     price: 70,
     priceUSD: 48,
@@ -211,11 +211,11 @@ const tours: Tour[] = [
   {
     id: 13,
     title: "جشنواره بهار بامیان",
-    description: "جشنواره فرهنگی بهار با موسیقی محلی، رقص سنتی و غذاهای محلی",
+    description: "موسیقی محلی، رقص سنتی و غذاهای محلی بامیان",
     duration: "۲ روز - هتل ۴ ستاره",
     price: 180,
     priceUSD: 130,
-    image: "/assets/bamyan-tour.jpg",
+    image: "/assets/tour2.jpg",
     category: "exhibition",
     rating: 4.9,
     reviews: 210,
@@ -224,11 +224,11 @@ const tours: Tour[] = [
   {
     id: 14,
     title: "نمایشگاه صنایع دستی کابل",
-    description: "بازدید از نمایشگاه صنایع دستی افغانی با امکان خرید مستقیم از تولیدکنندگان",
+    description: "صنایع دستی اصیل افغانی در قلب پایتخت",
     duration: "۱ روز - بدون اقامت",
     price: 30,
     priceUSD: 20,
-    image: "/assets/kabul-hero.jpg",
+    image: "/assets/tour4.jpg",
     category: "exhibition",
     rating: 4.6,
     reviews: 145,
@@ -236,38 +236,38 @@ const tours: Tour[] = [
   },
   {
     id: 15,
-    title: "مراسم عاشورای هرات",
-    description: "شرکت در مراسم مذهبی و عزاداری در شهر تاریخی هرات با بازدید از مساجد قدیمی",
+    title: "مراسم نوروز در مزار شریف",
+    description: "شرکت در جشن میله گل سرخ و برافراشتن جنده سخی",
     duration: "۲ روز - هتل ۳ ستاره",
     price: 120,
     priceUSD: 85,
-    image: "/assets/herat-hero.jpg",
+    image: "/assets/tour3.jpg",
     category: "exhibition",
     rating: 4.8,
     reviews: 89,
-    city: "هرات",
-  },
-  {
-    id: 16,
-    title: "جشنواره موسیقی مقامات",
-    description: "اجرای زنده موسیقی مقامات افغانی توسط هنرمندان برجسته کشور",
-    duration: "۱ روز - بدون اقامت",
-    price: 25,
-    priceUSD: 18,
-    image: "/assets/mazar-hero.jpg",
-    category: "exhibition",
-    rating: 4.7,
-    reviews: 178,
     city: "مزار شریف",
   },
   {
+    id: 16,
+    title: "جشنواره موسیقی در هرات",
+    description: "اجرای زنده موسیقی دوتار و هنرمندان هراتی",
+    duration: "۱ روز - بدون اقامت",
+    price: 25,
+    priceUSD: 18,
+    image: "/assets/tour6.jpg",
+    category: "exhibition",
+    rating: 4.7,
+    reviews: 178,
+    city: "هرات",
+  },
+  {
     id: 17,
-    title: "بازار نوروزی کابل",
-    description: "بازدید از بازار ویژه نوروزی با صنایع دستی، لباس‌های سنتی و شیرینی‌های محلی",
+    title: "نمایشگاه کتاب کابل",
+    description: "گردهمایی ناشران و نویسندگان برتر در پایتخت",
     duration: "۱ روز - بدون اقامت",
     price: 20,
     priceUSD: 15,
-    image: "/assets/kabul-hero.jpg",
+    image: "/assets/tour5.jpg",
     category: "exhibition",
     rating: 4.5,
     reviews: 92,
@@ -276,11 +276,11 @@ const tours: Tour[] = [
   {
     id: 18,
     title: "مسابقه بزکشی بامیان",
-    description: "شرکت در مسابقات سنتی بزکشی و آشنایی با فرهنگ عشایری افغانستان",
-    duration: "۱ روز - تاکسی اختصاصی",
+    description: "شور و هیجان ورزش باستانی بزکشی در دشت‌های سبز",
+    duration: "۱ روز - تماشای ویژه",
     price: 45,
     priceUSD: 32,
-    image: "/assets/bamyan-tour.jpg",
+    image: "/assets/tour1.jpg",
     category: "exhibition",
     rating: 4.6,
     reviews: 67,
@@ -353,8 +353,8 @@ export default function ToursPage() {
   };
 
   const allTours = dynamicTours.length > 0 ? dynamicTours : tours;
-  const filteredTours = activeCategory === "all" 
-    ? allTours 
+  const filteredTours = activeCategory === "all"
+    ? allTours
     : allTours.filter(tour => tour.category === activeCategory);
 
   return (
@@ -364,11 +364,11 @@ export default function ToursPage() {
       <main className="flex-1">
         {/* Hero Section with Image - Same as Home */}
         <div className="w-full h-[250px] md:h-[350px] lg:h-[400px] relative overflow-hidden">
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url('/assets/home-page.webp')` }}
           />
-          <div className="absolute inset-0 bg-white/60" />
+          <div className="absolute inset-0 bg-black/50" />
           <div className="container mx-auto px-4 pt-20 relative z-10">
           </div>
         </div>
@@ -379,7 +379,7 @@ export default function ToursPage() {
             <div className="space-y-4 md:space-y-6">
               <div className="flex items-center justify-between gap-2 flex-wrap lg:flex-nowrap">
                 <div className="relative flex-1 min-w-[180px]">
-                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مبدا</div>
+                  <div className="text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">مبدا</div>
                   <input
                     type="text"
                     placeholder="Origin"
@@ -390,7 +390,7 @@ export default function ToursPage() {
                       if (!e.target.value) setSelectedOrigin("");
                     }}
                     onFocus={() => setOriginDropdown(true)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-right"
+                    className="w-full px-4 py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-orange-500 text-right font-bold text-gray-900 placeholder:text-gray-400"
                   />
                   <ChevronDown className="absolute left-3 top-10 h-5 text-gray-400 pointer-events-none" />
                   {originDropdown && (
@@ -414,7 +414,7 @@ export default function ToursPage() {
                 </button>
 
                 <div className="relative flex-1 min-w-[180px]">
-                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">مقصد</div>
+                  <div className="text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">مقصد</div>
                   <input
                     type="text"
                     placeholder="Destination"
@@ -425,7 +425,7 @@ export default function ToursPage() {
                       if (!e.target.value) setSelectedDestination("");
                     }}
                     onFocus={() => setDestinationDropdown(true)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-right"
+                    className="w-full px-4 py-3 border border-gray-400 rounded-lg focus:ring-2 focus:ring-orange-500 text-right font-bold text-gray-900 placeholder:text-gray-400"
                   />
                   <ChevronDown className="absolute left-3 top-10 h-5 text-gray-400 pointer-events-none" />
                   {destinationDropdown && (
@@ -445,8 +445,8 @@ export default function ToursPage() {
                 </div>
 
                 <div className="relative flex-1 min-w-[160px]">
-                  <div className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2 text-right">تاریخ</div>
-                  <div onClick={() => setDateDropdown(!dateDropdown)} className="w-full px-4 py-3 border border-gray-300 rounded-lg cursor-pointer flex items-center justify-between hover:bg-gray-50 transition">
+                  <div className="text-xs md:text-sm text-gray-900 font-bold mb-1 md:mb-2 text-right">تاریخ</div>
+                  <div onClick={() => setDateDropdown(!dateDropdown)} className="w-full px-4 py-3 border border-gray-400 rounded-lg cursor-pointer flex items-center justify-between hover:bg-gray-50 transition">
                     <span className="text-gray-700">{departureDate || 'انتخاب تاریخ'}</span>
                     <Calendar className="h-5 text-gray-400" />
                   </div>
@@ -488,8 +488,8 @@ export default function ToursPage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             {destinations.map((city, index) => (
-              <Link 
-                key={index} 
+              <Link
+                key={index}
                 href={`/search-results?type=tour&destination=${city.name}`}
                 className="group"
               >
@@ -517,11 +517,10 @@ export default function ToursPage() {
                 <button
                   key={category.id}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`px-4 py-3 text-sm md:text-base font-medium whitespace-nowrap transition-colors relative ${
-                    activeCategory === category.id 
-                      ? 'text-orange-500' 
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
+                  className={`px-4 py-3 text-sm md:text-base font-medium whitespace-nowrap transition-colors relative ${activeCategory === category.id
+                    ? 'text-orange-500'
+                    : 'text-gray-600 hover:text-gray-900'
+                    }`}
                 >
                   {category.label}
                   {activeCategory === category.id && (
@@ -540,59 +539,49 @@ export default function ToursPage() {
               <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-orange-500"></div>
             </div>
           ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredTours.map((tour, index) => (
-              <Link key={tour._id || tour.id || index} href={`/search-results?type=tour&destination=${tour.city}`} className="group">
-                <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={tour.image}
-                      alt={tour.title}
-                      width={400}
-                      height={192}
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
-                    />
-
-                    {tour.category === "oneday" && (
-                      <span className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded">یک روزه</span>
-                    )}
-                    {tour.category === "taxi" && (
-                      <span className="absolute top-3 right-3 bg-purple-500 text-white text-xs px-2 py-1 rounded">تاکسی</span>
-                    )}
-                    {tour.category === "exhibition" && (
-                      <span className="absolute top-3 right-3 bg-pink-500 text-white text-xs px-2 py-1 rounded">نمایشگاه و رویداد</span>
-                    )}
-                  </div>
-                  <div className="p-4 text-right">
-                    <h3 className="font-bold text-gray-900 mb-2 group-hover:text-orange-500 transition-colors">{tour.title}</h3>
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">{tour.description}</p>
-                    <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
-                      <Clock className="h-3 w-3" />
-                      <span>{tour.duration}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {filteredTours.map((tour, index) => (
+                <Link key={tour._id || tour.id || index} href={`/tour/${tour._id || tour.id || index + 1}`} className="group">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div className="relative h-48 overflow-hidden">
+                      <Image
+                        src={tour.image}
+                        alt={tour.title}
+                        width={400}
+                        height={192}
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                      />
                     </div>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                        <span className="text-sm font-semibold">{tour.rating}</span>
-                        <span className="text-xs text-gray-400">({tour.reviews})</span>
+                    <div className="p-4 text-right">
+                      <h3 className="font-bold text-gray-900 mb-2 group-hover:text-orange-500 transition-colors">{tour.title}</h3>
+                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{tour.description}</p>
+                      <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                        <Clock className="h-3 w-3" />
+                        <span>{tour.duration}</span>
+                      </div>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                          <span className="text-sm font-semibold">{tour.rating}</span>
+                          <span className="text-xs text-gray-400">({tour.reviews})</span>
+                        </div>
+                      </div>
+                      <div className="pt-3 border-t border-gray-100">
+                        <span className="text-xs text-gray-500">از</span>
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-xl font-bold text-orange-500">{tour.price.toLocaleString()}</span>
+                          <span className="text-xs text-gray-600">افغانی</span>
+                        </div>
+                        <span className="text-xs text-gray-400">(${tour.priceUSD})</span>
+                      </div>
+                      <div className="mt-3 text-center text-sm font-medium text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                        مشاهده جزئیات ←
                       </div>
                     </div>
-                    <div className="pt-3 border-t border-gray-100">
-                      <span className="text-xs text-gray-500">از</span>
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-xl font-bold text-orange-500">{tour.price.toLocaleString()}</span>
-                        <span className="text-xs text-gray-600">افغانی</span>
-                      </div>
-                      <span className="text-xs text-gray-400">(${tour.priceUSD})</span>
-                    </div>
-                    <div className="mt-3 text-center text-sm font-medium text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                      مشاهده جزئیات ←
-                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
           )}
         </section>
 
@@ -676,8 +665,8 @@ export default function ToursPage() {
             <h2 className="text-xl font-bold text-gray-900 mb-6 text-right">مسیرهای پرطرفدار</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {popularRoutes.map((route, index) => (
-                <Link 
-                  key={index} 
+                <Link
+                  key={index}
                   href={`/search-results?type=tour&destination=${route.name}`}
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-orange-50 transition group"
                 >

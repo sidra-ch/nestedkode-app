@@ -10,11 +10,11 @@ import { useEffect, useState } from "react";
 
 export default function SearchResultsPage() {
   const searchParams = useSearchParams();
-  const type = searchParams.get("type") || "bus";
-  const from = searchParams.get("from") || "";
-  const to = searchParams.get("to") || "";
-  const date = searchParams.get("date") || "";
-  const passengers = searchParams.get("passengers") || "1";
+  const type = searchParams?.get("type") || "bus";
+  const from = searchParams?.get("from") || "";
+  const to = searchParams?.get("to") || "";
+  const date = searchParams?.get("date") || "";
+  const passengers = searchParams?.get("passengers") || "1";
 
   const [loading, setLoading] = useState(false);
   const [buses, setBuses] = useState<any[]>([]);
@@ -48,11 +48,11 @@ export default function SearchResultsPage() {
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-right">نتایج جستجو</h1>
         <div className="bg-white rounded-xl p-6 mb-8 shadow">
           <div className="flex flex-wrap gap-4 text-sm text-gray-700">
-            <span>نوع: <b>{type}</b></span>
-            <span>مبدا: <b>{from}</b></span>
-            <span>مقصد: <b>{to}</b></span>
-            <span>تاریخ: <b>{date}</b></span>
-            <span>مسافران: <b>{passengers}</b></span>
+            <span className="font-bold text-gray-900">نوع: <b className="text-orange-600">{type}</b></span>
+            <span className="font-bold text-gray-900">مبدا: <b className="text-orange-600">{from}</b></span>
+            <span className="font-bold text-gray-900">مقصد: <b className="text-orange-600">{to}</b></span>
+            <span className="font-bold text-gray-900">تاریخ: <b className="text-orange-600">{date}</b></span>
+            <span className="font-bold text-gray-900">مسافران: <b className="text-orange-600">{passengers}</b></span>
           </div>
         </div>
         {type === "bus" && (
@@ -81,7 +81,7 @@ export default function SearchResultsPage() {
                       <div className="text-xs text-gray-500">صندلی‌های خالی: {bus.availableSeats} / {bus.totalSeats}</div>
                     </div>
                     <div className="flex flex-col items-end gap-2">
-                      <Link href={`/bus-booking/${bus._id}`} className="px-6 py-2 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition">رزرو</Link>
+                      <Link href={`/bus-booking/${bus._id}?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${date}&passengers=${passengers}`} className="px-6 py-2 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition">رزرو</Link>
                     </div>
                   </div>
                 </div>

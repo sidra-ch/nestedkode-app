@@ -35,9 +35,45 @@ export async function GET(request: NextRequest) {
       };
     }
 
-    const flights = await Flight.find(query)
+    let flights = await Flight.find(query)
       .sort({ departureTime: 1, price: 1 })
       .lean();
+
+    // If no flights found, return mock data for testing UI
+    if (flights.length === 0) {
+      flights = [
+        {
+          _id: "mock1",
+          airline: "Kam Air",
+          flightNumber: "RQ-101",
+          from: origin || (type === 'domestic' ? "Kabul" : "Kabul"),
+          to: destination || (type === 'domestic' ? "Herat" : "Istanbul"),
+          departureTime: new Date(date || Date.now()),
+          arrivalTime: new Date(Date.now() + 7200000), // +2 hours
+          price: type === 'domestic' ? 4500 : 25000,
+          totalSeats: 150,
+          availableSeats: 42,
+          type: type || 'domestic',
+          class: 'economy',
+          status: 'scheduled'
+        },
+        {
+          _id: "mock2",
+          airline: "Ariana Afghan",
+          flightNumber: "FG-205",
+          from: origin || (type === 'domestic' ? "Kabul" : "Kabul"),
+          to: destination || (type === 'domestic' ? "Mazar" : "Dubai"),
+          departureTime: new Date(Date.now() + 14400000), // +4 hours
+          arrivalTime: new Date(Date.now() + 21600000), // +6 hours
+          price: type === 'domestic' ? 5200 : 32000,
+          totalSeats: 180,
+          availableSeats: 12,
+          type: type || 'domestic',
+          class: 'business',
+          status: 'scheduled'
+        }
+      ] as any;
+    }
 
     return NextResponse.json({
       success: true,
