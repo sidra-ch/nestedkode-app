@@ -38,7 +38,6 @@ export async function POST(request: NextRequest) {
       password: hashedPassword,
       role,
       phone,
-      isApproved: role === 'vendor' ? false : true, // Vendors need approval
     });
 
     // Assuming generateToken is defined elsewhere and imported, or needs to be added.
@@ -62,15 +61,12 @@ export async function POST(request: NextRequest) {
       email: user.email,
       role: user.role,
       phone: user.phone,
-      isApproved: user.isApproved,
     };
 
     return NextResponse.json(
       {
         success: true,
-        message: role === 'vendor'
-          ? 'Registration successful! Your account is pending approval.'
-          : 'Registration successful!',
+        message: 'Registration successful!',
         token,
         user: userResponse,
       },

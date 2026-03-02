@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 
 const BranchesMap = dynamic(() => import("@/components/maps/BranchesMap"), {
     ssr: false,
-    fallback: <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center text-gray-400">Loading Map...</div>
+    loading: () => <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center text-gray-400">Loading Map...</div>
 });
 
 const ConfirmationContent = () => {

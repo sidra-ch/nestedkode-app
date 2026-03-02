@@ -22,7 +22,7 @@ export async function calculateRefund(
       return { allowed: false, message: 'رزرو یافت نشد' };
     }
 
-    if (booking.status === 'cancelled') {
+    if (booking.bookingStatus === 'cancelled') {
       return { allowed: false, message: 'این رزرو قبلاً کنسل شده است' };
     }
 
@@ -37,10 +37,10 @@ export async function calculateRefund(
     }).sort({ isDefault: 1 });
 
     if (!policy) {
-      return { allowed: true, refundAmount: booking.totalPrice, refundPercentage: 100, message: 'کنسلی با بازگشت کامل وجه امکان‌پذیر است' };
+      return { allowed: true, refundAmount: booking.totalAmount, refundPercentage: 100, message: 'کنسلی با بازگشت کامل وجه امکان‌پذیر است' };
     }
 
-    const departureTime = new Date(booking.travelDate).getTime();
+    const departureTime = new Date(booking.tripDetails.departureDate).getTime();
     const now = Date.now();
     const hoursUntilDeparture = (departureTime - now) / (1000 * 60 * 60);
 
@@ -55,7 +55,7 @@ export async function calculateRefund(
     }
 
     const refundPercentage = applicableRule.refundPercentage;
-    const refundAmount = calculateRefundAmount(booking.totalPrice, refundPercentage);
+    const refundAmount = calculateRefundAmount(booking.totalAmount, refundPercentage);
 
     return {
       allowed: refundPercentage > 0,
@@ -91,7 +91,7 @@ export async function processRefund(
       return { success: false, message: 'دسترسی غیرمجاز' };
     }
 
-    const serviceType = booking.busId ? 'bus' : 'flight';
+    const serviceType = booking.tripDetails.busId ? 'bus' : 'flight';
     const refundCalc = await calculateRefund(bookingId, serviceType);
 
     if (!refundCalc.allowed) {
@@ -99,7 +99,7 @@ export async function processRefund(
     }
 
     const refund = await Refund.create({
-      paymentId: booking.paymentId,
+      paymentId: booking.transactionId,
       bookingId: booking._id,
       userId: booking.userId,
       amount: refundCalc.refundAmount,
@@ -111,7 +111,7 @@ export async function processRefund(
     });
 
     await Booking.findByIdAndUpdate(bookingId, {
-      status: 'cancelled',
+      bookingStatus: 'cancelled',
       paymentStatus: 'refunded',
     });
 

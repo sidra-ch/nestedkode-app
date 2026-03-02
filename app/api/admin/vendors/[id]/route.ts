@@ -21,7 +21,6 @@ export async function PUT(
     await connectDB();
 
     const body = await request.json();
-    const { isApproved } = body;
     const { id } = await params;
 
     const vendor = await User.findById(id);
@@ -35,14 +34,14 @@ export async function PUT(
 
     const updatedVendor = await User.findByIdAndUpdate(
       id,
-      { isApproved },
+      { ...body },
       { new: true }
     ).select('-password');
 
     return NextResponse.json(
       {
         success: true,
-        message: isApproved ? 'Vendor approved successfully' : 'Vendor rejected',
+        message: 'Vendor updated successfully',
         vendor: updatedVendor,
       },
       { status: 200 }

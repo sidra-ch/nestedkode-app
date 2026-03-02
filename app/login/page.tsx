@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
@@ -26,10 +26,10 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      
+
       // Get current user info
       const currentUser = useAuthStore.getState().user;
-      
+
       if (currentUser) {
         // Show success popup
         setLoginUserInfo({
@@ -57,8 +57,13 @@ export default function LoginPage() {
     }
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/bus");
+    }
+  }, [isAuthenticated, router]);
+
   if (isAuthenticated) {
-    router.push("/bus");
     return null;
   }
 
@@ -133,15 +138,15 @@ export default function LoginPage() {
               <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4">
                 <CheckCircle className="text-green-600" size={48} />
               </div>
-              
+
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 ورود موفق!
               </h2>
-              
+
               <p className="text-gray-600 mb-4">
                 خوش آمدید، <span className="font-semibold text-gray-900">{loginUserInfo.name}</span>
               </p>
-              
+
               <div className="bg-gray-50 rounded-lg p-4 w-full mb-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm text-gray-600">ایمیل:</span>
@@ -149,22 +154,21 @@ export default function LoginPage() {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">نقش:</span>
-                  <span className={`text-sm font-semibold px-3 py-1 rounded-full ${
-                    loginUserInfo.role === 'admin' ? 'bg-purple-100 text-purple-700' :
-                    loginUserInfo.role === 'vendor' ? 'bg-blue-100 text-blue-700' :
-                    'bg-orange-100 text-orange-700'
-                  }`}>
+                  <span className={`text-sm font-semibold px-3 py-1 rounded-full ${loginUserInfo.role === 'admin' ? 'bg-purple-100 text-purple-700' :
+                      loginUserInfo.role === 'vendor' ? 'bg-blue-100 text-blue-700' :
+                        'bg-orange-100 text-orange-700'
+                    }`}>
                     {loginUserInfo.role === 'admin' ? 'ادمین' : loginUserInfo.role === 'vendor' ? 'فروشنده' : 'کاربر'}
                   </span>
                 </div>
               </div>
-              
+
               <p className="text-sm text-gray-500">
                 در حال انتقال به داشبورد...
               </p>
-              
+
               <div className="mt-4 w-full bg-gray-200 rounded-full h-1">
-                <div className="bg-orange-500 h-1 rounded-full animate-progress" style={{width: '100%'}}></div>
+                <div className="bg-orange-500 h-1 rounded-full animate-progress" style={{ width: '100%' }}></div>
               </div>
             </div>
           </div>
@@ -172,7 +176,7 @@ export default function LoginPage() {
       )}
 
       <Footer />
-      
+
       <style jsx>{`
         @keyframes fadeIn {
           from { opacity: 0; }

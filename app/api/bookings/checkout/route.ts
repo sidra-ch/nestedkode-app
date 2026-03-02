@@ -10,7 +10,7 @@ import { sendBookingConfirmation, sendPaymentConfirmation } from '@/lib/notifica
 export async function POST(request: NextRequest) {
   try {
     const user = getUserFromRequest(request);
-    
+
     if (!user) {
       return NextResponse.json(
         { success: false, message: 'Unauthorized' },
@@ -21,13 +21,13 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     const body = await request.json();
-    const { 
-      bookingId, 
-      passengers, 
-      discountCode, 
+    const {
+      bookingId,
+      passengers,
+      discountCode,
       discountAmount = 0,
       paymentMethod,
-      bankDetails 
+      bankDetails
     } = body;
 
     if (!bookingId) {
@@ -52,33 +52,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let finalPrice = booking.totalPrice;
-    
+    let finalPrice = booking.totalAmount;
+
     if (discountCode && discountAmount > 0) {
       const discountValidation = await validateDiscountCode(
         discountCode,
         'bus',
-        booking.totalPrice
+        booking.totalAmount
       );
-      
+
       if (discountValidation.valid) {
         await applyDiscountCode(discountCode);
-        finalPrice = booking.totalPrice - discountAmount;
+        finalPrice = booking.totalAmount - discountAmount;
       }
     }
 
     const transactionId = generateTransactionId();
 
-    const paymentStatus = paymentMethod === 'online' ? 'pending' : 
-                         paymentMethod === 'cash' ? 'pending' : 'pending';
+    const paymentStatus = paymentMethod === 'online' ? 'pending' :
+      paymentMethod === 'cash' ? 'pending' : 'pending';
 
     const payment = await Payment.create({
       bookingId: booking._id,
       userId: user.userId,
       amount: finalPrice,
       currency: 'AFN',
-      paymentMethod: paymentMethod === 'online' ? 'card' : 
-                    paymentMethod === 'cash' ? 'cash' : 'bank_transfer',
+      paymentMethod: paymentMethod === 'online' ? 'card' :
+        paymentMethod === 'cash' ? 'cash' : 'bank_transfer',
       status: 'pending',
       transactionId,
       paymentGateway: paymentMethod === 'online' ? 'Stripe' : 'Offline',
@@ -90,12 +90,11 @@ export async function POST(request: NextRequest) {
     });
 
     await Booking.findByIdAndUpdate(bookingId, {
-      passengerDetails: passengers.map((p: any) => ({
-        firstName: p.firstName,
-        lastName: p.lastName,
+      travelers: passengers.map((p: any) => ({
+        fullName: `${p.firstName} ${p.lastName}`,
         fatherName: p.fatherName || '',
         passportNumber: p.passportNumber,
-        dateOfBirth: p.dateOfBirth,
+        dateOfBirth: new Date(p.dateOfBirth),
         gender: p.gender,
         email: p.email || '',
         phone: p.phone || '',
@@ -104,7 +103,7 @@ export async function POST(request: NextRequest) {
       })),
       paymentId: payment._id,
       paymentStatus: 'paid',
-      status: 'confirmed',
+      bookingStatus: 'confirmed',
     });
 
     const userEmail = passengers[0]?.email || '';
@@ -116,23 +115,23 @@ export async function POST(request: NextRequest) {
       userPhone,
       {
         _id: booking._id.toString(),
-        from: booking.from,
-        to: booking.to,
-        travelDate: booking.travelDate,
-        seats: booking.seats,
+        from: booking.tripDetails.from,
+        to: booking.tripDetails.to,
+        travelDate: booking.travelDate || new Date(),
+        seats: booking.travelers.map(t => t.seatNumber || '').filter(s => s !== '') as any,
         totalPrice: finalPrice,
       }
     );
 
     const responseData = {
       success: true,
-      message: paymentMethod === 'offline' 
+      message: paymentMethod === 'offline'
         ? 'درخواست پرداخت آفلاین ثبت شد. منتظر تایید مدیریت باشید.'
         : 'رزرو با موفقیت تایید شد',
       booking: {
         ...booking.toObject(),
         paymentStatus: 'pending',
-        status: 'confirmed',
+        bookingStatus: 'confirmed',
       },
       payment: payment,
     };

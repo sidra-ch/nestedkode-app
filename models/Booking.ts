@@ -20,7 +20,10 @@ export interface IBooking {
   bookingReference: string;
   bookingType: "FLIGHT" | "UMRAH" | "TOUR" | "BUS" | "HOTEL";
   userId: string;
+  vendorId?: string;
   agencyId?: string; // For future SaaS scaling
+  userName?: string;
+  userEmail?: string;
 
   tripDetails: {
     from: string;
@@ -32,6 +35,8 @@ export interface IBooking {
     busId?: string;
     airline?: string;
   };
+
+  travelDate?: Date;
 
   travelers: {
     fullName: string;
@@ -53,6 +58,7 @@ export interface IBooking {
   bookingStatus: BookingStatus;
 
   transactionId?: string;
+  paymentId?: string;
   receiptImage?: string; // Cloudinary URL
   totalAmount: number;
   currency: "AFN" | "USD";
@@ -74,7 +80,10 @@ const BookingSchema = new Schema<IBooking>(
       required: true
     },
     userId: { type: String, required: true, index: true },
+    vendorId: { type: String, index: true },
     agencyId: { type: String },
+    userName: { type: String },
+    userEmail: { type: String },
 
     tripDetails: {
       from: { type: String, required: true },
@@ -121,9 +130,11 @@ const BookingSchema = new Schema<IBooking>(
     },
 
     transactionId: { type: String },
+    paymentId: { type: String },
     receiptImage: { type: String },
     totalAmount: { type: Number, required: true },
     currency: { type: String, enum: ["AFN", "USD"], default: "AFN" },
+    travelDate: { type: Date },
 
     holdExpiresAt: { type: Date, required: true, index: { expireAfterSeconds: 0 } },
     verifiedAt: { type: Date },

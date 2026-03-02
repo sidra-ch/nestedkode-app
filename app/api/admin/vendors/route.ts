@@ -21,11 +21,6 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status');
 
     const query: Record<string, unknown> = { role: 'vendor' };
-    if (status === 'pending') {
-      query.isApproved = false;
-    } else if (status === 'approved') {
-      query.isApproved = true;
-    }
 
     const vendors = await User.find(query).select('-password').sort({ createdAt: -1 });
 
@@ -79,12 +74,11 @@ export async function POST(request: NextRequest) {
       name,
       email: email.toLowerCase(),
       role: 'vendor',
-      isApproved: false,
     });
     await newVendor.save();
 
     return NextResponse.json(
-      { success: true, vendor: { id: newVendor._id, name: newVendor.name, email: newVendor.email, isApproved: newVendor.isApproved } },
+      { success: true, vendor: { id: newVendor._id, name: newVendor.name, email: newVendor.email } },
       { status: 201 }
     );
   } catch (error) {

@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
 
     // Calculate total revenue
     const bookings = await Booking.find({ vendorId: user.userId, paymentStatus: 'paid' });
-    const totalRevenue = bookings.reduce((sum, booking) => sum + booking.totalPrice, 0);
+    const totalRevenue = bookings.reduce((sum, booking) => sum + booking.totalAmount, 0);
 
     // Recent bookings
     const recentBookings = await Booking.find({ vendorId: user.userId })

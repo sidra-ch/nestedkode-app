@@ -32,7 +32,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fa" dir="rtl">
+    <html lang="fa" dir="rtl" suppressHydrationWarning>
       <body
         className={`antialiased min-h-screen overflow-x-hidden ${notoSansArabic.variable} ${plusJakartaSans.variable}`}
       >

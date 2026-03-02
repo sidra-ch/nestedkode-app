@@ -29,13 +29,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if vendor is approved
-    if (user.role === 'vendor' && !user.isApproved) {
-      return NextResponse.json(
-        { success: false, message: 'Your vendor account is pending approval' },
-        { status: 403 }
-      );
-    }
 
     // Verify password
     const isPasswordValid = await comparePassword(password, user.password || "");
@@ -66,7 +59,6 @@ export async function POST(request: NextRequest) {
       email: user.email,
       role: user.role,
       phone: user.phone,
-      isApproved: user.isApproved,
     };
 
     return NextResponse.json(

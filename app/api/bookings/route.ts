@@ -128,6 +128,7 @@ export async function POST(request: NextRequest) {
       userName: userData?.name || 'User',
       userEmail: user.email || '',
       tripDetails,
+      travelDate: new Date(tripDetails.departureDate),
       travelers,
       contact,
       totalAmount,
