@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   title: "افغانی‌بابا | خرید آنلاین بلیط هواپیما، اتوبوس، هتل و تور",
   description: "خرید بلیط هواپیما، اتوبوس، رزرو هتل، تور و تاکسی بین‌شهری با بهترین قیمت | افغانی‌بابا",
   keywords: "بلیط هواپیما, رزرو هتل, تور, اتوبوس, تاکسی, بیمه مسافرتی, ویزا",
+  icons: {
+    icon: "https://res.cloudinary.com/dwmxdyvd2/image/upload/v1772489756/Afghan_Baba_with_mountainous_backdrop_gim2ik.png",
+    shortcut: "https://res.cloudinary.com/dwmxdyvd2/image/upload/v1772489756/Afghan_Baba_with_mountainous_backdrop_gim2ik.png",
+    apple: "https://res.cloudinary.com/dwmxdyvd2/image/upload/v1772489756/Afghan_Baba_with_mountainous_backdrop_gim2ik.png",
+  },
 };
 
 export default function RootLayout({
