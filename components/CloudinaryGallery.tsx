@@ -35,7 +35,6 @@ export default function CloudinaryGallery() {
   return (
     <div>
       {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {images.map((img) => (
           <div key={img.public_id} className="border rounded-lg overflow-hidden">
