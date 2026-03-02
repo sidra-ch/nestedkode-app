@@ -8,6 +8,7 @@ export interface IUser extends Document {
   phone?: string;
   agencyId?: mongoose.Types.ObjectId;
   isVerified: boolean;
+  isApproved: boolean;
   lastLogin?: Date;
   loginCount?: number;
   createdAt: Date;
@@ -47,6 +48,10 @@ const UserSchema = new Schema<IUser>(
       ref: 'Agency',
     },
     isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    isApproved: {
       type: Boolean,
       default: false,
     },
