@@ -7,7 +7,12 @@ import Image from "next/image";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Star, ChevronRight, MapPin, Calendar, Users, Bus, Hotel as HotelIcon } from "lucide-react";
-import BranchesMap from "@/components/maps/BranchesMap";
+import dynamic from "next/dynamic";
+
+const BranchesMap = dynamic(() => import("@/components/maps/BranchesMap"), {
+  ssr: false,
+  loading: () => <div className="h-full w-full bg-gray-100 animate-pulse flex items-center justify-center text-gray-400">Loading Map...</div>
+});
 import { formatDualDate } from "@/lib/date-utils";
 
 const SearchResultsContent = () => {

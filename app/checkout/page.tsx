@@ -19,7 +19,12 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { motion, AnimatePresence } from "framer-motion";
 
-import BranchesMap from "@/components/maps/BranchesMap";
+import dynamic from "next/dynamic";
+
+const BranchesMap = dynamic(() => import("@/components/maps/BranchesMap"), {
+    ssr: false,
+    loading: () => <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center text-gray-400">Loading Map...</div>
+});
 
 // --- Types ---
 type Passenger = {

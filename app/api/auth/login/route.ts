@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify password
-    const isPasswordValid = await comparePassword(password, user.password);
+    const isPasswordValid = await comparePassword(password, user.password || "");
 
     if (!isPasswordValid) {
       return NextResponse.json(
@@ -66,7 +66,6 @@ export async function POST(request: NextRequest) {
       email: user.email,
       role: user.role,
       phone: user.phone,
-      vendorId: user.vendorId,
       isApproved: user.isApproved,
     };
 

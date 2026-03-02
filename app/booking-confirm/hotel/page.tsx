@@ -6,7 +6,12 @@ import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { CheckCircle, Calendar, Users, MapPin, Printer, Download, Home, Phone, Mail, ChevronRight, ChevronLeft } from "lucide-react";
-import BranchesMap from "@/components/maps/BranchesMap";
+import dynamic from "next/dynamic";
+
+const BranchesMap = dynamic(() => import("@/components/maps/BranchesMap"), {
+    ssr: false,
+    fallback: <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center text-gray-400">Loading Map...</div>
+});
 
 const ConfirmationContent = () => {
     const searchParams = useSearchParams();

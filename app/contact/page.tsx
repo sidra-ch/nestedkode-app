@@ -3,7 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import BranchesMap from "@/components/maps/BranchesMap";
+import dynamic from "next/dynamic";
+
+const BranchesMap = dynamic(() => import("@/components/maps/BranchesMap"), {
+    ssr: false,
+    loading: () => <div className="h-full w-full bg-gray-100 animate-pulse flex items-center justify-center text-gray-400">Loading Map...</div>
+});
 import { Phone, Mail, MessageCircle, MapPin, Clock, Send, ChevronLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -97,8 +102,8 @@ export default function ContactPage() {
                                         whileHover={{ scale: 1.02 }}
                                         onClick={() => handleBranchClick(branch._id)}
                                         className={`cursor-pointer p-6 rounded-2xl border-2 transition-all shadow-sm ${selectedBranchId === branch._id
-                                                ? 'border-[#D4AF37] bg-orange-50/30'
-                                                : 'border-white bg-white hover:border-gray-200'
+                                            ? 'border-[#D4AF37] bg-orange-50/30'
+                                            : 'border-white bg-white hover:border-gray-200'
                                             }`}
                                     >
                                         <div className="flex justify-between items-start mb-3">
