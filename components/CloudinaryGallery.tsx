@@ -21,10 +21,10 @@ export default function CloudinaryGallery() {
         if (data.success) {
           setImages(data.images);
         } else {
-          setError(data.message || 'Failed to load images');
+          setError(data.message || '');
         }
       } catch {
-        setError('Failed to load images');
+        setError('');
       } finally {
         setLoading(false);
       }

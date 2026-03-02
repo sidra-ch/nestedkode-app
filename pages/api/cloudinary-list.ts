@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // List images from the 'nestedkode' folder (change as needed)
     const result = await cloudinary.search
       .expression('folder:nestedkode/*')
-      .sort_by('created_at','desc')
+      .sort_by('created_at', 'desc')
       .max_results(30)
       .execute();
 
@@ -27,6 +27,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.status(200).json({ success: true, images });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Failed to fetch images', error });
+    res.status(500).json({ success: false, message: '', error });
   }
 }
