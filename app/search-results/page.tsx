@@ -1,14 +1,12 @@
 "use client";
 
-
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
-
-export default function SearchResultsPage() {
+const SearchResultsContent = () => {
   const searchParams = useSearchParams();
   const type = searchParams?.get("type") || "bus";
   const from = searchParams?.get("from") || "";
@@ -98,5 +96,17 @@ export default function SearchResultsPage() {
       </main>
       <Footer />
     </div>
+  );
+};
+
+export default function SearchResultsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+      </div>
+    }>
+      <SearchResultsContent />
+    </Suspense>
   );
 }

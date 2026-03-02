@@ -21,7 +21,7 @@ type Booking = {
 
 function PaymentConfirmContent() {
   const searchParams = useSearchParams();
-  const bookingId = searchParams.get("bookingId");
+  const bookingId = searchParams?.get("bookingId");
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

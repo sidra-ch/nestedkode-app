@@ -3,9 +3,9 @@
 import { useSearchParams, useParams, useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 
-export default function BusBookingPaymentPage() {
+function BusBookingPaymentContent() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -89,5 +89,17 @@ export default function BusBookingPaymentPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function BusBookingPaymentPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+      </div>
+    }>
+      <BusBookingPaymentContent />
+    </Suspense>
   );
 }

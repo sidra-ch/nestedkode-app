@@ -7,8 +7,8 @@ import Link from "next/link";
 function OTPVerificationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const phone = searchParams.get("phone") || "";
-  
+  const phone = searchParams?.get("phone") || "";
+
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(120); // 2 minutes

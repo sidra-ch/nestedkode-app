@@ -25,14 +25,13 @@ export default function BottomNav() {
     >
       <div className="flex justify-around items-center py-2">
         {navItems.map(({ href, icon: Icon, label, key }) => {
-          const isActive = pathname.startsWith(`/${key}`);
+          const isActive = pathname?.startsWith(`/${key}`);
           return (
             <Link
               key={key}
               href={href}
-              className={`flex flex-col items-center justify-center min-w-[60px] py-1 transition-colors ${
-                isActive ? "text-orange-500" : "text-gray-600"
-              }`}
+              className={`flex flex-col items-center justify-center min-w-[60px] py-1 transition-colors ${isActive ? "text-orange-500" : "text-gray-600"
+                }`}
             >
               <Icon className="h-6 w-6 mb-1" />
               <span className="text-xs font-medium">{label}</span>

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { ChevronRight, Calendar, Clock } from "lucide-react";
+import { ChevronRight, Calendar, Clock, ShieldCheck } from "lucide-react";
 import useAuthStore from "@/store/useAuthStore";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
@@ -26,7 +26,7 @@ type BusDetails = {
   bookedSeats?: number[];
 };
 
-export default function BusBookingPage() {
+function BusBookingContent() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -549,5 +549,17 @@ export default function BusBookingPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function BusBookingPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+      </div>
+    }>
+      <BusBookingContent />
+    </Suspense>
   );
 }

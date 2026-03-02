@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -20,10 +20,10 @@ type Bus = {
   busType: string;
 };
 
-export default function EditBusPage() {
+function EditBusContent() {
   const router = useRouter();
   const params = useParams();
-  const busId = params.id as string;
+  const busId = params?.id as string;
   const { user, token, isAuthenticated } = useAuthStore();
 
   const [bus, setBus] = useState<Bus | null>(null);
@@ -270,5 +270,17 @@ export default function EditBusPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function EditBusPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+      </div>
+    }>
+      <EditBusContent />
+    </Suspense>
   );
 }
