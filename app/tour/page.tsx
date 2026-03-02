@@ -610,11 +610,11 @@ export default function ToursPage() {
                   سریع‌تر و مطمئن‌تر به سفر بروید. اپلیکیشن افغانی‌بابا را دانلود کنید و از تمام خدمات سفر در هر جای و هر زمان استفاده کنید.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <a href="#" className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition justify-center">
+                  <a href="/mobile-app" className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition justify-center">
                     <span>🍎</span>
                     <span>دانلود iOS</span>
                   </a>
-                  <a href="#" className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition justify-center">
+                  <a href="/mobile-app/android" className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition justify-center">
                     <span>🤖</span>
                     <span>دانلود Android</span>
                   </a>

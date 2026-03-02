@@ -66,6 +66,15 @@ export default function FlightsPage() {
     setSelectedDestination(temp);
   };
 
+  const [showResults, setShowResults] = useState(false);
+  const [searchParams, setSearchParams] = useState<{
+    from?: string;
+    to?: string;
+    date?: string;
+    passengers?: string;
+    type?: string;
+  }>({});
+
   const handleSearch = () => {
     const errors: string[] = [];
     if (!selectedOrigin) errors.push("origin");
@@ -79,14 +88,16 @@ export default function FlightsPage() {
       return;
     }
 
-    const params = new URLSearchParams();
-    params.set("from", selectedOrigin);
-    params.set("to", selectedDestination);
-    params.set("date", departureDate);
-    params.set("passengers", passengers);
-    params.set("type", searchMode);
+    const params = {
+      from: selectedOrigin,
+      to: selectedDestination,
+      date: departureDate,
+      passengers: passengers,
+      type: searchMode
+    };
 
-    window.location.href = `/flight-results?${params.toString()}`;
+    setSearchParams(params);
+    setShowResults(true);
   };
 
   const getInputClass = (field: string) => {
@@ -295,15 +306,143 @@ export default function FlightsPage() {
           </div>
         </div>
 
-        {/* Categories Section */}
+        {/* Flight Results Section */}
+        {showResults && (
+          <div className="max-w-6xl mx-auto px-4 mb-12">
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-gray-900">
+                  نتایج پرواز: {searchParams.from} به {searchParams.to}
+                </h2>
+                <button
+                  onClick={() => setShowResults(false)}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                >
+                  جستجوی جدید
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  {
+                    _id: "flight1",
+                    airline: "کام ایر",
+                    airlineCode: "RQ",
+                    flightNumber: "RQ-112",
+                    class: "economy",
+                    from: searchParams.from || "کابل",
+                    to: searchParams.to || "مزار شریف",
+                    departureTime: "08:00",
+                    arrivalTime: "09:15",
+                    price: 4500,
+                    availableSeats: 15,
+                    rating: 4.5
+                  },
+                  {
+                    _id: "flight2",
+                    airline: "آریانا افغان",
+                    airlineCode: "FG",
+                    flightNumber: "FG-405",
+                    class: "economy",
+                    from: searchParams.from || "کابل",
+                    to: searchParams.to || "مزار شریف",
+                    departureTime: "14:30",
+                    arrivalTime: "15:45",
+                    price: 4200,
+                    availableSeats: 8,
+                    rating: 4.2
+                  },
+                  {
+                    _id: "flight3",
+                    airline: "Afghan Jet",
+                    airlineCode: "AJ",
+                    flightNumber: "AJ-208",
+                    class: "business",
+                    from: searchParams.from || "کابل",
+                    to: searchParams.to || "مزار شریف",
+                    departureTime: "18:00",
+                    arrivalTime: "19:15",
+                    price: 6500,
+                    availableSeats: 5,
+                    rating: 4.8
+                  }
+                ].map((flight) => (
+                  <div key={flight._id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                          <Plane className="h-6 w-6 text-blue-600" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-gray-900">{flight.airline}</h3>
+                          <p className="text-sm text-gray-500">{flight.flightNumber}</p>
+                        </div>
+                      </div>
+
+                      <div className="text-center">
+                        <p className="text-lg font-bold text-gray-900">{flight.departureTime}</p>
+                        <p className="text-sm text-gray-600">{flight.from}</p>
+                      </div>
+
+                      <div className="text-center">
+                        <div className="flex items-center justify-center">
+                          <div className="border-t-2 border-dashed border-gray-300 w-12"></div>
+                          <Plane className="h-4 w-4 text-gray-400 mx-2" />
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">1 ساعت 15 دقیقه</p>
+                      </div>
+
+                      <div className="text-center">
+                        <p className="text-lg font-bold text-gray-900">{flight.arrivalTime}</p>
+                        <p className="text-sm text-gray-600">{flight.to}</p>
+                      </div>
+
+                      <div className="text-left">
+                        <p className="text-2xl font-bold text-blue-600">{flight.price} AFN</p>
+                        <p className="text-sm text-gray-500">{flight.availableSeats} صندلی خالی</p>
+                        <button className="w-full mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                          انتخاب پرواز
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {showResults && (
+                <div className="mt-6 p-8 text-center bg-gray-50 rounded-lg">
+                  <p className="text-gray-600">پرواز بیشتری یافت نشد</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         <section className="max-w-6xl mx-auto px-4 grid md:grid-cols-4 gap-8 mb-20">
           {[
-            { title: "پروازهای امروز", icon: "✈️", color: "bg-blue-50 text-blue-600" },
-            { title: "ارزان‌ترین ها", icon: "💰", color: "bg-emerald-50 text-emerald-600" },
-            { title: "رزرو فوری", icon: "⚡", color: "bg-orange-50 text-orange-600" },
-            { title: "پشتیبانی ویژه", icon: "📞", color: "bg-purple-50 text-purple-600" }
+            {
+              title: "پروازهای امروز", icon: "", color: "bg-blue-50 text-blue-600", action: () => {
+                const today = new Date().toISOString().split('T')[0];
+                window.location.href = `/flight-results?from=کابل&to=مزار شریف&date=${today}&passengers=1 نفر&type=domestic`;
+              }
+            },
+            {
+              title: "ارزان‌ترین ها", icon: "💰", color: "bg-emerald-50 text-emerald-600", action: () => {
+                window.location.href = `/flight-results?from=کابل&to=هرات&date=2026-04-10&passengers=1 نفر&type=domestic`;
+              }
+            },
+            {
+              title: "رزرو فوری", icon: "⚡", color: "bg-orange-50 text-orange-600", action: () => {
+                window.location.href = `/flight-results?from=هرات&to=کابل&date=2026-03-30&passengers=1 نفر&type=domestic`;
+              }
+            },
+            { title: "پشتیبانی ویژه", icon: "📞", color: "bg-purple-50 text-purple-600", action: () => window.location.href = "/contact" }
           ].map(cat => (
-            <div key={cat.title} className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all cursor-pointer group text-center">
+            <div
+              key={cat.title}
+              onClick={cat.action}
+              className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all cursor-pointer group text-center"
+            >
               <div className={`w-16 h-16 rounded-2xl ${cat.color} flex items-center justify-center text-3xl mx-auto mb-4 group-hover:scale-110 transition-transform`}>
                 {cat.icon}
               </div>

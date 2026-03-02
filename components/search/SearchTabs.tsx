@@ -8,7 +8,7 @@ import Toast from "@/components/ui/Toast";
 import type { TabKey } from "@/components/BookingTabs";
 
 const inputBase =
-  "w-full h-14 px-4 rounded-xl border border-gray-400 text-right text-gray-900 focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-all duration-200 font-bold placeholder:text-gray-400";
+  "w-full h-14 px-4 rounded-xl border border-gray-400 text-right text-gray-900 focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-all duration-200 font-bold placeholder:text-gray-400 cursor-pointer";
 
 type TravelFormState = {
   origin: string;
@@ -183,7 +183,7 @@ export default function SearchTabs({ activeTab }: SearchTabsProps) {
     if (travel.tripType === "roundtrip" && travel.returnDate) params.set("returnDate", travel.returnDate);
     if (activeTab === "bus") router.push(`/bus?${params.toString()}`);
     else if (activeTab === "tour") router.push(`/tour?${params.toString()}`);
-    else router.push(`/flights?${params.toString()}`);
+    else router.push(`/flight-results?${params.toString()}`);
   };
 
   const validateAndSubmitHotel = () => {

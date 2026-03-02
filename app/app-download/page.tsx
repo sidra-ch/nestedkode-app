@@ -85,14 +85,14 @@ export default function AppDownloadPage() {
                             <div className="space-y-3">
                                 <p className="text-white/60 text-sm font-bold">دانلود اپلیکیشن:</p>
                                 <div className="flex flex-wrap gap-3">
-                                    <a href="#" className="flex items-center gap-3 bg-white text-gray-900 font-bold px-5 py-3 rounded-2xl hover:bg-orange-50 transition shadow-lg">
+                                    <a href="/mobile-app/android" className="flex items-center gap-3 bg-white text-gray-900 font-bold px-5 py-3 rounded-2xl hover:bg-orange-50 transition shadow-lg">
                                         <span className="text-2xl">🤖</span>
                                         <div className="text-right">
                                             <p className="text-xs text-gray-400">دانلود برای</p>
                                             <p className="font-black">Android</p>
                                         </div>
                                     </a>
-                                    <a href="#" className="flex items-center gap-3 bg-white text-gray-900 font-bold px-5 py-3 rounded-2xl hover:bg-orange-50 transition shadow-lg">
+                                    <a href="/mobile-app" className="flex items-center gap-3 bg-white text-gray-900 font-bold px-5 py-3 rounded-2xl hover:bg-orange-50 transition shadow-lg">
                                         <span className="text-2xl">🍎</span>
                                         <div className="text-right">
                                             <p className="text-xs text-gray-400">دانلود برای</p>
@@ -228,11 +228,11 @@ export default function AppDownloadPage() {
                     <h2 className="text-3xl font-black mb-3">همین حالا دانلود کن!</h2>
                     <p className="text-white/80 mb-8">بیش از ۵۰۰,۰۰۰ مسافر قبلاً هوشمندانه انتخاب کرده‌اند.</p>
                     <div className="flex flex-wrap justify-center gap-4">
-                        <a href="#" className="flex items-center gap-3 bg-white text-gray-900 font-bold px-6 py-3 rounded-2xl hover:bg-orange-50 transition shadow-lg">
+                        <a href="/mobile-app/android" className="flex items-center gap-3 bg-white text-gray-900 font-bold px-6 py-3 rounded-2xl hover:bg-orange-50 transition shadow-lg">
                             <span className="text-2xl">🤖</span>
                             <span>دانلود Android</span>
                         </a>
-                        <a href="#" className="flex items-center gap-3 bg-white text-gray-900 font-bold px-6 py-3 rounded-2xl hover:bg-orange-50 transition shadow-lg">
+                        <a href="/mobile-app" className="flex items-center gap-3 bg-white text-gray-900 font-bold px-6 py-3 rounded-2xl hover:bg-orange-50 transition shadow-lg">
                             <span className="text-2xl">🍎</span>
                             <span>دانلود iOS</span>
                         </a>

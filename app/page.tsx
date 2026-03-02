@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import dynamic from "next/dynamic";
@@ -162,8 +163,8 @@ function Home() {
                   <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">اپلیکیشن افغانی‌بابا</h2>
                   <p className="text-gray-600 mb-6 leading-relaxed">سریع‌تر و مطمئن‌تر به سفر بروید. اپلیکیشن افغانی‌بابا را دانلود کنید و از تمام خدمات سفر در هر جای و هر زمان استفاده کنید.</p>
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <a href="#" className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition text-center justify-center"><span>🍎</span><span>دانلود iOS</span></a>
-                    <a href="#" className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition text-center justify-center"><span>🤖</span><span>دانلود Android</span></a>
+                    <Link href="/mobile-app" className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition text-center justify-center"><span>🍎</span><span>دانلود iOS</span></Link>
+                    <Link href="/mobile-app/android" className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition text-center justify-center"><span>🤖</span><span>دانلود Android</span></Link>
                   </div>
                 </div>
                 <div className="flex items-center justify-center">
@@ -289,10 +290,11 @@ function Home() {
           {/* Services Section */}
           <div className="container mx-auto px-3 sm:px-4 mb-16">
             <h2 className="text-2xl font-bold text-gray-900 mb-8 text-right">خدمات ما</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <a href="/flights" className="group p-8 bg-white rounded-xl hover:shadow-lg transition text-right"><div className="text-4xl mb-4">✈️</div><h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-afghanibaba-primary transition">بلیط هواپیما</h3><p className="text-gray-600">رزرو بلیط پروازهای داخلی و بین‌المللی با بهترین نرخ</p></a>
-              <a href="/hotels" className="group p-8 bg-white rounded-xl hover:shadow-lg transition text-right"><div className="text-4xl mb-4">🏨</div><h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-afghanibaba-primary transition">رزرو هتل</h3><p className="text-gray-600">رزرو هتل‌های معتبر در سراسر کشور و جهان</p></a>
-              <a href="/bus" className="group p-8 bg-white rounded-xl hover:shadow-lg transition text-right"><div className="text-4xl mb-4">🚌</div><h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-afghanibaba-primary transition">بلیط اتوبوس</h3><p className="text-gray-600">رزرو اتوبوس‌های بین‌شهری با امکانات کامل</p></a>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Link href="/flights" className="group p-8 bg-white rounded-xl hover:shadow-lg transition text-right"><div className="text-4xl mb-4">✈️</div><h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-afghanibaba-primary transition">بلیط هواپیما</h3><p className="text-gray-600">رزرو بلیط پروازهای داخلی و بین‌المللی با بهترین نرخ</p></Link>
+              <Link href="/today-flights" className="group p-8 bg-white rounded-xl hover:shadow-lg transition text-right"><div className="text-4xl mb-4">🛫</div><h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-afghanibaba-primary transition">پروازهای امروز</h3><p className="text-gray-600">مشاهده و رزرو پروازهای امروز در تمام مسیرها</p></Link>
+              <Link href="/hotels" className="group p-8 bg-white rounded-xl hover:shadow-lg transition text-right"><div className="text-4xl mb-4">🏨</div><h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-afghanibaba-primary transition">رزرو هتل</h3><p className="text-gray-600">رزرو هتل‌های معتبر در سراسر کشور و جهان</p></Link>
+              <Link href="/bus" className="group p-8 bg-white rounded-xl hover:shadow-lg transition text-right"><div className="text-4xl mb-4">🚌</div><h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-afghanibaba-primary transition">بلیط اتوبوس</h3><p className="text-gray-600">رزرو اتوبوس‌های بین‌شهری با امکانات کامل</p></Link>
             </div>
           </div>
         </main>
